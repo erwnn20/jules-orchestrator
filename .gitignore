@@ -1,0 +1,10 @@
+﻿# Dependencies
+node_modules/
+
+# IDE
+.idea/
+
+# Subjects and Utils
+*.pdf
+*.txt
+subject.md
