@@ -1,6 +1,7 @@
 ﻿import { version } from '@/package.json';
 import { routes } from "@/routes.config";
 import StatusDot from "@components/helpers/statusDot";
+import { useApp } from "@context/AppContext";
 import { Project } from "@interfaces/project.interface";
 import { Route } from "@interfaces/route.interface";
 import { NavLink as NavLinkReact } from 'react-router-dom'
@@ -50,10 +51,8 @@ function NavProject({ project }: { project: Project }) {
 
 //
 
-export default function Sidebar({
-                                  page, onNavigate, projects, onSelectProject, selectedProjectId,
-                                }: {
-  projects: Project[]
+export default function Sidebar() {
+  const { projects } = useApp()
   const navRoutes = routes.filter(route => route.isNav)
 
   const recentProjects = projects.filter(p => p.lastActivity).sort((a, b) => (a.lastActivity?.getDate() ?? 0) - (b.lastActivity?.getDate() ?? 0))

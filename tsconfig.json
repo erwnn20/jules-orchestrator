@@ -13,6 +13,12 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "paths": {
+      "@context/*": [
+        "./src/renderer/context/*"
+      ],
+      "@data/*": [
+        "./src/renderer/data/*"
+      ],
       "@pages/*": [
         "./src/renderer/components/pages/*"
       ],

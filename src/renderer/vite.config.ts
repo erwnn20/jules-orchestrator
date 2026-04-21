@@ -5,13 +5,15 @@ import path from 'path'
 export default defineConfig({
   // root: 'src/renderer',
   plugins: [react()],
-  base: './',
+  base: '.',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
   },
   resolve: {
     alias: {
+      '@context': path.resolve(__dirname, './context'),
+      '@data': path.resolve(__dirname, './data'),
       '@pages': path.resolve(__dirname, './components/pages'),
       '@components': path.resolve(__dirname, './components'),
       '@interfaces': path.resolve(__dirname, './interfaces'),

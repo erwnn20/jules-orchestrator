@@ -1,6 +1,6 @@
 ﻿import { routes } from "@/routes.config";
 import Sidebar from "@components/sidebar";
-import {MOCK_PROJECTS, Page} from "./mock.data";
+import { Route, Routes } from "react-router";
 
 
 export default function App() {

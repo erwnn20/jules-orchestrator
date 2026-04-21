@@ -3,5 +3,5 @@
   task: string
   branch: string
   convUrl: string
-  status: 'running' | 'done' | 'error'
+  status: 'running' | 'done' | 'error' | 'none'
 }

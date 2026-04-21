@@ -4,10 +4,10 @@ import { useApp } from "@context/AppContext";
 import { useNavigate } from "react-router";
 
 
-export default function ProjectsPage({projects, onSelectProject, onNavigate}: {
-  projects: Project[]
-}) {
+export default function ProjectsPage() {
+  const { projects } = useApp()
   const navigate = useNavigate();
+
   return (
     <div style={{ padding: '32px 40px', maxWidth: 900 }}>
       <h1 style={{

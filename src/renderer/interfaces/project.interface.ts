@@ -7,7 +7,7 @@ export interface Project {
   repoUrl: string
   hasJulesAccess: boolean
   activeAgents: number
-  lastActivity: string | null
+  lastActivity?: Date
   agents: Agent[]
   pullRequests: PullRequest[]
 }

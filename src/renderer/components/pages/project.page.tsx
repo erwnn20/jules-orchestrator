@@ -1,12 +1,16 @@
-﻿import {Project} from "@interfaces/project.interface";
-import Badge from "@components/helpers/badge";
+﻿import Badge from "@components/helpers/badge";
 import StatusDot from "@components/helpers/statusDot";
+import { useApp } from "@context/AppContext";
 import { useState } from "react";
 import { useParams } from "react-router";
 
 
-export default function ProjectPage({project}: { project: Project }) {
+export default function ProjectPage() {
+  const { projects } = useApp()
   const [task, setTask] = useState('')
+  const { id } = useParams();
+  const project = projects.find(p => p.id === id);
+
   if (!project)
     return (
       <div style={{ padding: 40, fontSize: 12, fontFamily: 'monospace', color: '#4b5563' }}>

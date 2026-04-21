@@ -1,12 +1,10 @@
-﻿import {Project} from "@interfaces/project.interface";
-import {Page, RECENT_ACTIVITY} from "../../mock.data";
-import StatusDot from "@components/helpers/statusDot";
+﻿import StatusDot from "@components/helpers/statusDot";
+import { useApp } from "@context/AppContext";
 import { useNavigate } from "react-router";
 
 
-export default function HomePage({projects, onSelectProject, onNavigate}: {
-  projects: Project[]
-}) {
+export default function HomePage() {
+  const { projects, recentActivities } = useApp()
   const navigate = useNavigate();
 
   const totalActive = projects.reduce((acc, p) => acc + p.activeAgents, 0)
@@ -68,17 +66,17 @@ export default function HomePage({projects, onSelectProject, onNavigate}: {
         }}>
           ACTIVITÉ RÉCENTE
         </div>
-          {RECENT_ACTIVITY.map((a, i) => (
         <div style={{
           background: '#0d1117',
           border: '1px solid #21262d',
           borderRadius: 6,
           overflow: 'hidden'
         }}>
+          {recentActivities.map((activity, i) => (
             <div key={i} style={{
               display: 'flex', alignItems: 'center', gap: 12,
               padding: '10px 16px',
-              borderBottom: i < RECENT_ACTIVITY.length - 1 ? '1px solid #161b22' : 'none',
+              borderBottom: i < recentActivities.length - 1 ? '1px solid #161b22' : 'none',
             }}>
               <StatusDot status={activity.status}/>
               <button onClick={() => {
