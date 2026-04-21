@@ -4,8 +4,8 @@
   "main": "dist/electron/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"npm run dev --prefix src/renderer\" \"tsc --watch\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development nodemon --watch dist/electron --ext js --exec electron .\"",
-    "build": "vite build && tsc -p tsconfig.json",
+    "dev": "concurrently \"npm run dev --prefix src/renderer\" \"tsc --watch -p tsconfig.json\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development nodemon --watch dist/electron --ext js --exec electron .\"",
+    "build": "tsc -p tsconfig.json && npm run build --prefix src/renderer",
     "dist": "npm run build && electron-builder"
   },
   "keywords": [],
