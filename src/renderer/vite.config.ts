@@ -15,6 +15,7 @@ export default defineConfig({
       '@pages': path.resolve(__dirname, './components/pages'),
       '@components': path.resolve(__dirname, './components'),
       '@interfaces': path.resolve(__dirname, './interfaces'),
+      '@': path.resolve(__dirname, '.'),
     },
   },
 })

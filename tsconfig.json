@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "strict": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -10,10 +13,21 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "paths": {
-      "@pages/*": ["./src/renderer/components/pages/*"],
-      "@components/*": ["./src/renderer/components/*"],
-      "@interfaces/*": ["./src/renderer/interfaces/*"]
+      "@pages/*": [
+        "./src/renderer/components/pages/*"
+      ],
+      "@components/*": [
+        "./src/renderer/components/*"
+      ],
+      "@interfaces/*": [
+        "./src/renderer/interfaces/*"
+      ],
+      "@/*": [
+        "./src/renderer/*"
+      ]
     }
   },
-  "include": ["src"],
+  "include": [
+    "src"
+  ]
 }

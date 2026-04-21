@@ -6,6 +6,7 @@ export default function StatusDot({status}: { status: Agent['status'] }) {
     running: '#4ade80',
     done: '#6b7280',
     error: '#f87171',
+    none: '',
   }
   const pulse = status === 'running'
   return (
