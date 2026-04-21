@@ -1,4 +1,4 @@
-﻿import StatusDot from "@components/helpers/statusDot";
+import StatusDot from "@components/helpers/statusDot";
 import { useApp } from "@context/AppContext";
 import { useNavigate } from "react-router";
 

@@ -1,4 +1,4 @@
-﻿import { routes } from "@/routes.config";
+import { routes } from "@/routes.config";
 import Sidebar from "@components/sidebar";
 import { Route, Routes } from "react-router";
 
