@@ -1,6 +1,6 @@
 ﻿import { version } from '@/package.json';
-import { routes } from "@/routes.config";
 import StatusDot from "@components/helpers/statusDot";
+import { routes } from "@config/routes.config";
 import { useApp } from "@context/AppContext";
 import { Project } from "@interfaces/project.interface";
 import { Route } from "@interfaces/route.interface";

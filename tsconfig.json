@@ -13,6 +13,9 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "paths": {
+      "@config/*": [
+        "./src/renderer/config/*"
+      ],
       "@context/*": [
         "./src/renderer/context/*"
       ],

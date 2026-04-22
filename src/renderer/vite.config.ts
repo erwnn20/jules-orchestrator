@@ -13,6 +13,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@config': path.resolve(__dirname, './config'),
       '@context': path.resolve(__dirname, './context'),
       '@data': path.resolve(__dirname, './data'),
       '@pages': path.resolve(__dirname, './components/pages'),
