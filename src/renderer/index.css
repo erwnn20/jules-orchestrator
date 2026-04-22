@@ -1,0 +1,123 @@
+﻿@import "tailwindcss";
+
+@theme {
+    /* Fonds */
+    --color-bg-void: #010409;   /* fond global de l'app */
+    --color-bg-base: #0d1117;   /* panneaux principaux, cards */
+    --color-bg-elevated: #161b22;   /* textarea, nav actif, fond élevé */
+    /* Bordures */
+    --color-border: #21262d;   /* bordure par défaut */
+    --color-border-hover: #374151;   /* bordure au survol */
+    --color-border-input: #30363d;   /* inputs / textarea */
+    /* Textes */
+    --color-text-primary: #e6edf3;
+    --color-text-secondary: #9ca3af;
+    --color-text-muted: #6b7280;
+    --color-text-faint: #4b5563;  /* labels uppercase, timestamps */
+    --color-text-ghost: #374151;  /* états vides "— aucun élément" */
+    /* Accents */
+    --color-accent-green: #4ade80;  /* running · CTA actif · logo */
+    --color-accent-orange: #fb923c;  /* PRs · alertes */
+    --color-accent-blue: #60a5fa;  /* liens · projets connectés */
+    --color-accent-red: #f87171;  /* error · agent KO */
+    --color-accent-gray: #6b7280;  /* done · inactif */
+    /* Badges */
+    --color-badge-default: #286dbd1a;
+    /*--color-badge-default: #1f2937;
+    --color-badge-default-moy: #848b931a;*/
+    --color-badge-agent: #36c25b1a;  /* vert très sombre */
+    /*--color-badge-agent: #0f2010;  !* vert très sombre *!
+    --color-badge-agent-moy: #768e7c1a;*/
+    --color-badge-pr: #d19e111a;
+    /*--color-badge-pr: #1a1200;  !* orange très sombre *!
+    --color-badge-pr-moy: #8d83671a;*/
+    /* CTA — bouton "lancer un agent" */
+    --color-cta-bg: #166534;
+    --color-cta-bg-off: #1f2937;
+
+    /* GLOW — StatusDot (utilisé en box-shadow via var()) */
+    --color-glow-running: #4ade80;
+    --color-glow-error: #f87171;
+
+    /* Typographie */
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo,
+    Consolas, 'Liberation Mono', monospace;
+
+    --font-size-xxs: 10px;   /* labels uppercase, timestamps, badges */
+    --font-size-xs: 11px;   /* meta, descriptions, nav */
+    --font-size-sm: 12px;   /* corps de texte, actions */
+    --font-size-md: 13px;   /* titres de liste, noms de projet */
+    --font-size-lg: 18px;   /* titres de page (h1) */
+    /* Espacements Sémantiques */
+    --spacing-page-x: 40px;
+    --spacing-page-y: 32px;
+    --spacing-card: 16px;
+    --spacing-gap-sm: 6px;
+    --spacing-gap-md: 12px;
+    --spacing-gap-lg: 16px;
+
+    /* Rayons */
+    --radius-sm: 3px;   /* badges */
+    --radius-md: 4px;   /* boutons, inputs, nav items */
+    --radius-lg: 6px;   /* cards, panneaux */
+    /* Sidebar */
+    --sidebar-width: 220px;
+
+    /* Transitions */
+    --transition-border: border-color 0.15s ease;
+    --transition-all: all 0.15s ease;
+}
+
+@layer base {
+    .light {
+        /* Fonds */
+        --color-bg-void: #ffffff;
+        --color-bg-base: #f6f8fa;
+        --color-bg-elevated: #eaeef2;
+
+        /* Bordures */
+        --color-border: #d0d7de;
+        --color-border-hover: #9198a1;
+        --color-border-input: #b0b8c1;
+
+        /* Textes */
+        --color-text-primary: #1f2328;
+        --color-text-secondary: #424a53;
+        --color-text-muted: #636c76;
+        --color-text-faint: #818b98;
+        --color-text-ghost: #adb5bd;
+
+        /* Accents */
+        --color-accent-green: #16a34a;
+        --color-accent-orange: #c2410c;
+        --color-accent-blue: #2563eb;
+        --color-accent-red: #dc2626;
+        --color-accent-gray: #636c76;
+
+        /* Badges */
+        /*--color-badge-default: #e9ecef;*/
+        /*--color-badge-agent: #dcfce7; !* vert très clair *!*/
+        /*--color-badge-pr: #fff3cd; !* orange très clair *!*/
+
+        /* CTA */
+        --color-cta-bg: #dcfce7;
+        --color-cta-bg-off: #e9ecef;
+
+        /* Glow — adouci en light */
+        --color-glow-running: #16a34a;
+        --color-glow-error: #dc2626;
+    }
+}
+
+/* Base Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-mono);
+    background-color: var(--color-bg-void);
+    color: var(--color-text-primary);
+    margin: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
