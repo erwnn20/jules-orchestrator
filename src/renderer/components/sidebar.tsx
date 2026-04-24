@@ -11,14 +11,12 @@ function NavLink({ route }: { route: Route }) {
   const { path, label, icon: Icon } = route
 
   return (
-    <NavLinkReact to={path} style={({ isActive }) => ({
-      display: 'block', textAlign: 'left', textDecoration: 'none',
-      padding: '7px 10px', borderRadius: 4, border: 'none', cursor: 'pointer',
-      fontSize: 13, fontFamily: 'monospace',
-      background: isActive ? '#161b22' : 'transparent',
-      color: isActive ? '#e6edf3' : '#6b7280',
-      marginBottom: 2,
-    })}>
+    <NavLinkReact
+      to={path}
+      className={({ isActive }) =>
+        'flex items-center gap-1.5 py-2 px-3.5 cursor-pointer text-subtitle ' +
+        (isActive ? 'bg-elevated text-primary-foreground' : 'bg-transparent text-muted')}
+    >
       {Icon ? <Icon size={14}/> : <span style={{ height: 14, width: 14 }}></span>} {label}
     </NavLinkReact>
   )
@@ -26,25 +24,19 @@ function NavLink({ route }: { route: Route }) {
 
 function NavProject({ project }: { project: Project }) {
   return (
-    <NavLinkReact to={`/projects/${project.id}`} style={({ isActive }) => ({
-      display: 'flex', alignItems: 'center', gap: 7,
-      textAlign: 'left', padding: '6px 8px', borderRadius: 4,
-      border: 'none', cursor: 'pointer',
-      background: isActive ? '#161b22' : 'transparent',
-      marginBottom: 1, textDecoration: 'none'
-    })}>
-      {project.activeAgents > 0 && <StatusDot status="running"/>}
-      {project.activeAgents === 0 && <StatusDot status="none"/>}
-      <span style={{
-        fontSize: 12,
-        fontFamily: 'monospace',
-        color: '#9ca3af',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-      }}>
+    <NavLinkReact
+      to={`/projects/${project.id}`}
+      className={({ isActive }) =>
+        'flex items-center gap-1.5 mb-0.5 py-1.5 px-2 rounded-md cursor-pointer ' +
+        (isActive ? 'bg-elevated' : 'bg-transparent')}
+    >
+      <StatusDot
+        status={project.hasJulesAccess ? (project.activeAgents > 0 ? 'running' : 'done') : 'none'}/>
+      <span
+        className='text-base text-secondary-foreground overflow-hidden text-ellipsis whitespace-nowrap'
+      >
           {project.name}
-        </span>
+      </span>
     </NavLinkReact>
   )
 }
@@ -55,44 +47,32 @@ export default function Sidebar() {
   const { projects } = useApp()
   const navRoutes = routes.filter(route => route.isNav)
 
-  const recentProjects = projects.filter(p => p.lastActivity).sort((a, b) => (a.lastActivity?.getDate() ?? 0) - (b.lastActivity?.getDate() ?? 0))
+  const recentProjects = projects
+  .filter(p => p.lastActivity)
+  .sort((a, b) => (a.lastActivity?.getDate() ?? 0) - (b.lastActivity?.getDate() ?? 0))
 
   return (
-    <aside style={{
-      width: 220, minHeight: '100vh', background: '#0d1117',
-      borderRight: '1px solid #21262d', display: 'flex', flexDirection: 'column',
-      padding: '16px 0', flexShrink: 0,
-    }}>
+    <aside
+      className='w-55 min-h-screen flex flex-col shrink-0 bg-panel border-r border-r-border-color'
+    >
       {/* Logo */}
-      <div style={{ padding: '0 16px 20px', borderBottom: '1px solid #21262d' }}>
-        <div style={{
-          fontSize: 19,
-          fontFamily: 'monospace',
-          color: '#4ade80',
-          fontWeight: 700,
-          letterSpacing: 1
-        }}>
+      <div className='p-4 border-b border-b-border-color'>
+        <div className='text-title text-primary font-bold tracking-wider'>
           ◈ JULES
         </div>
-        <div style={{ fontSize: 10, color: '#4b5563', fontFamily: 'monospace', marginTop: 2 }}>
+        <div className='text-label text-faint'>
           orchestrator {version}
         </div>
       </div>
 
       {/* Nav */}
-      <nav style={{ padding: '12px 8px', borderBottom: '1px solid #21262d' }}>
+      <nav className='border-b border-b-border-color'>
         {navRoutes.map((nav, index) => <NavLink route={nav} key={index}/>)}
       </nav>
 
       {/* Recent projects */}
-      <div style={{ padding: '12px 8px', flex: 1 }}>
-        <div style={{
-          fontSize: 10,
-          color: '#4b5563',
-          fontFamily: 'monospace',
-          padding: '0 4px 8px',
-          letterSpacing: 1
-        }}>
+      <div className='px-2 py-3 flex-1 overflow-y-auto'>
+        <div className='pb-1 px-1 text-label text-muted uppercase tracking-wider'>
           RECENT
         </div>
         {recentProjects.map(p => (<NavProject project={p} key={p.id}/>))}
