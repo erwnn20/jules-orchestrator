@@ -5,12 +5,9 @@ import { Route, Routes } from "react-router";
 
 export default function App() {
   return (
-    <div style={{
-      display: 'flex', minHeight: '100vh',
-      background: '#010409', color: '#e6edf3',
-    }}>
+    <div className="flex h-screen bg-void text-primary-foreground">
       <Sidebar/>
-      <main style={{ flex: 1, overflowY: 'auto' }}>
+      <main className="flex-1 overflow-y-auto">
         <Routes>
           {routes.map(({ path, component: Component }) => (
             <Route key={path} path={path} element={<Component/>}/>)
