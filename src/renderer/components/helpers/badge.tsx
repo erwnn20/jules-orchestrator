@@ -24,13 +24,18 @@ export default function Badge({ children, color, variant = 'default' }: {
   })(variant)
 
   return (
-    <span style={{
-      fontSize: 10, fontFamily: 'monospace', padding: '2px 6px',
-      borderRadius: 3, color: '#9ca3af', whiteSpace: 'nowrap',
-    }}>
+    <span
+      className={
+        'px-1.5 py-0.5 ' +
+        'border border-border-hover rounded-sm ' +
+        'text-label text-secondary-foreground whitespace-nowrap'
+      }
+      style={{
         color: clr,
         backgroundColor: `color-mix(in srgb, ${clr} 10%, transparent)`,
         borderColor: `color-mix(in srgb, ${clr} 20%, transparent)`
+    }}
+    >
       {children}
     </span>
   )
