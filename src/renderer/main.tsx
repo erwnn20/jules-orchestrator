@@ -1,4 +1,5 @@
 ﻿import { AppProvider } from "@context/AppContext";
+import { ThemeProvider } from "@context/ThemeContext";
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from "react-router";
@@ -9,10 +10,12 @@ if (!root) throw new Error('Root element not found')
 
 ReactDOM.createRoot(root).render(
   <React.StrictMode>
-    <HashRouter>
-      <AppProvider>
-        <App/>
-      </AppProvider>
-    </HashRouter>
+    <ThemeProvider>
+      <HashRouter>
+        <AppProvider>
+          <App/>
+        </AppProvider>
+      </HashRouter>
+    </ThemeProvider>
   </React.StrictMode>
 )

@@ -1,5 +1,6 @@
 ﻿import { version } from '@/package.json';
 import StatusDot from "@components/helpers/statusDot";
+import ThemeToggle from "@components/themeToggle";
 import { routes } from "@config/routes.config";
 import { useApp } from "@context/AppContext";
 import { Project } from "@interfaces/project.interface";
@@ -76,6 +77,10 @@ export default function Sidebar() {
           RECENT
         </div>
         {recentProjects.map(p => (<NavProject project={p} key={p.id}/>))}
+      </div>
+
+      <div className='px-3 py-2 border-t border-t-border-color'> {/*TODO*/}
+        <ThemeToggle/>
       </div>
     </aside>
   )
