@@ -1,6 +1,8 @@
 import StatusDot from "@components/helpers/statusDot";
 import { useApp } from "@context/AppContext";
 import { useNavigate } from "react-router";
+import { Property } from "csstype";
+import { ReactNode } from "react";
 
 
 export default function HomePage() {
@@ -27,15 +29,6 @@ export default function HomePage() {
 
       {/* Stats */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 40 }}>
-        {[
-          { label: 'agents actifs', value: totalActive, accent: '#4ade80' },
-          { label: 'PRs en attente', value: totalPRs, accent: '#fb923c' },
-          {
-            label: 'projets connectés',
-            value: projects.filter(p => p.hasJulesAccess).length,
-            accent: '#60a5fa'
-          },
-        ].map(stat => (
           <div key={stat.label} style={{
             background: '#0d1117', border: '1px solid #21262d', borderRadius: 6,
             padding: '16px 24px', flex: 1,
@@ -52,6 +45,61 @@ export default function HomePage() {
               {stat.label}
             </div>
           </div>
+  const stats: {
+    children?: ReactNode
+    label: string,
+    value: number,
+    accent: Property.Color,
+    icon: LucideIcon
+  }[] = [
+    {
+      label: 'Agents actifs',
+      value: totalActive,
+      accent: 'var(--color-accent-green)',
+      icon: Bot,
+      children: (
+        <div className="flex items-center gap-1">
+          <div className="flex-1 h-1 bg-bg-elevated rounded-full overflow-hidden">
+            <div className="h-full bg-accent-green rounded-full" style={{ width: '70%' }}/>
+          </div>
+          <span className="text-label text-text-faint">70%</span>
+        </div>
+      )
+    },
+    {
+      label: 'Pull Requests en attente',
+      value: totalPRs,
+      accent: 'var(--color-accent-orange)',
+      icon: GitPullRequest,
+      children: (
+        <div className="flex items-center gap-2 text-label">
+          <span className="text-accent-green">8 merged</span>
+          <span className="text-faint">·</span>
+          <span className="text-accent-orange">4 ouvertes</span>
+        </div>
+      )
+    },
+    {
+      label: 'Sessions du Jour',
+      value: 12,
+      accent: 'var(--color-accent-gray)',
+      icon: Activity,
+      children: (
+        <div className="flex items-center gap-1 text-label">
+          <span className="text-accent-green">19 réussies</span>
+          <span className="text-text-faint">·</span>
+          <span className="text-accent-red">4 erreurs</span>
+        </div>
+      )
+    },
+    {
+      label: 'Projets connectés',
+      value: projects.filter(p => p.hasJulesAccess).length,
+      accent: 'var(--color-accent-blue)',
+      icon: Folders,
+    },
+  ]
+        {stats.map((stat, index) => (
         ))}
       </div>
 
