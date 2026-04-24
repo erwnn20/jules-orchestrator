@@ -1,50 +1,19 @@
+import Badge from "@components/helpers/badge";
 import StatusDot from "@components/helpers/statusDot";
 import { useApp } from "@context/AppContext";
-import { useNavigate } from "react-router";
+import { RecentActivity } from "@interfaces/recentActivity.interface";
+import BasePage from "@pages/base.page";
 import { Property } from "csstype";
+import { Activity, Bot, Folders, GitPullRequest, LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
+import { NavLink } from "react-router";
 
 
 export default function HomePage() {
   const { projects, recentActivities } = useApp()
-  const navigate = useNavigate();
 
   const totalActive = projects.reduce((acc, p) => acc + p.activeAgents, 0)
   const totalPRs = projects.reduce((acc, p) => acc + p.pullRequests.length, 0)
-
-  return (
-    <div style={{ padding: '32px 40px', maxWidth: 900 }}>
-      <h1 style={{
-        fontSize: 18,
-        fontFamily: 'monospace',
-        color: '#e6edf3',
-        marginBottom: 4,
-        fontWeight: 600
-      }}>
-        Dashboard
-      </h1>
-      <p style={{ fontSize: 12, color: '#4b5563', fontFamily: 'monospace', marginBottom: 32 }}>
-        {new Date().toLocaleString('fr-FR')}
-      </p>
-
-      {/* Stats */}
-      <div style={{ display: 'flex', gap: 16, marginBottom: 40 }}>
-          <div key={stat.label} style={{
-            background: '#0d1117', border: '1px solid #21262d', borderRadius: 6,
-            padding: '16px 24px', flex: 1,
-          }}>
-            <div style={{
-              fontSize: 28,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              color: stat.accent
-            }}>
-              {stat.value}
-            </div>
-            <div style={{ fontSize: 11, color: '#4b5563', fontFamily: 'monospace', marginTop: 4 }}>
-              {stat.label}
-            </div>
-          </div>
   const stats: {
     children?: ReactNode
     label: string,
@@ -99,58 +68,109 @@ export default function HomePage() {
       icon: Folders,
     },
   ]
+
+  return (
+    <BasePage title='Dashboard' subtitle={new Date().toLocaleString('fr-FR')}>
+
+      {/* Stats */}
+      <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-10'>
         {stats.map((stat, index) => (
+          <StatsCard
+            key={index}
+            label={stat.label}
+            value={stat.value}
+            accent={stat.accent}
+            icon={stat.icon}
+          >
+            {stat.children}
+          </StatsCard>
         ))}
       </div>
 
       {/* Recent activity */}
       <div>
-        <div style={{
-          fontSize: 11,
-          color: '#4b5563',
-          fontFamily: 'monospace',
-          letterSpacing: 1,
-          marginBottom: 12
-        }}>
+        <div className='mb-3 text-meta text-faint uppercase tracking-wider'>
           ACTIVITÉ RÉCENTE
         </div>
-        <div style={{
-          background: '#0d1117',
-          border: '1px solid #21262d',
-          borderRadius: 6,
-          overflow: 'hidden'
-        }}>
-          {recentActivities.map((activity, i) => (
-            <div key={i} style={{
-              display: 'flex', alignItems: 'center', gap: 12,
-              padding: '10px 16px',
-              borderBottom: i < recentActivities.length - 1 ? '1px solid #161b22' : 'none',
-            }}>
-              <StatusDot status={activity.status}/>
-              <button onClick={() => {
-                const project = projects.find(p => p.name === activity.project.name)
-                if (project) navigate(`/projects/${project.id}`)
-              }} style={{
-                fontSize: 11,
-                fontFamily: 'monospace',
-                color: '#60a5fa',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: 0,
-              }}>
-                {activity.project.name}
-              </button>
-              <span style={{ fontSize: 11, fontFamily: 'monospace', color: '#6b7280', flex: 1 }}>
-                {activity.action}
-              </span>
-              <span style={{ fontSize: 10, color: '#374151', fontFamily: 'monospace' }}>
-                {activity.time}
-              </span>
-            </div>
+
+        <div className="space-y-2">
+          {recentActivities.map((activity, index) => (
+            <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
       </div>
+
+    </BasePage>
+  )
+}
+
+//
+
+function StatsCard({ children, label, value, accent, icon: Icon }: {
+  children?: ReactNode
+  label: string,
+  value: number,
+  accent: Property.Color,
+  icon: LucideIcon
+}) {
+  return (
+    <div
+      className="bg-panel border border-border-color rounded-lg px-5 py-4 hover:border-border-hover transition-colors duration-150">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className='w-8 h-8 rounded-md flex items-center justify-center'
+               style={{ backgroundColor: `color-mix(in srgb, ${accent} 10%, transparent)` }}>
+            <Icon className="w-4 h-4" style={{ color: accent }}/>
+          </div>
+          <span className="text-base text-secondary-foreground">{label}</span>
+        </div>
+      </div>
+      <div className="flex items-baseline gap-2">
+        <p className="text-2xl text-primary-foreground font-semibold">{value}</p>
+        <span className="text-label" style={{ color: accent }}>+5 {/*TODO ?*/}</span>
+      </div>
+
+      {children}
+
+    </div>
+  )
+}
+
+function ActivityCard({ activity, }: { activity: RecentActivity }) {
+  return (
+    <div className={
+      'flex items-center gap-3 px-4 py-3 ' +
+      'bg-panel border border-border-color rounded-lg  hover:border-border-hover ' +
+      'transition-colors duration-150'
+    }>
+      <StatusDot status={activity.status}/>
+      <div className="flex-1">
+        <div className="flex items-center gap-2">
+          <NavLink to={`/projects/${activity.project.id}`}
+                   className="text-base text-accent-blue hover:underline">
+            {activity.project.name}
+          </NavLink>
+
+          <div className="flex items-center gap-1">
+            {!activity.project.hasJulesAccess && <Badge>no jules access</Badge>}
+            {activity.status === 'error' && <Badge variant='error'>error</Badge>}
+            {activity.project.activeAgents > 0 && (
+              <Badge variant="agent">
+                {activity.project.activeAgents} agent{activity.project.activeAgents > 1 ? 's' : ''}
+              </Badge>
+            )}
+            {activity.project.pullRequests.length > 0 && (
+              <Badge variant="pr">
+                {activity.project.pullRequests.length} PR{activity.project.pullRequests.length > 1 ? 's' : ''}
+              </Badge>
+            )}
+          </div>
+        </div>
+        <p className="text-meta text-secondary-foreground mt-1">
+          {activity.action}
+        </p>
+      </div>
+      <span className="text-meta text-faint">{activity.time}</span>
     </div>
   )
 }
