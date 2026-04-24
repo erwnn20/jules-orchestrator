@@ -8,7 +8,7 @@ import { NavLink as NavLinkReact } from 'react-router-dom'
 
 
 function NavLink({ route }: { route: Route }) {
-  const { path, label, icon } = route
+  const { path, label, icon: Icon } = route
 
   return (
     <NavLinkReact to={path} style={({ isActive }) => ({
@@ -19,7 +19,7 @@ function NavLink({ route }: { route: Route }) {
       color: isActive ? '#e6edf3' : '#6b7280',
       marginBottom: 2,
     })}>
-      {icon} {label}
+      {Icon ? <Icon size={14}/> : <span style={{ height: 14, width: 14 }}></span>} {label}
     </NavLinkReact>
   )
 }
