@@ -10,6 +10,9 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "paths": {
+      "@jules/*": [
+        "./src/shared/jules/*"
+      ],
       "@electron/utils/*": [
         "./src/electron/utils/*"
       ],
