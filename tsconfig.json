@@ -8,7 +8,12 @@
     "jsx": "react-jsx",
     "outDir": "dist",
     "rootDir": "src",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@electron/utils/*": [
+        "./src/electron/utils/*"
+      ],
+    }
   },
   "include": ["src"]
 }

@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from 'electron'
+import '@electron/env'
 import path from 'path'
 
 const isDev = process.env.NODE_ENV === 'development'
