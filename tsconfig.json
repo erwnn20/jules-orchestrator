@@ -16,6 +16,9 @@
       "@electron/utils/*": [
         "./src/electron/utils/*"
       ],
+      "@electron/*": [
+        "./src/electron/*"
+      ]
     }
   },
   "include": ["src"]
