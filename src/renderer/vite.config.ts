@@ -1,4 +1,5 @@
 ﻿import react from '@vitejs/plugin-react'
+import path from "path";
 import { defineConfig } from 'vite'
 
 export default defineConfig({
@@ -11,7 +12,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@jules': '../../src/shared/jules/*',
+      '@components': path.resolve(__dirname, './components'),
+      '@services': path.resolve(__dirname, './services'),
+      '@jules': path.resolve(__dirname, '../../src/shared/jules/'),
     },
   },
 })

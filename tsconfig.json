@@ -13,6 +13,12 @@
       "@jules/*": [
         "./src/shared/jules/*"
       ],
+      "@components/*": [
+        "./src/renderer/components/*"
+      ],
+      "@services/*": [
+        "./src/renderer/services/*"
+      ],
       "@electron/utils/*": [
         "./src/electron/utils/*"
       ],
