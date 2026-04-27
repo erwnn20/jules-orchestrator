@@ -1,4 +1,4 @@
-﻿import { Agent } from "@interfaces/agent.interface";
+﻿import { Agent } from "@renderer/interfaces/agent.interface";
 import { Property } from "csstype";
 
 

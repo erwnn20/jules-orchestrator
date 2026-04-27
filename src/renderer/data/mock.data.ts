@@ -1,5 +1,5 @@
-﻿import { Project } from "@interfaces/project.interface";
-import { RecentActivity } from "@interfaces/recentActivity.interface";
+﻿import { Project } from "@renderer/interfaces/project.interface";
+import { RecentActivity } from "@renderer/interfaces/recentActivity.interface";
 
 
 export const MOCK_PROJECTS: Project[] = [

@@ -1,5 +1,6 @@
-﻿import {Agent} from "@interfaces/agent.interface";
-import {PullRequest} from "@interfaces/pullRequest.interface";
+﻿import { Agent } from "@renderer/interfaces/agent.interface";
+import { PullRequest } from "@renderer/interfaces/pullRequest.interface";
+
 
 export interface Project {
   id: string

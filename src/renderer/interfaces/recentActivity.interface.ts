@@ -1,4 +1,5 @@
-﻿import { Project } from "@interfaces/project.interface";
+﻿import { Project } from "@renderer/interfaces/project.interface";
+
 
 export interface RecentActivity {
   project: Project

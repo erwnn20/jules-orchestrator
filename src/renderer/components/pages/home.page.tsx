@@ -1,8 +1,8 @@
 import Badge from "@components/helpers/badge";
 import StatusDot from "@components/helpers/statusDot";
 import { useApp } from "@context/AppContext";
-import { RecentActivity } from "@interfaces/recentActivity.interface";
 import BasePage from "@pages/base.page";
+import { RecentActivity } from "@renderer/interfaces/recentActivity.interface";
 import { Property } from "csstype";
 import { Activity, Bot, Folders, GitPullRequest, LucideIcon } from "lucide-react";
 import { ReactNode } from "react";

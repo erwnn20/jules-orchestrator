@@ -16,12 +16,6 @@
       "@jules/*": [
         "./src/shared/jules/*"
       ],
-      "@config/*": [
-        "./src/renderer/config/*"
-      ],
-      "@data/*": [
-        "./src/renderer/data/*"
-      ],
       "@context/*": [
         "./src/renderer/context/*"
       ],

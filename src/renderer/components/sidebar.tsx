@@ -1,10 +1,10 @@
-﻿import { version } from '@/package.json';
-import StatusDot from "@components/helpers/statusDot";
+﻿import StatusDot from "@components/helpers/statusDot";
 import ThemeToggle from "@components/themeToggle";
-import { routes } from "@config/routes.config";
 import { useApp } from "@context/AppContext";
-import { Project } from "@interfaces/project.interface";
-import { Route } from "@interfaces/route.interface";
+import { routes } from "@renderer/config/routes.config";
+import { Project } from "@renderer/interfaces/project.interface";
+import { Route } from "@renderer/interfaces/route.interface";
+import { version } from '@renderer/package.json';
 import { NavLink as NavLinkReact } from 'react-router-dom'
 
 

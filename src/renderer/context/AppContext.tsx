@@ -1,6 +1,6 @@
-﻿import { MOCK_PROJECTS, RECENT_ACTIVITY } from "@data/mock.data";
-import { Project } from '@interfaces/project.interface'
-import { RecentActivity } from "@interfaces/recentActivity.interface";
+﻿import { MOCK_PROJECTS, RECENT_ACTIVITY } from "@renderer/data/mock.data";
+import { Project } from "@renderer/interfaces/project.interface";
+import { RecentActivity } from "@renderer/interfaces/recentActivity.interface";
 import { createContext, ReactNode, useContext, useState } from 'react'
 
 

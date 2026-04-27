@@ -1,9 +1,9 @@
 ﻿import Badge from "@components/helpers/badge";
 import StatusDot, { statusColors } from "@components/helpers/statusDot";
 import { useApp } from "@context/AppContext";
-import { Agent } from "@interfaces/agent.interface";
-import { Project } from "@interfaces/project.interface";
 import BasePage from "@pages/base.page";
+import { Agent } from "@renderer/interfaces/agent.interface";
+import { Project } from "@renderer/interfaces/project.interface";
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Image, Plus, Search, SlidersHorizontal } from "lucide-react";
