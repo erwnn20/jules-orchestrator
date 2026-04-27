@@ -1,6 +1,6 @@
 import '@electron/env'
 import { JulesController } from "@electron/controllers/jules.controller";
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import path from 'path'
 
 
@@ -38,12 +38,4 @@ app.on('window-all-closed', () => {
 
 //
 
-ipcMain.handle('jules:source:get', JulesController.getSource);
-ipcMain.handle('jules:source:list', JulesController.getSources);
-
-ipcMain.handle('jules:session:get', JulesController.getSession);
-ipcMain.handle('jules:session:list', JulesController.getSessions);
-ipcMain.handle('jules:session:create', JulesController.createSession);
-ipcMain.handle('jules:session:delete', JulesController.deleteSession);
-ipcMain.handle('jules:session:message', JulesController.sendMessageSession);
-ipcMain.handle('jules:session:approvePlan', JulesController.approvePlanSession);
+new JulesController().registerHandlers()

@@ -1,4 +1,5 @@
-﻿import { getEnv } from "@electron/utils/env.util";
+﻿import { BaseController } from "@electron/controllers/base.controller";
+import { getEnv } from "@electron/utils/env.util";
 import { HttpClient } from "@electron/utils/http-client";
 import { Pagination } from "@jules/jules.interfaces";
 import {
@@ -19,25 +20,58 @@ import {
   ListSourceResponse
 } from "@jules/sources/source.interfaces";
 import { Source } from "@jules/sources/source.model";
-import { IpcMainInvokeEvent } from 'electron'
 
 
-export abstract class JulesController {
-  private static readonly baseUrl = 'https://jules.googleapis.com/v1alpha/'
-  private static readonly apiKey = getEnv('JULES_API_KEY');
+export class JulesController extends BaseController {
+  constructor(httpClient?: HttpClient) {
+    const client = httpClient ?? new HttpClient(
+      'https://jules.googleapis.com/v1alpha/',
+      getEnv('JULES_API_KEY'),
+      (key: string) => ({ 'x-goog-api-key': key })
+    );
 
-  private static readonly httpClient = new HttpClient(
-    this.baseUrl, this.apiKey, (key: string) => ({ 'x-goog-api-key': key })
-  );
+    super(client, [
+      { channel: 'jules:source:get', listener: (_, id: string) => this.getSource(id) },
+      {
+        channel: 'jules:source:list',
+        listener: (_, pagination?: Pagination) => this.getSources(pagination)
+      },
 
-  static async getSource(event: IpcMainInvokeEvent, id: string): Promise<Source> {
+      { channel: 'jules:session:get', listener: (_, id: string) => this.getSession(id) },
+      {
+        channel: 'jules:session:list',
+        listener: (_, pagination?: Pagination) => this.getSessions(pagination)
+      },
+      {
+        channel: 'jules:session:create',
+        listener: (_, data: CreateSessionRequest) => this.createSession(data)
+      },
+      { channel: 'jules:session:delete', listener: (_, id: string) => this.deleteSession(id) },
+      {
+        channel: 'jules:session:message',
+        listener: (_, { id, data }: {
+          id: string,
+          data: SendMessageRequest
+        }) => this.sendMessageSession({ id, data })
+      },
+      {
+        channel: 'jules:session:approvePlan',
+        listener: (_, { id, data }: {
+          id: string,
+          data: ApprovePlanRequest
+        }) => this.approvePlanSession({ id, data })
+      },
+    ])
+  }
+
+  private async getSource(id: string): Promise<Source> {
     const { data } = await this.httpClient.get<GetSourceResponse>({
       path: `/sources/${id}`
     })
     return new Source(data)
   }
 
-  static async getSources(event: IpcMainInvokeEvent, pagination?: Pagination): Promise<ListSource> {
+  private async getSources(pagination?: Pagination): Promise<ListSource> {
     const { data } = await this.httpClient.get<ListSourceResponse>({
       path: '/sources', config: { params: pagination }
     })
@@ -49,14 +83,14 @@ export abstract class JulesController {
 
   //
 
-  static async getSession(event: IpcMainInvokeEvent, id: string): Promise<Session> {
+  private async getSession(id: string): Promise<Session> {
     const { data } = await this.httpClient.get<GetSessionResponse>({
       path: `/sessions/${id}`
     })
     return new Session(data)
   }
 
-  static async getSessions(event: IpcMainInvokeEvent, pagination?: Pagination): Promise<ListSessions> {
+  private async getSessions(pagination?: Pagination): Promise<ListSessions> {
     const { data } = await this.httpClient.get<ListSessionsResponse>({
       path: '/sessions', config: { params: pagination }
     })
@@ -66,36 +100,37 @@ export abstract class JulesController {
     }
   }
 
-  static async createSession(event: IpcMainInvokeEvent, dta: CreateSessionRequest): Promise<Session> {
+  private async createSession(dta: CreateSessionRequest): Promise<Session> {
     const { data } = await this.httpClient.post<CreateSessionResponse, CreateSessionRequest>({
       path: '/sessions', body: dta,
     })
     return new Session(data)
   }
 
-  static async deleteSession(event: IpcMainInvokeEvent, id: string): Promise<void> {
-    await this.httpClient.delete<{}>({
+  private async deleteSession(id: string): Promise<{}> {
+    const { data } = await this.httpClient.delete<{}>({
       path: `/sessions/${id}`
     })
+    return data
   }
 
-  static async sendMessageSession(event: IpcMainInvokeEvent, { id, data }: {
+  private async sendMessageSession({ id, data: dta }: {
     id: string,
     data: SendMessageRequest
   }): Promise<SendMessageResponse> {
-    const res = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
-      path: `/sessions/${id}:sendMessage`, body: data
+    const { data } = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
+      path: `/sessions/${id}:sendMessage`, body: dta
     })
-    return res.data
+    return data
   }
 
-  static async approvePlanSession(event: IpcMainInvokeEvent, { id, data }: {
+  private async approvePlanSession({ id, data: dta }: {
     id: string,
     data: ApprovePlanRequest
   }): Promise<ApprovePlanResponse> {
-    const res = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
-      path: `/sessions/${id}:approvePlan`, body: data
+    const { data } = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
+      path: `/sessions/${id}:approvePlan`, body: dta
     })
-    return res.data
+    return data
   }
 }
