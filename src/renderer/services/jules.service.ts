@@ -30,7 +30,7 @@ export abstract class JulesService {
   }) => Promise<SendMessageResponse> = window.api.jules.session.message;
   static approvePlanSession: ({ id, data }: {
     id: string,
-    data: ApprovePlanRequest
+    data?: ApprovePlanRequest
   }) => Promise<ApprovePlanResponse> = window.api.jules.session.approvePlan;
 
 }

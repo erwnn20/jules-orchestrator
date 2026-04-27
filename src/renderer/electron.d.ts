@@ -18,7 +18,7 @@
           }) => Promise<SendMessageResponse>,
           approvePlan: ({ id, data }: {
             id: string,
-            data: ApprovePlanRequest
+            data?: ApprovePlanRequest
           }) => Promise<ApprovePlanResponse>,
         }
       },
