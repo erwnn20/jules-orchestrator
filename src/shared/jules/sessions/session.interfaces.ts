@@ -12,13 +12,15 @@ export interface SourceContext {
 //
 
 export interface GetSessionResponse {
-  id: string //
-  title?: string //
+  id: string
+  name: string
+  title?: string
   state: SessionState
-  prompt: string //
-  sourceContext: SourceContext //
-  createTime: string // now
-  updateTime: string // now
+  prompt: string
+  sourceContext: SourceContext
+  url: string
+  createTime: string
+  updateTime: string
   outputs: SessionOutput[]
 }
 

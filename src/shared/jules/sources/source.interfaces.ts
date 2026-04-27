@@ -4,6 +4,7 @@ import type { Source } from "@jules/sources/source.model";
 
 export interface GetSourceResponse {
   id: string,
+  name: string,
   githubRepo: GitHubRepo
 }
 

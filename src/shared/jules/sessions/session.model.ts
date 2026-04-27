@@ -19,10 +19,12 @@ import { AutomationMode, SessionOutput, SessionState } from "@jules/sessions/ses
 /** */
 export class Session {
   readonly id: string
+  readonly name: string
   readonly title?: string
   readonly state: SessionState
   readonly prompt: string
   readonly sourceContext: SourceContext
+  readonly url: string
   readonly createTime: Date
   readonly updateTime: Date
   readonly outputs?: SessionOutput[]
@@ -31,26 +33,24 @@ export class Session {
 
 
   constructor({
-                id, title, state, prompt,
-                sourceContext, outputs,
+                id, name, title, state, prompt,
+                url, sourceContext, outputs,
                 createTime, updateTime,
                 automationMode, requirePlanApproval
               }: SessionArgs) {
     this.id = id
+    this.name = name
     this.title = title
     this.state = state ?? SessionState.STATE_UNSPECIFIED
     this.prompt = prompt
     this.sourceContext = sourceContext
+    this.url = url
     this.createTime = new Date(createTime ?? Date.now())
     this.updateTime = new Date(updateTime ?? Date.now())
     this.outputs = outputs
     this.automationMode = automationMode
     this.requirePlanApproval = requirePlanApproval
   }
-
-  get name() { return `sessions/${this.id}` }
-
-  get url() { return `https://jules.google.com/session/${this.id}` }
 }
 
 

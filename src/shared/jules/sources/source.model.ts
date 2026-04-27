@@ -10,14 +10,24 @@ import { GetSourceResponse } from "@jules/sources/source.interfaces";
 /** */
 export class Source {
   readonly id: string
+  readonly name: string
   readonly githubRepo: GitHubRepo
 
-  constructor({ id, githubRepo }: GetSourceResponse) {
+  readonly shortname: string
+  readonly project: string
+
+  constructor({ id, name, githubRepo }: GetSourceResponse) {
     this.id = id
     this.githubRepo = githubRepo
+    this.name = name
+
+    this.shortname = this._shortname
+    this.project = this._project
   }
 
-  get name() { return `sources/${this.id}` }
+  private get _shortname() { return `${this.githubRepo.owner}/${this.githubRepo.repo}` }
+
+  private get _project() { return this.githubRepo.repo }
 }
 
 
