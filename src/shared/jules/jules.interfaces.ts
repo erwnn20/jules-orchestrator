@@ -1,4 +1,4 @@
 ﻿export interface Pagination {
-  pageSize: number
+  pageSize?: number
   pageToken?: string
 }
