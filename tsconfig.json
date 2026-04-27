@@ -13,14 +13,20 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "paths": {
+      "@jules/*": [
+        "./src/shared/jules/*"
+      ],
       "@config/*": [
         "./src/renderer/config/*"
+      ],
+      "@data/*": [
+        "./src/renderer/data/*"
       ],
       "@context/*": [
         "./src/renderer/context/*"
       ],
-      "@data/*": [
-        "./src/renderer/data/*"
+      "@services/*": [
+        "./src/renderer/services/*"
       ],
       "@pages/*": [
         "./src/renderer/components/pages/*"
@@ -28,11 +34,11 @@
       "@components/*": [
         "./src/renderer/components/*"
       ],
-      "@interfaces/*": [
-        "./src/renderer/interfaces/*"
-      ],
-      "@/*": [
+      "@renderer/*": [
         "./src/renderer/*"
+      ],
+      "@electron/*": [
+        "./src/electron/*"
       ]
     }
   },

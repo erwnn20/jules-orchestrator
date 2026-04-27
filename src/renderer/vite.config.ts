@@ -1,11 +1,11 @@
-﻿import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from "@tailwindcss/vite";
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   // root: 'src/renderer',
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
   base: './',
   build: {
     outDir: 'dist',
@@ -13,6 +13,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@services': path.resolve(__dirname, './services'),
+      '@jules': path.resolve(__dirname, '../../src/shared/jules/'),
       '@config': path.resolve(__dirname, './config'),
       '@context': path.resolve(__dirname, './context'),
       '@data': path.resolve(__dirname, './data'),

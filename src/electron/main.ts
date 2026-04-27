@@ -1,5 +1,8 @@
-import {app, BrowserWindow} from 'electron'
+import '@electron/env'
+import { JulesController } from "@electron/controllers/jules.controller";
+import { app, BrowserWindow } from 'electron'
 import path from 'path'
+
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -32,3 +35,7 @@ app.whenReady().then(async () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
+
+//
+
+new JulesController().registerHandlers()
