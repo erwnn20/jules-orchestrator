@@ -15,7 +15,7 @@ export default function ProjectsPage() {
   const { projects } = useApp()
 
   return (
-    <BasePage title='Projects' subtitle={`${projects.length} repositories GitHub`}>
+    <BasePage title='Projects' subtitle={`${projects.list.length} repositories GitHub`}>
 
       <div className="flex items-center justify-end gap-3 mb-4">
         <div className="relative">
@@ -46,7 +46,7 @@ export default function ProjectsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[200px]">
-        {projects.map((project, index) =>
+        {projects.list.map((project, index) =>
           <ProjectCard key={index} index={index} project={project}/>)}
 
         <button

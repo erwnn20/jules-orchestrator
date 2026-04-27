@@ -9,7 +9,7 @@ export default function ProjectPage() {
   const { projects } = useApp()
   const [task, setTask] = useState('')
   const { id } = useParams();
-  const project = projects.find(p => p.id === id);
+  const project = projects.list.find(p => p.id === id);
 
   if (!project)
     return (

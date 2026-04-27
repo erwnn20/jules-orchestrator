@@ -48,7 +48,7 @@ export default function Sidebar() {
   const { projects } = useApp()
   const navRoutes = routes.filter(route => route.isNav)
 
-  const recentProjects = projects
+  const recentProjects = projects.list
   .filter(p => p.lastActivity)
   .sort((a, b) => (a.lastActivity?.getDate() ?? 0) - (b.lastActivity?.getDate() ?? 0))
 

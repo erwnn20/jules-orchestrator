@@ -5,10 +5,8 @@ import { createContext, ReactNode, useContext, useState } from 'react'
 
 
 interface AppContextType {
-  projects: Project[]
-  setProjects: (p: Project[]) => void
-  recentActivities: RecentActivity[]
-  setRecentActivities: (p: RecentActivity[]) => void
+  projects: { list: Project[], set: (p: Project[]) => void }
+  activities: { list: RecentActivity[], set: (a: RecentActivity[]) => void }
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -20,8 +18,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider
       value={{
-        projects, setProjects,
-        recentActivities, setRecentActivities
+        projects: { list: projects, set: setProjects },
+        activities: { list: recentActivities, set: setRecentActivities },
       }}>
       {children}
     </AppContext.Provider>

@@ -10,10 +10,10 @@ import { NavLink } from "react-router";
 
 
 export default function HomePage() {
-  const { projects, recentActivities } = useApp()
+  const { projects, activities } = useApp()
 
-  const totalActive = projects.reduce((acc, p) => acc + p.activeAgents, 0)
-  const totalPRs = projects.reduce((acc, p) => acc + p.pullRequests.length, 0)
+  const totalActive = projects.list.reduce((acc, p) => acc + p.activeAgents, 0)
+  const totalPRs = projects.list.reduce((acc, p) => acc + p.pullRequests.length, 0)
   const stats: {
     children?: ReactNode
     label: string,
@@ -63,7 +63,7 @@ export default function HomePage() {
     },
     {
       label: 'Projets connectés',
-      value: projects.filter(p => p.hasJulesAccess).length,
+      value: projects.list.filter(p => p.hasJulesAccess).length,
       accent: 'var(--color-accent-blue)',
       icon: Folders,
     },
@@ -94,7 +94,7 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-2">
-          {recentActivities.map((activity, index) => (
+          {activities.list.map((activity, index) => (
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
