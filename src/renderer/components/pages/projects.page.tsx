@@ -50,12 +50,14 @@ export default function ProjectsPage() {
           <ProjectCard key={index} index={index} project={project}/>)}
 
         <button
+          disabled={true}
           className={
             "flex flex-col items-center justify-center gap-3 " +
             "bg-void border border-dashed border-border-hover rounded-lg " +
             "cursor-pointer " +
             "hover:border-primary/25 hover:bg-primary/10 " +
             "transition-colors duration-200 " +
+            "disabled:opacity-50 " +
             "group"
           }>
           <div
@@ -73,7 +75,7 @@ export default function ProjectsPage() {
             "text-subtitle text-primary-foreground group-hover:text-primary " +
             "transition-colors duration-200"
           }>
-            Connect Repository
+            Connect Repository (WIP)
           </span>
         </button>
       </div>
