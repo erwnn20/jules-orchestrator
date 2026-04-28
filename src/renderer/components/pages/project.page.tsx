@@ -89,31 +89,20 @@ export default function ProjectPage() {
             value={task}
             onChange={e => setTask(e.target.value)}
             placeholder="Décris la tâche ou colle un plan d'implémentation (.md)..."
-            style={{
-              width: '100%', minHeight: 100, background: '#161b22',
-              border: '1px solid #30363d', borderRadius: 4, padding: '10px 12px',
-              fontSize: 12, fontFamily: 'monospace', color: '#e6edf3',
-              resize: 'vertical', outline: 'none', boxSizing: 'border-box',
-            }}
-          />
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 10 }}>
-            <button
-              disabled={!task.trim() || !project.hasJulesAccess}
-              style={{
-                padding: '8px 18px',
-                background: task.trim() && project.hasJulesAccess ? '#166534' : '#1f2937',
-                border: `1px solid ${task.trim() && project.hasJulesAccess ? '#4ade80' : '#374151'}`,
-                borderRadius: 4,
-                color: task.trim() && project.hasJulesAccess ? '#4ade80' : '#4b5563',
-                fontSize: 12,
-                fontFamily: 'monospace',
-                cursor: task.trim() && project.hasJulesAccess ? 'pointer' : 'not-allowed',
-                transition: 'all .15s',
-              }}
-            >
-              ▶ lancer l'agent
-            </button>
-          </div>
+            className={
+              'min-h-24 px-3 py-2.5 ' +
+              'bg-elevated border text-base text-primary-foreground ' +
+              'border-border-color rounded-md ' +
+              'resize-y outline-none box-border'
+            }/>
+          <Button
+            size={'sm'}
+            disabled={!task.trim() || !project.hasJulesAccess}
+            className={'ms-auto'}
+            // onClick={}
+          >
+            <Play className={'h-3 w-3 me-1 fill-current stroke-0'}/> lancer l'agent
+          </Button>
         </div>
       </Section>
     </BasePage>
