@@ -7,46 +7,38 @@ import { useParams } from "react-router";
 
 export default function ProjectPage() {
   const { projects } = useApp()
-  const [task, setTask] = useState('')
   const { id } = useParams();
   const project = projects.find(p => p.id === id);
 
+  const [task, setTask] = useState('')
+
   if (!project)
     return (
-      <div style={{ padding: 40, fontSize: 12, fontFamily: 'monospace', color: '#4b5563' }}>
-        Sélectionne un projet.
+      <div className='flex p-10 text-base text-faint'>
+        <TriangleAlert className="w-4 h-4 mr-1 text-accent-orange"/> Aucun projet avec cet ID.
       </div>
     )
 
   return (
-    <div style={{ padding: '32px 40px', maxWidth: 900 }}>
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        marginBottom: 32
-      }}>
-        <div>
-          <h1 style={{
-            fontSize: 18,
-            fontFamily: 'monospace',
-            color: '#e6edf3',
-            fontWeight: 600,
-            marginBottom: 4
-          }}>
+    <BasePage
+      title={
+        <div className='flex'>
+          <h1 className='text-title text-primary-foreground mb-1 font-semibold'>
             {project.name}
           </h1>
-          <a href={project.repoUrl} target="_blank" rel="noreferrer" style={{
-            fontSize: 11, fontFamily: 'monospace', color: '#60a5fa', textDecoration: 'none',
-          }}>
-            ↗ {project.repoUrl.replace('https://github.com/', '')}
-          </a>
+          {!project.hasJulesAccess && (<div className='ms-2'>
+            <Badge>jules non connecté</Badge>
+          </div>)}
         </div>
-        {!project.hasJulesAccess && (
-          <Badge>jules non connecté</Badge>
-        )}
-      </div>
+      }
+      subtitle={
+        <NavLink to={project.repoUrl}
+                 className='flex items-center mb-8 text-meta text-accent-blue hover:underline'
+                 target='_blank'>
+          <ExternalLink className='h-3 w-3 me-1'/>
+          {project.repoUrl.replace('https://github.com/', '')}
+        </NavLink>
+      }>
 
       {/* Agents actifs */}
       <section style={{ marginBottom: 32 }}>
@@ -60,10 +52,9 @@ export default function ProjectPage() {
           AGENTS ({project.agents.length})
         </div>
         {project.agents.length === 0 ? (
-          <div
-            style={{ fontSize: 12, color: '#374151', fontFamily: 'monospace', padding: '12px 0' }}>
+          <span className='text-base text-faint'>
             — aucun agent actif
-          </div>
+          </span>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {project.agents.map(agent => (
@@ -125,10 +116,9 @@ export default function ProjectPage() {
           PULL REQUESTS ({project.pullRequests.length})
         </div>
         {project.pullRequests.length === 0 ? (
-          <div
-            style={{ fontSize: 12, color: '#374151', fontFamily: 'monospace', padding: '12px 0' }}>
+          <span className='text-base text-faint'>
             — aucune PR en attente
-          </div>
+          </span>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {project.pullRequests.map(pr => (
@@ -211,6 +201,6 @@ export default function ProjectPage() {
           </div>
         </div>
       </section>
-    </div>
+    </BasePage>
   )
 }
