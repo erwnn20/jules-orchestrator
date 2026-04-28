@@ -1,4 +1,5 @@
 import Badge from "@components/helpers/badge";
+import { CardWide } from "@components/helpers/cards";
 import StatusDot from "@components/helpers/statusDot";
 import { Section } from "@components/section";
 import { useApp } from "@context/AppContext";
@@ -134,11 +135,7 @@ function StatsCard({ children, label, value, accent, icon: Icon }: {
 
 function ActivityCard({ activity, }: { activity: RecentActivity }) {
   return (
-    <div className={
-      'flex items-center gap-3 px-4 py-3 ' +
-      'bg-panel border border-border-color rounded-lg  hover:border-border-hover ' +
-      'transition-colors duration-150'
-    }>
+    <CardWide>
       <StatusDot status={activity.status}/>
       <div className="flex-1">
         <div className="flex items-center gap-2">
@@ -167,6 +164,6 @@ function ActivityCard({ activity, }: { activity: RecentActivity }) {
         </p>
       </div>
       <span className="text-meta text-faint">{activity.time}</span>
-    </div>
+    </CardWide>
   )
 }

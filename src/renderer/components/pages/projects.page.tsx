@@ -1,4 +1,5 @@
 ﻿import Badge from "@components/helpers/badge";
+import { CardWide } from "@components/helpers/cards";
 import StatusDot, { statusColors } from "@components/helpers/statusDot";
 import { useApp } from "@context/AppContext";
 import { Agent } from "@interfaces/agent.interface";
@@ -223,41 +224,38 @@ function ProjectCardDefault({ project }: { project: Project }) {
 
 function ProjectCardWide({ project }: { project: Project }) {
   return (
-    <NavLink
-      to={`/projects/${project.id}`}
-      className={
-        'flex items-center gap-4 px-4 py-3 ' +
-        'bg-panel border border-border-color rounded-lg hover:border-border-hover ' +
-        'cursor-pointer ' +
+    <NavLink to={`/projects/${project.id}`} className={'group'}>
+      <CardWide className={
+        'group-hover:border-border-hover cursor-pointer ' +
         'transition-colors duration-150'
-      }
-    >
-      <StatusDot
-        status={project.hasJulesAccess ? (project.activeAgents > 0 ? 'running' : 'done') : 'none'}
-      />
+      }>
+        <StatusDot
+          status={project.hasJulesAccess ? (project.activeAgents > 0 ? 'running' : 'done') : 'none'}
+        />
 
-      <div className='flex-1'>
-        <div className='text-subtitle mb-1'>{project.name}</div>
-        <div className='text-label text-faint'>
-          {project.lastActivity
-            ? `dernière activité le ${project.lastActivity.toLocaleString('fr-Fr')}`
-            : 'aucune activité'}
+        <div className='flex-1'>
+          <div className='text-subtitle mb-1'>{project.name}</div>
+          <div className='text-label text-faint'>
+            {project.lastActivity
+              ? `dernière activité le ${project.lastActivity.toLocaleString('fr-Fr')}`
+              : 'aucune activité'}
+          </div>
         </div>
-      </div>
 
-      <div className='flex gap-1.5 items-center'>
-        {!project.hasJulesAccess && <Badge>no jules access</Badge>}
-        {project.activeAgents > 0 && (
-          <Badge variant="agent">
-            {project.activeAgents} agent{project.activeAgents > 1 ? 's' : ''}
-          </Badge>
-        )}
-        {project.pullRequests.length > 0 && (
-          <Badge variant="pr">
-            {project.pullRequests.length} PR{project.pullRequests.length > 1 ? 's' : ''}
-          </Badge>
-        )}
-      </div>
+        <div className='flex gap-1.5 items-center'>
+          {!project.hasJulesAccess && <Badge>no jules access</Badge>}
+          {project.activeAgents > 0 && (
+            <Badge variant="agent">
+              {project.activeAgents} agent{project.activeAgents > 1 ? 's' : ''}
+            </Badge>
+          )}
+          {project.pullRequests.length > 0 && (
+            <Badge variant="pr">
+              {project.pullRequests.length} PR{project.pullRequests.length > 1 ? 's' : ''}
+            </Badge>
+          )}
+        </div>
+      </CardWide>
     </NavLink>
   )
 }
