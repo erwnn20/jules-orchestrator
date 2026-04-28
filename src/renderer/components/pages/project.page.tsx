@@ -1,11 +1,17 @@
 ﻿import Badge from "@components/helpers/badge";
+import { Button } from "@components/helpers/buttons";
+import { CardWide } from "@components/helpers/cards";
 import StatusDot from "@components/helpers/statusDot";
 import { Section } from "@components/section";
 import { useApp } from "@context/AppContext";
+import { Agent } from "@interfaces/agent.interface";
+import { Project } from "@interfaces/project.interface";
+import { PullRequest } from "@interfaces/pullRequest.interface";
 import BasePage from "@pages/base.page";
 import { ExternalLink, GitBranch, LucideIcon, Play, TriangleAlert } from "lucide-react";
 import { useState } from "react";
-import { useParams } from "react-router";
+import { NavLink, useParams } from "react-router";
+import { To } from "react-router-dom";
 
 
 export default function ProjectPage() {
@@ -50,49 +56,9 @@ export default function ProjectPage() {
             — aucun agent actif
           </span>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {project.agents.map(agent => (
-              <div key={agent.id} style={{
-                background: '#0d1117', border: '1px solid #21262d',
-                borderRadius: 6, padding: '12px 16px',
-                display: 'flex', alignItems: 'center', gap: 12,
-              }}>
-                <StatusDot status={agent.status}/>
-                <div style={{ flex: 1 }}>
-                  <div style={{
-                    fontSize: 12,
-                    fontFamily: 'monospace',
-                    color: '#e6edf3',
-                    marginBottom: 3
-                  }}>
-                    {agent.task}
-                  </div>
-                  <div style={{ fontSize: 10, color: '#4b5563', fontFamily: 'monospace' }}>
-                    branch: {agent.branch}
-                  </div>
-                </div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <a href={agent.convUrl}
-                     style={{
-                       fontSize: 10,
-                       fontFamily: 'monospace',
-                       color: '#60a5fa',
-                       textDecoration: 'none'
-                     }}>
-                    conversation ↗
-                  </a>
-                  <span style={{ color: '#21262d' }}>|</span>
-                  <a href={`${project.repoUrl}/tree/${agent.branch}`}
-                     style={{
-                       fontSize: 10,
-                       fontFamily: 'monospace',
-                       color: '#60a5fa',
-                       textDecoration: 'none'
-                     }}>
-                    branche ↗
-                  </a>
-                </div>
-              </div>
+          <div className='flex flex-col gap-1.5'>
+            {project.agents.map((agent, index) => (
+              <AgentCardWide key={index} agent={agent} project={project}/>
             ))}
           </div>
         )}
@@ -105,37 +71,9 @@ export default function ProjectPage() {
             — aucune PR en attente
           </span>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {project.pullRequests.map(pr => (
-              <div key={pr.id} style={{
-                background: '#0d1117', border: '1px solid #21262d',
-                borderRadius: 6, padding: '12px 16px',
-                display: 'flex', alignItems: 'center', gap: 12,
-              }}>
-                <span style={{ fontSize: 12, color: '#4ade80', fontFamily: 'monospace' }}>⊕</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{
-                    fontSize: 12,
-                    fontFamily: 'monospace',
-                    color: '#e6edf3',
-                    marginBottom: 2
-                  }}>
-                    {pr.title}
-                  </div>
-                  <div style={{ fontSize: 10, color: '#4b5563', fontFamily: 'monospace' }}>
-                    {pr.branch} · {pr.createdAt}
-                  </div>
-                </div>
-                <a href={pr.url}
-                   style={{
-                     fontSize: 10,
-                     fontFamily: 'monospace',
-                     color: '#60a5fa',
-                     textDecoration: 'none'
-                   }}>
-                  voir PR ↗
-                </a>
-              </div>
+          <div className='flex flex-col gap-1.5'>
+            {project.pullRequests.map((pr, index) => (
+              <PullRequestCardWide key={index} pr={pr}/>
             ))}
           </div>
         )}
@@ -179,5 +117,60 @@ export default function ProjectPage() {
         </div>
       </Section>
     </BasePage>
+  )
+}
+
+//
+
+function AgentCardWide({ agent, project: { repoUrl } }: { agent: Agent, project: Project }) {
+  return (
+    <CardWide>
+      <StatusDot status={agent.status}/>
+      <div className='flex-1'>
+        <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
+          {agent.task}
+        </span>
+        <span className='flex items-center gap-1 text-label text-muted'>
+          <GitBranch className='h-3 w-3'/> {agent.branch}
+        </span>
+      </div>
+      <div className='flex items-center-safe gap-2.5'>
+        <CardLink to={agent.convUrl} text={'conversation'}/>
+        <span className='border-l border-border-color h-5'/>
+        <CardLink to={`${repoUrl}/tree/${agent.branch}`} text={'branche'}/>
+      </div>
+    </CardWide>
+  )
+}
+
+function PullRequestCardWide({ pr }: { pr: PullRequest }) {
+  return (
+    <CardWide>
+      <span className='text-base text-primary'>⊕</span>
+      <div className='flex-1'>
+        <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
+          {pr.title}
+        </span>
+        <span className='flex items-center gap-1 text-label text-muted'>
+          <GitBranch className='h-3 w-3'/> {pr.branch} · {pr.createdAt}
+        </span>
+      </div>
+      <CardLink to={pr.url} text='voir PR'/>
+    </CardWide>
+  )
+}
+
+//
+
+function CardLink({ to, icon: Icon = ExternalLink, text }: {
+  to: To,
+  icon?: LucideIcon,
+  text: string
+}) {
+  return (
+    <NavLink to={to} target={'_blank'}
+             className='flex items-start text-label text-accent-blue hover:underline'>
+      {text} <Icon className='w-3 h-3 ms-1'/>
+    </NavLink>
   )
 }
