@@ -1,5 +1,6 @@
 import Badge from "@components/helpers/badge";
 import StatusDot from "@components/helpers/statusDot";
+import { Section } from "@components/section";
 import { useApp } from "@context/AppContext";
 import { RecentActivity } from "@interfaces/recentActivity.interface";
 import BasePage from "@pages/base.page";
@@ -88,18 +89,13 @@ export default function HomePage() {
       </div>
 
       {/* Recent activity */}
-      <div>
-        <div className='mb-3 text-meta text-faint uppercase tracking-wider'>
-          ACTIVITÉ RÉCENTE
-        </div>
-
+      <Section title={'ACTIVITÉ RÉCENTE'}>
         <div className="space-y-2">
           {recentActivities.map((activity, index) => (
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
-      </div>
-
+      </Section>
     </BasePage>
   )
 }

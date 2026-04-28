@@ -1,6 +1,9 @@
 ﻿import Badge from "@components/helpers/badge";
 import StatusDot from "@components/helpers/statusDot";
+import { Section } from "@components/section";
 import { useApp } from "@context/AppContext";
+import BasePage from "@pages/base.page";
+import { ExternalLink, GitBranch, LucideIcon, Play, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router";
 
@@ -41,16 +44,7 @@ export default function ProjectPage() {
       }>
 
       {/* Agents actifs */}
-      <section style={{ marginBottom: 32 }}>
-        <div style={{
-          fontSize: 11,
-          color: '#4b5563',
-          fontFamily: 'monospace',
-          letterSpacing: 1,
-          marginBottom: 12
-        }}>
-          AGENTS ({project.agents.length})
-        </div>
+      <Section title={`AGENTS (${project.agents.length})`}>
         {project.agents.length === 0 ? (
           <span className='text-base text-faint'>
             — aucun agent actif
@@ -102,19 +96,10 @@ export default function ProjectPage() {
             ))}
           </div>
         )}
-      </section>
+      </Section>
 
       {/* Pull Requests */}
-      <section style={{ marginBottom: 32 }}>
-        <div style={{
-          fontSize: 11,
-          color: '#4b5563',
-          fontFamily: 'monospace',
-          letterSpacing: 1,
-          marginBottom: 12
-        }}>
-          PULL REQUESTS ({project.pullRequests.length})
-        </div>
+      <Section title={`PULL REQUESTS (${project.pullRequests.length})`}>
         {project.pullRequests.length === 0 ? (
           <span className='text-base text-faint'>
             — aucune PR en attente
@@ -154,22 +139,14 @@ export default function ProjectPage() {
             ))}
           </div>
         )}
-      </section>
+      </Section>
 
       {/* Lancer un agent */}
-      <section>
-        <div style={{
-          fontSize: 11,
-          color: '#4b5563',
-          fontFamily: 'monospace',
-          letterSpacing: 1,
-          marginBottom: 12
-        }}>
-          LANCER UN AGENT
-        </div>
-        <div style={{
-          background: '#0d1117', border: '1px solid #21262d', borderRadius: 6, padding: 16,
-        }}>
+      <Section title={'LANCER UN AGENT'}>
+        <div className={
+          'p-4 flex flex-col gap-2.5 ' +
+          'bg-panel border border-border-color rounded-lg'
+        }>
           <textarea
             value={task}
             onChange={e => setTask(e.target.value)}
@@ -200,7 +177,7 @@ export default function ProjectPage() {
             </button>
           </div>
         </div>
-      </section>
+      </Section>
     </BasePage>
   )
 }
