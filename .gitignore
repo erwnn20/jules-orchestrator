@@ -6,8 +6,11 @@ node_modules/
 
 #
 dist/
+.env
 
 # Subjects and Utils
 *.pdf
 *.txt
 subject.md
+Claude.md
+Jules Orchestrator.md
