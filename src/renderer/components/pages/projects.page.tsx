@@ -1,5 +1,7 @@
 ﻿import Badge from "@components/helpers/badge";
+import { Button } from "@components/helpers/buttons";
 import { CardWide } from "@components/helpers/cards";
+import { Input } from "@components/helpers/Input";
 import StatusDot, { statusColors } from "@components/helpers/statusDot";
 import { useApp } from "@context/AppContext";
 import { Agent } from "@interfaces/agent.interface";
@@ -7,7 +9,7 @@ import { Project } from "@interfaces/project.interface";
 import BasePage from "@pages/base.page";
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Image, Plus, Search, SlidersHorizontal } from "lucide-react";
+import { Image, Plus, SlidersHorizontal } from "lucide-react";
 import { ReactNode } from "react";
 import { NavLink } from "react-router";
 
@@ -19,31 +21,10 @@ export default function ProjectsPage() {
     <BasePage title='Projects' subtitle={`${projects.length} repositories GitHub`}>
 
       <div className="flex items-center justify-end gap-3 mb-4">
-        <div className="relative">
-          <input
-            type="search"
-            placeholder="Search projects..."
-            className={
-              "w-80 px-3 py-2 pl-9 " +
-              "text-base text-primary-foreground placeholder:text-muted " +
-              "bg-elevated border border-border-input rounded-md " +
-              "focus:outline-none focus:border-border-hover " +
-              "transition-colors duration-150"
-            }/>
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-            <Search className="w-3.5 h-3.5 text-muted"/>
-          </div>
-        </div>
-        <button
-          className={
-            "flex items-center gap-2 px-4 py-2 " +
-            "bg-elevated border border-border-hover rounded-md " +
-            "text-base text-primary-foreground " +
-            "hover:border-border-hover " +
-            "transition-colors duration-150"
-          }>
+        <Input type={"search"} placeholder="Search projects..." className={"w-80"}/>
+        <Button variant={'outline'} className={'gap-2 bg-elevated hover:border-border-hover'}>
           <SlidersHorizontal className="w-3 h-3"/> Filter
-        </button>
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[200px]">

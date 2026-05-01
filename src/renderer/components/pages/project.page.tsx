@@ -1,6 +1,7 @@
 ﻿import Badge from "@components/helpers/badge";
 import { Button } from "@components/helpers/buttons";
 import { CardWide } from "@components/helpers/cards";
+import { Textarea } from "@components/helpers/inputs/Textarea";
 import StatusDot from "@components/helpers/statusDot";
 import { Section } from "@components/section";
 import { useApp } from "@context/AppContext";
@@ -85,16 +86,12 @@ export default function ProjectPage() {
           'p-4 flex flex-col gap-2.5 ' +
           'bg-panel border border-border-color rounded-lg'
         }>
-          <textarea
+          <Textarea
             value={task}
             onChange={e => setTask(e.target.value)}
             placeholder="Décris la tâche ou colle un plan d'implémentation (.md)..."
-            className={
-              'min-h-24 px-3 py-2.5 ' +
-              'bg-elevated border text-base text-primary-foreground ' +
-              'border-border-color rounded-md ' +
-              'resize-y outline-none box-border'
-            }/>
+            className={'w-full min-h-24 resize-y box-border'}
+          />
           <Button
             size={'sm'}
             disabled={!task.trim() || !project.hasJulesAccess}
