@@ -15,7 +15,7 @@ type Option = { value: string; label: string }
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ label, error, helperText, placeholder, options, className = '', ...props }, ref) => {
     return (
-      <div className={className.includes("w-full") ? className = "w-full" : ""}>
+      <div className={className.includes("w-full") ? "w-full" : ""}>
         {label && (
           <label className="block text-base text-primary-foreground font-medium mb-2">
             {label}

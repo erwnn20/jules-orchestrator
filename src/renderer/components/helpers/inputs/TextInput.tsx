@@ -74,7 +74,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const padding = paddings[iconPosition]
 
     return (
-      <div className={className.includes("w-full") ? className = "w-full" : ""}>
+      <div className={className.includes("w-full") ? "w-full" : ""}>
         {label && (
           <label className="block text-base text-primary-foreground font-medium mb-2">
             {label}
