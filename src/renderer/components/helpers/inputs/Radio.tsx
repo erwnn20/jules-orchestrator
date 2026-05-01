@@ -4,7 +4,7 @@ export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   label?: string;
 }
 
-export const Radio = forwardRef<HTMLInputElement, RadioProps>(
+const Radio = forwardRef<HTMLInputElement, RadioProps>(
   ({ label, className = '', ...props }, ref) => {
     return (
       <label className={'group inline-flex items-center'}>
@@ -49,3 +49,5 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
 );
 
 Radio.displayName = 'Radio';
+
+export default Radio;

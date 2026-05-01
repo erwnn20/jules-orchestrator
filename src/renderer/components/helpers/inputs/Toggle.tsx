@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 
 export interface ToggleProps extends Omit<CheckboxProps, 'variant'> {}
 
-export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
+const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
   ({ label, innerIcon: Icon, className = '', ...props }, ref) => {
     return (
       <label className={'group inline-flex items-center'}>
@@ -61,3 +61,5 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
 );
 
 Toggle.displayName = 'Toggle';
+
+export default Toggle;

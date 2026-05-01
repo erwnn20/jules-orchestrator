@@ -1,4 +1,4 @@
-import { Toggle } from "@components/helpers/inputs/Toggle";
+import Toggle from "@components/helpers/inputs/Toggle";
 import { Check, LucideIcon } from 'lucide-react';
 import { forwardRef, InputHTMLAttributes } from 'react';
 
@@ -8,8 +8,8 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
   innerIcon?: LucideIcon
 }
 
-export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ label, variant = 'default',innerIcon, className = '', ...props }, ref) => {
+const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+  ({ label, variant = 'default', innerIcon, className = '', ...props }, ref) => {
     if (variant === 'toggle') return <Toggle label={label} innerIcon={innerIcon} {...props}/>;
 
     const Icon = innerIcon ?? Check
@@ -53,3 +53,5 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 );
 
 Checkbox.displayName = 'Checkbox';
+
+export default Checkbox;

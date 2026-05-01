@@ -31,7 +31,7 @@ const paddings = {
   iconEnd: 'ps-3 pe-9 py-2',
 }
 
-export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ type = 'text', label, error, helperText, className = '', ...props }, ref) => {
     const [typ, setType] = useState<TextInputType>(type)
     const [isVisible, setVisible] = useState(true)
@@ -121,6 +121,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 );
 
 TextInput.displayName = 'TextInput';
+
+export default TextInput;
 
 //
 

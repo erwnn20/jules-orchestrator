@@ -1,14 +1,13 @@
-import { Checkbox, CheckboxProps } from "@components/helpers/inputs/Checkbox";
-import { Radio, RadioProps } from "@components/helpers/inputs/Radio";
-import { Select, SelectProps } from "@components/helpers/inputs/Select";
-import { Textarea, TextareaProps } from "@components/helpers/inputs/Textarea";
-import {
+import Checkbox, { CheckboxProps } from "@components/helpers/inputs/Checkbox";
+import Radio, { RadioProps } from "@components/helpers/inputs/Radio";
+import Select, { SelectProps } from "@components/helpers/inputs/Select";
+import Textarea, { TextareaProps } from "@components/helpers/inputs/Textarea";
+import TextInput, {
   isTextInputType,
-  TextInput,
   TextInputProps,
   TextInputType
 } from "@components/helpers/inputs/TextInput";
-import { Toggle, ToggleProps } from "@components/helpers/inputs/Toggle";
+import Toggle, { ToggleProps } from "@components/helpers/inputs/Toggle";
 import { ForwardedRef, forwardRef, HTMLInputTypeAttribute, InputHTMLAttributes } from 'react';
 
 
@@ -82,6 +81,8 @@ function InputInner<T extends keyof ElementMap>(
   }
 }
 
-export const Input = forwardRef(InputInner)
+const Input = forwardRef(InputInner)
 
 Input.displayName = 'Input';
+
+export default Input;

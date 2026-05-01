@@ -1,7 +1,7 @@
 ﻿import Badge from "@components/helpers/Badge";
-import { Button } from "@components/helpers/Button";
-import { CardWide } from "@components/helpers/CardWide";
-import { Input } from "@components/helpers/Input";
+import Button from "@components/helpers/Button";
+import CardWide from "@components/helpers/CardWide";
+import Input from "@components/helpers/Input";
 import StatusDot, { statusColors } from "@components/helpers/StatusDot";
 import { useApp } from "@context/AppContext";
 import { Agent } from "@interfaces/agent.interface";

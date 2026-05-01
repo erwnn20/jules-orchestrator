@@ -12,7 +12,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 type Option = { value: string; label: string }
 
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(
+const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ label, error, helperText, placeholder, options, className = '', ...props }, ref) => {
     return (
       <div className={className.includes("w-full") ? className = "w-full" : ""}>
@@ -70,3 +70,5 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 );
 
 Select.displayName = 'Select';
+
+export default Select;

@@ -1,7 +1,7 @@
 import Badge from "@components/helpers/Badge";
-import { CardWide } from "@components/helpers/CardWide";
+import CardWide from "@components/helpers/CardWide";
 import StatusDot from "@components/helpers/StatusDot";
-import { Section } from "@components/Section";
+import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
 import { RecentActivity } from "@interfaces/recentActivity.interface";
 import BasePage from "@pages/BasePage";

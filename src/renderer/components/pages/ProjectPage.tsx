@@ -1,9 +1,9 @@
 ﻿import Badge from "@components/helpers/Badge";
-import { Button } from "@components/helpers/Button";
-import { CardWide } from "@components/helpers/CardWide";
-import { Textarea } from "@components/helpers/inputs/Textarea";
+import Button from "@components/helpers/Button";
+import CardWide from "@components/helpers/CardWide";
+import Textarea from "@components/helpers/inputs/Textarea";
 import StatusDot from "@components/helpers/StatusDot";
-import { Section } from "@components/Section";
+import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
 import { Agent } from "@interfaces/agent.interface";
 import { Project } from "@interfaces/project.interface";

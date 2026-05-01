@@ -13,14 +13,14 @@ interface ButtonProps {
   className?: string;
 }
 
-export function Button({
-                         children,
-                         variant = 'primary',
-                         size = 'md',
-                         disabled = false,
-                         onClick,
-                         className = '',
-                       }: ButtonProps) {
+export default function Button({
+                                 children,
+                                 variant = 'primary',
+                                 size = 'md',
+                                 disabled = false,
+                                 onClick,
+                                 className = '',
+                               }: ButtonProps) {
   const variantClasses: Record<ButtonVariant, string> = {
     primary:
       'bg-primary text-void hover:opacity-90 cursor-pointer ' +
