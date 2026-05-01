@@ -126,7 +126,7 @@ export class JulesController extends BaseController {
 
   private async approvePlanSession({ id, data: dta }: {
     id: string,
-    data: ApprovePlanRequest
+    data?: ApprovePlanRequest
   }): Promise<ApprovePlanResponse> {
     const { data } = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
       path: `/sessions/${id}:approvePlan`, body: dta

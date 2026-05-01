@@ -25,7 +25,7 @@ contextBridge.exposeInMainWorld('api', {
       }) => ipcRenderer.invoke('jules:session:message', { id, data }),
       approvePlan: ({ id, data = {} }: {
         id: string,
-        data: ApprovePlanRequest
+        data?: ApprovePlanRequest
       }) => ipcRenderer.invoke('jules:session:approvePlan', { id, data }),
     }
   },
