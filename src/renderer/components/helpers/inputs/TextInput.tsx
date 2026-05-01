@@ -74,7 +74,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const padding = paddings[iconPosition]
 
     return (
-      <div className="w-full">
+      <div className={className.includes("w-full") ? className = "w-full" : ""}>
         {label && (
           <label className="block text-base text-primary-foreground font-medium mb-2">
             {label}
@@ -85,7 +85,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             type={typ}
             ref={ref}
             className={
-              `w-full ${Icon ? padding : paddings.noIcon} peer ` +
+              `${Icon ? padding : paddings.noIcon} peer ` +
               'bg-elevated text-base text-primary-foreground placeholder:text-ghost ' +
               'border rounded-md ' +
               'focus:outline-none cursor-text ' +

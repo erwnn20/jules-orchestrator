@@ -15,7 +15,7 @@ type Option = { value: string; label: string }
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ label, error, helperText, placeholder, options, className = '', ...props }, ref) => {
     return (
-      <div className="w-full">
+      <div className={className.includes("w-full") ? className = "w-full" : ""}>
         {label && (
           <label className="block text-base text-primary-foreground font-medium mb-2">
             {label}
@@ -25,7 +25,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <select
             ref={ref}
             className={
-              'w-full px-3 py-2 pr-9 peer ' +
+              'px-3 py-2 pr-9 peer ' +
               'bg-elevated text-base text-primary-foreground ' +
               'border rounded-md ' +
               'transition-colors duration-150 ' +
