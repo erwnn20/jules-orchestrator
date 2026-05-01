@@ -1,5 +1,5 @@
-﻿import StatusDot from "@components/helpers/statusDot";
-import ThemeToggle from "@components/themeToggle";
+﻿import StatusDot from "@components/helpers/StatusDot";
+import ThemeToggle from "@components/ThemeToggle";
 import { useApp } from "@context/AppContext";
 import { routes } from "@renderer/config/routes.config";
 import { Project } from "@renderer/interfaces/project.interface";

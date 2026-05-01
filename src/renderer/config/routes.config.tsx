@@ -1,6 +1,6 @@
-﻿import HomePage from "@pages/home.page";
-import ProjectPage from "@pages/project.page";
-import ProjectsPage from "@pages/projects.page";
+import HomePage from "@pages/HomePage";
+import ProjectPage from "@pages/ProjectPage";
+import ProjectsPage from "@pages/ProjectsPage";
 import { Route } from "@renderer/interfaces/route.interface";
 import { Folder, FolderOpen, House } from "lucide-react";
 

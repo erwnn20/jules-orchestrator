@@ -1,7 +1,9 @@
-import Badge from "@components/helpers/badge";
-import StatusDot from "@components/helpers/statusDot";
+import Badge from "@components/helpers/Badge";
+import CardWide from "@components/helpers/CardWide";
+import StatusDot from "@components/helpers/StatusDot";
+import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
-import BasePage from "@pages/base.page";
+import BasePage from "@pages/BasePage";
 import { RecentActivity } from "@renderer/interfaces/recentActivity.interface";
 import { Property } from "csstype";
 import { Activity, Bot, Folders, GitPullRequest, LucideIcon } from "lucide-react";
@@ -88,18 +90,13 @@ export default function HomePage() {
       </div>
 
       {/* Recent activity */}
-      <div>
-        <div className='mb-3 text-meta text-faint uppercase tracking-wider'>
-          ACTIVITÉ RÉCENTE
-        </div>
-
+      <Section title={'ACTIVITÉ RÉCENTE'}>
         <div className="space-y-2">
           {activities.list.map((activity, index) => (
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
-      </div>
-
+      </Section>
     </BasePage>
   )
 }
@@ -138,11 +135,7 @@ function StatsCard({ children, label, value, accent, icon: Icon }: {
 
 function ActivityCard({ activity, }: { activity: RecentActivity }) {
   return (
-    <div className={
-      'flex items-center gap-3 px-4 py-3 ' +
-      'bg-panel border border-border-color rounded-lg  hover:border-border-hover ' +
-      'transition-colors duration-150'
-    }>
+    <CardWide>
       <StatusDot status={activity.status}/>
       <div className="flex-1">
         <div className="flex items-center gap-2">
@@ -171,6 +164,6 @@ function ActivityCard({ activity, }: { activity: RecentActivity }) {
         </p>
       </div>
       <span className="text-meta text-faint">{activity.time}</span>
-    </div>
+    </CardWide>
   )
 }
