@@ -51,6 +51,36 @@ export default function ProjectPage() {
         </NavLink>
       }>
 
+      {/* Lancer un agent */}
+      <Section title={'LANCER UN NOUVEL AGENT'}>
+        <div className={
+          'p-4 flex flex-col gap-1 ' +
+          'bg-panel border border-border-color rounded-lg'
+        }>
+          <Textarea
+            value={task}
+            onChange={e => setTask(e.target.value)}
+            placeholder="Décris la tâche ou colle un plan d'implémentation (.md)..."
+            className={'w-full min-h-24 resize-y box-border'}
+          />
+          <div className='flex items-center gap-2'>
+            <Input type={"toggle"} label={"Auto create PR"}
+                   disabled={!task.trim() || !project.hasJulesAccess}
+            />
+            <span className="text-faint">·</span>
+            <Input type={"toggle"} label={"Auto approve Plan"} disabled/>
+            <Button
+              size={'sm'}
+              disabled={!task.trim() || !project.hasJulesAccess}
+              className={'ms-auto'}
+              // onClick={}
+            >
+              <Play className={'h-3 w-3 me-1 fill-current stroke-0'}/> lancer l'agent
+            </Button>
+          </div>
+        </div>
+      </Section>
+
       {/* Agents actifs */}
       <Section title={`AGENTS (${project.agents.length})`}>
         {project.agents.length === 0 ? (
@@ -81,35 +111,6 @@ export default function ProjectPage() {
         )}
       </Section>
 
-      {/* Lancer un agent */}
-      <Section title={'LANCER UN AGENT'}>
-        <div className={
-          'p-4 flex flex-col gap-1 ' +
-          'bg-panel border border-border-color rounded-lg'
-        }>
-          <Textarea
-            value={task}
-            onChange={e => setTask(e.target.value)}
-            placeholder="Décris la tâche ou colle un plan d'implémentation (.md)..."
-            className={'w-full min-h-24 resize-y box-border'}
-          />
-          <div className='flex items-center gap-2'>
-            <Input type={"toggle"} label={"Auto create PR"}
-                   disabled={!task.trim() || !project.hasJulesAccess}
-            />
-            <span className="text-faint">·</span>
-            <Input type={"toggle"} label={"Auto approve Plan"} disabled/>
-            <Button
-              size={'sm'}
-              disabled={!task.trim() || !project.hasJulesAccess}
-              className={'ms-auto'}
-              // onClick={}
-            >
-              <Play className={'h-3 w-3 me-1 fill-current stroke-0'}/> lancer l'agent
-            </Button>
-          </div>
-        </div>
-      </Section>
     </BasePage>
   )
 }
