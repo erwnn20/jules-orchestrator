@@ -71,8 +71,8 @@
         --color-primary-foreground: #1f2328;
         --color-secondary-foreground: #424a53;
         --color-muted: #636c76;
-        --color-text-faint: #818b98;
-        --color-text-ghost: #adb5bd;
+        --color-faint: #818b98;
+        --color-ghost: #adb5bd;
 
         /* Accents */
         --color-accent-green: #16a34a;
@@ -80,10 +80,6 @@
         --color-accent-blue: #2563eb;
         --color-accent-red: #dc2626;
         --color-accent-gray: #636c76;
-
-        /* Glow — adouci en light */
-        --color-glow-running: #16a34a;
-        --color-glow-error: #dc2626;
     }
 }
 
