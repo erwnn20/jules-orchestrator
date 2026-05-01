@@ -1,6 +1,7 @@
 ﻿import Badge from "@components/helpers/Badge";
 import Button from "@components/helpers/Button";
 import CardWide from "@components/helpers/CardWide";
+import Input from "@components/helpers/Input";
 import Textarea from "@components/helpers/inputs/Textarea";
 import StatusDot from "@components/helpers/StatusDot";
 import Section from "@components/Section";
@@ -83,7 +84,7 @@ export default function ProjectPage() {
       {/* Lancer un agent */}
       <Section title={'LANCER UN AGENT'}>
         <div className={
-          'p-4 flex flex-col gap-2.5 ' +
+          'p-4 flex flex-col gap-1 ' +
           'bg-panel border border-border-color rounded-lg'
         }>
           <Textarea
@@ -92,14 +93,21 @@ export default function ProjectPage() {
             placeholder="Décris la tâche ou colle un plan d'implémentation (.md)..."
             className={'w-full min-h-24 resize-y box-border'}
           />
-          <Button
-            size={'sm'}
-            disabled={!task.trim() || !project.hasJulesAccess}
-            className={'ms-auto'}
-            // onClick={}
-          >
-            <Play className={'h-3 w-3 me-1 fill-current stroke-0'}/> lancer l'agent
-          </Button>
+          <div className='flex items-center gap-2'>
+            <Input type={"toggle"} label={"Auto create PR"}
+                   disabled={!task.trim() || !project.hasJulesAccess}
+            />
+            <span className="text-faint">·</span>
+            <Input type={"toggle"} label={"Auto approve Plan"} disabled/>
+            <Button
+              size={'sm'}
+              disabled={!task.trim() || !project.hasJulesAccess}
+              className={'ms-auto'}
+              // onClick={}
+            >
+              <Play className={'h-3 w-3 me-1 fill-current stroke-0'}/> lancer l'agent
+            </Button>
+          </div>
         </div>
       </Section>
     </BasePage>
