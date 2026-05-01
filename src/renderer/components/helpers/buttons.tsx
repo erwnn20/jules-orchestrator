@@ -29,7 +29,7 @@ export function Button({
       'bg-elevated text-primary-foreground hover:opacity-90 cursor-pointer ' +
       'disabled:opacity-50 disabled:cursor-default',
     outline:
-      'border-2 border-border-input text-secondary-foreground hover:bg-elevated cursor-pointer ' +
+      'border border-border-input text-primary-foreground hover:bg-elevated cursor-pointer ' +
       'disabled:opacity-50 disabled:cursor-default disabled:hover:bg-transparent',
     ghost:
       'text-primary-foreground hover:bg-elevated cursor-pointer ' +
