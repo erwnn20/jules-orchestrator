@@ -16,7 +16,7 @@ import {
 import { Session } from "@jules/sessions/session.model";
 import {
   GetSourceResponse,
-  ListSource,
+  ListSources,
   ListSourceResponse
 } from "@jules/sources/source.interfaces";
 import { Source } from "@jules/sources/source.model";
@@ -71,7 +71,7 @@ export class JulesController extends BaseController {
     return new Source(data)
   }
 
-  private async getSources(pagination?: Pagination): Promise<ListSource> {
+  private async getSources(pagination?: Pagination): Promise<ListSources> {
     const { data } = await this.httpClient.get<ListSourceResponse>({
       path: '/sources', config: { params: pagination }
     })

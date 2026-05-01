@@ -15,7 +15,7 @@ export interface ListSourceResponse {
   nextPageToken?: string
 }
 
-export interface ListSource {
+export interface ListSources {
   sources: Source[]
   nextPageToken?: string
 }
