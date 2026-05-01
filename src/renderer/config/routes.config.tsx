@@ -1,8 +1,8 @@
 ﻿import { Route } from "@interfaces/route.interface";
-import HomePage from "@pages/home.page";
-import ProjectPage from "@pages/project.page";
-import ProjectsPage from "@pages/projects.page";
 import { Folder, FolderOpen, House } from "lucide-react";
+import HomePage from "@pages/HomePage";
+import ProjectPage from "@pages/ProjectPage";
+import ProjectsPage from "@pages/ProjectsPage";
 
 
 const DEFAULT_COMPONENT = () => (<></>)

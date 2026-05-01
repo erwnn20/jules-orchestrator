@@ -1,6 +1,6 @@
 ﻿import { version } from '@/package.json';
-import StatusDot from "@components/helpers/statusDot";
-import ThemeToggle from "@components/themeToggle";
+import StatusDot from "@components/helpers/StatusDot";
+import ThemeToggle from "@components/ThemeToggle";
 import { routes } from "@config/routes.config";
 import { useApp } from "@context/AppContext";
 import { Project } from "@interfaces/project.interface";

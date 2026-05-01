@@ -1,10 +1,10 @@
-import Badge from "@components/helpers/badge";
-import { CardWide } from "@components/helpers/cards";
-import StatusDot from "@components/helpers/statusDot";
-import { Section } from "@components/section";
+import Badge from "@components/helpers/Badge";
+import { CardWide } from "@components/helpers/CardWide";
+import StatusDot from "@components/helpers/StatusDot";
+import { Section } from "@components/Section";
 import { useApp } from "@context/AppContext";
 import { RecentActivity } from "@interfaces/recentActivity.interface";
-import BasePage from "@pages/base.page";
+import BasePage from "@pages/BasePage";
 import { Property } from "csstype";
 import { Activity, Bot, Folders, GitPullRequest, LucideIcon } from "lucide-react";
 import { ReactNode } from "react";

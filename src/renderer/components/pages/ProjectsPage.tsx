@@ -1,12 +1,12 @@
-﻿import Badge from "@components/helpers/badge";
-import { Button } from "@components/helpers/buttons";
-import { CardWide } from "@components/helpers/cards";
+﻿import Badge from "@components/helpers/Badge";
+import { Button } from "@components/helpers/Button";
+import { CardWide } from "@components/helpers/CardWide";
 import { Input } from "@components/helpers/Input";
-import StatusDot, { statusColors } from "@components/helpers/statusDot";
+import StatusDot, { statusColors } from "@components/helpers/StatusDot";
 import { useApp } from "@context/AppContext";
 import { Agent } from "@interfaces/agent.interface";
 import { Project } from "@interfaces/project.interface";
-import BasePage from "@pages/base.page";
+import BasePage from "@pages/BasePage";
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Image, Plus, SlidersHorizontal } from "lucide-react";
