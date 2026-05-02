@@ -50,16 +50,43 @@ export default function HomePage() {
 
   const stats: Parameters<typeof StatsCard>[0][] = [
     {
-      label: 'Agents actifs',
-      value: totalActive,
+      label: 'Sessions actives',
+      value: filteredSessions.active.length,
       accent: 'var(--color-accent-green)',
       icon: Bot,
+      info: filteredSessions.waiting.length === 0 ? `${filteredSessions
+      .active.filter(sessions => sessions.state === SessionState.IN_PROGRESS)
+        .length} in progress` : undefined,
       children: (
-        <div className="flex items-center gap-1">
-          <div className="flex-1 h-1 bg-bg-elevated rounded-full overflow-hidden">
-            <div className="h-full bg-accent-green rounded-full" style={{ width: '70%' }}/>
+        filteredSessions.waiting.length > 0 &&
+        <div className="flex items-center gap-2 text-label mt-2">
+          <span className="text-accent-green">
+            {filteredSessions
+            .active.filter(sessions => sessions.state === SessionState.IN_PROGRESS)
+              .length} in progress
+          </span>
+            <span className="text-faint">·</span>
+            <span className="text-accent-orange">
+                {filteredSessions.waiting.length} en attente
+              </span>
+        </div>
+      )
+    },
+    {
+      label: 'Sessions du Jour',
+      value: filteredSessions.today.length,
+      info: `/${dailySessionsLimit}`,
+      accent: 'var(--color-accent-gray)',
+      icon: Activity,
+      children: (
+        <div className="flex items-center gap-2 mt-2">
+          <div className="flex-1 h-1 bg-elevated rounded-full overflow-hidden">
+            <div
+              className={"h-full rounded-full " +
+                (dailySessionsUsage < 0.9 ? "bg-accent-green" : "bg-accent-red")}
+              style={{ width: `${dailySessionsUsage * 100}%` }}/>
           </div>
-          <span className="text-label text-text-faint">70%</span>
+          <span className="text-label text-muted">{(dailySessionsUsage * 100).toFixed(0)} %</span>
         </div>
       )
     },
@@ -73,19 +100,6 @@ export default function HomePage() {
           <span className="text-accent-green">8 merged</span>
           <span className="text-faint">·</span>
           <span className="text-accent-orange">4 ouvertes</span>
-        </div>
-      )
-    },
-    {
-      label: 'Sessions du Jour',
-      value: activities.filter(activity => isToday(activity.updateTime)).length,
-      accent: 'var(--color-accent-gray)',
-      icon: Activity,
-      children: (
-        <div className="flex items-center gap-1 text-label">
-          <span className="text-accent-green">19 réussies</span>
-          <span className="text-text-faint">·</span>
-          <span className="text-accent-red">4 erreurs</span>
         </div>
       )
     },
