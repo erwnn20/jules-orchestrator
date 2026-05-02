@@ -224,14 +224,14 @@ function ActivityCard({ activity }: { activity: Session }) {
     <CardWide>
       <StatusDot status={status[activity.state].status} pulse={status[activity.state].pulse}/>
       <div className="flex-1">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <NavLink to={`/${activity.sourceContext.source}`}
                    className="text-base text-accent-blue hover:underline">
             {activity.sourceContext.source.split("/").slice(2).join("/")}
           </NavLink>
 
           <span className='flex items-center gap-1 text-label text-muted'>
-            <GitBranch className='h-3 w-3'/>
+            <GitBranch className='h-2.5 w-2.5'/>
             {activity.sourceContext.githubRepoContext.startingBranch}
           </span>
         </div>
