@@ -25,7 +25,7 @@ export default function HomePage() {
   const { projects } = useApp()
 
   const {
-    data: { sessions: activities } = { sessions: [] },
+    data: { sessions } = { sessions: [] },
     isLoading,
     error
   } = useSessions({ pageSize: 15 })
@@ -87,23 +87,20 @@ export default function HomePage() {
 
       {/* Stats */}
       <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-10'>
-        {stats.map((stat, index) => (
+        {stats.map(({ children, ...data }, index) => (
           <StatsCard
             key={index}
-            label={stat.label}
-            value={stat.value}
-            accent={stat.accent}
-            icon={stat.icon}
+            {...data}
           >
-            {stat.children}
+            {children}
           </StatsCard>
         ))}
       </div>
 
       {/* Recent activity */}
-      <Section title={'Séssions récentes'}>
+      <Section title={'Sessions récentes'}>
         <div className="space-y-2">
-          {activities.map((activity, index) => (
+          {sessions.map((activity, index) => (
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
