@@ -25,6 +25,7 @@ import { NavLink } from "react-router";
 
 export default function HomePage() {
   const { projects } = useApp()
+  const totalPRs = projects.list.reduce((acc, p) => acc + p.pullRequests.length, 0)
 
   const {
     data: { sources } = { sources: [] },
@@ -33,49 +34,45 @@ export default function HomePage() {
   } = useSources();
 
   const {
-    data: { sessions } = { sessions: [] },
+    data: { sessions: sessionsData } = { sessions: [] },
     isLoading: isSessionsLoading,
     error: sessionsError
   } = useSessions({ pageSize: 15 })
-  const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
-
-  const filteredSessions = sessions.reduce(
+  const sessions = sessionsData.reduce(
     (acc, session) => {
       if (isToday(session.updateTime)) acc.today.push(session);
 
-      if (ACTIVE_STATES.includes(session.state)) acc.active.push(session);
-      else if (WAITING_STATES.includes(session.state)) acc.waiting.push(session);
+      if (!acc.record[session.state]) acc.record[session.state] = [];
+      acc.record[session.state]?.push(session);
 
       return acc;
     },
-    { today: [] as Session[], active: [] as Session[], waiting: [] as Session[] }
+    { today: [] as Session[], record: {} as Partial<Record<SessionState, Session[]>> }
   );
+  const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
+  const dailySessionsUsage = sessions.today.length / dailySessionsLimit;
 
-  const dailySessionsUsage = filteredSessions.today.length / dailySessionsLimit;
-
-  const totalPRs = projects.list.reduce((acc, p) => acc + p.pullRequests.length, 0)
+  const inProgressCount = sessions.record[SessionState.IN_PROGRESS]?.length ?? 0
+  const waitingCount = WAITING_STATES.reduce((acc, state) => acc + (sessions.record[state]?.length ?? 0), 0)
+  const activeCount = ACTIVE_STATES.reduce((acc, state) => acc + (sessions.record[state]?.length ?? 0), 0)
 
   const stats: Parameters<typeof StatsCard>[0][] = [
     {
       label: 'Sessions actives',
-      value: filteredSessions.active.length,
+      value: activeCount,
       accent: 'var(--color-accent-green)',
       icon: Bot,
-      info: filteredSessions.waiting.length === 0 ? `${filteredSessions
-      .active.filter(sessions => sessions.state === SessionState.IN_PROGRESS)
-        .length} in progress` : undefined,
       children: (
-        filteredSessions.waiting.length > 0 &&
         <div className="flex items-center gap-2 text-label mt-2">
-          <span className="text-accent-green">
-            {filteredSessions
-            .active.filter(sessions => sessions.state === SessionState.IN_PROGRESS)
-              .length} in progress
-          </span>
+          {inProgressCount > 0 && (
+            <span className="text-accent-green">{inProgressCount} in progress</span>
+          )}
+          {inProgressCount > 0 && waitingCount > 0 && (
             <span className="text-faint">·</span>
-            <span className="text-accent-orange">
-                {filteredSessions.waiting.length} en attente
-              </span>
+          )}
+          {waitingCount > 0 && (
+            <span className="text-accent-orange">{waitingCount} en attente</span>
+          )}
         </div>
       ),
       isLoading: isSessionsLoading,
@@ -83,7 +80,7 @@ export default function HomePage() {
     },
     {
       label: 'Sessions du Jour',
-      value: filteredSessions.today.length,
+      value: sessions.today.length,
       info: `/${dailySessionsLimit}`,
       accent: 'var(--color-accent-gray)',
       icon: Activity,
@@ -142,7 +139,7 @@ export default function HomePage() {
       {/* Recent activity */}
       <Section title={'Sessions récentes'}>
         <div className="space-y-2">
-          {sessions.map((activity, index) => (
+          {sessionsData.map((activity, index) => (
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
