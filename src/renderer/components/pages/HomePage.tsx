@@ -1,5 +1,5 @@
 import CardWide from "@components/helpers/CardWide";
-import StatusDot from "@components/helpers/StatusDot";
+import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
 import { Session } from "@jules/sessions/session.model";
@@ -208,21 +208,9 @@ function StatsCard({ children, label, value, info, accent, icon: Icon, isLoading
 }
 
 function ActivityCard({ activity }: { activity: Session }) {
-  const status: Record<Session["state"], Parameters<typeof StatusDot>[0]> = {
-    AWAITING_PLAN_APPROVAL: { status: "warning", pulse: true },
-    AWAITING_USER_FEEDBACK: { status: "warning", pulse: true },
-    COMPLETED: { status: "done" },
-    FAILED: { status: "error" },
-    IN_PROGRESS: { status: "running", pulse: true },
-    PAUSED: { status: "warning" },
-    PLANNING: { status: "running", pulse: true },
-    QUEUED: { status: "running" },
-    STATE_UNSPECIFIED: { status: "done" }
-  };
-
   return (
     <CardWide>
-      <StatusDot status={status[activity.state].status} pulse={status[activity.state].pulse}/>
+      <SessionStatusDot session={activity}/>
       <div className="flex-1">
         <div className="flex items-center gap-2">
           <NavLink to={`/${activity.sourceContext.source}`}
