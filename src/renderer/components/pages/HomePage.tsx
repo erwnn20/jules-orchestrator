@@ -159,13 +159,15 @@ const WAITING_STATES: SessionState[] = [
 
 //
 
-function StatsCard({ children, label, value, info, accent, icon: Icon }: {
+function StatsCard({ children, label, value, info, accent, icon: Icon, isLoading, error }: {
   children?: ReactNode
   label: string,
   value: number,
   info?: string | number,
   accent: Property.Color,
-  icon: LucideIcon
+  icon: LucideIcon,
+  isLoading?: boolean,
+  error?: string,
 }) {
   return (
     <div
@@ -179,12 +181,16 @@ function StatsCard({ children, label, value, info, accent, icon: Icon }: {
           <span className="text-base text-secondary-foreground">{label}</span>
         </div>
       </div>
-      <div className="flex items-baseline gap-2">
-        <p className="text-2xl text-primary-foreground font-semibold">{value}</p>
-        {info && <span className="text-label" style={{ color: accent }}>{info}</span>}
+      <div className="flex items-baseline gap-2 min-h-8">
+        {isLoading ? <p className="text-meta text-secondary-foreground mt-auto">Loading...</p> // TODO
+          : error ? <p className="text-meta text-accent-red">{error}</p>
+            : <>
+              <p className="text-2xl text-primary-foreground font-semibold">{value}</p>
+              {info && <span className="text-label" style={{ color: accent }}>{info}</span>}
+            </>}
       </div>
 
-      {children}
+      {!isLoading && children}
 
     </div>
   )
