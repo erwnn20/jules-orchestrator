@@ -12,6 +12,7 @@ export const routes: Route[] = [
 
   { path: '/projects', icon: Folder, label: 'Projects', component: ProjectsPage, isNav: true },
   { path: '/projects/:id', icon: FolderOpen, label: 'Project', component: ProjectPage },
+  { path: '/sources/:id', icon: FolderOpen, label: 'Project', component: ProjectPage },
 
   { path: '/sessions', label: 'Sessions', component: DEFAULT_COMPONENT, isNav: true },
 
