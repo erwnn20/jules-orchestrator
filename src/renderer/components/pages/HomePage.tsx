@@ -127,10 +127,11 @@ export default function HomePage() {
 
 //
 
-function StatsCard({ children, label, value, accent, icon: Icon }: {
+function StatsCard({ children, label, value, info, accent, icon: Icon }: {
   children?: ReactNode
   label: string,
   value: number,
+  info?: string | number,
   accent: Property.Color,
   icon: LucideIcon
 }) {
@@ -148,7 +149,7 @@ function StatsCard({ children, label, value, accent, icon: Icon }: {
       </div>
       <div className="flex items-baseline gap-2">
         <p className="text-2xl text-primary-foreground font-semibold">{value}</p>
-        <span className="text-label" style={{ color: accent }}>+5 {/*TODO ?*/}</span>
+        {info && <span className="text-label" style={{ color: accent }}>{info}</span>}
       </div>
 
       {children}
