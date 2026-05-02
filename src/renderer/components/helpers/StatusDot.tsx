@@ -1,9 +1,8 @@
-﻿import { Agent } from "@renderer/interfaces/agent.interface";
-import { Property } from "csstype";
+﻿import { Property } from "csstype";
 
+type Status = 'running' | 'warning' | 'done' | 'error' | 'none'
 
-export default function StatusDot({ status }: { status: Agent['status'] }) {
-  const pulse = status === 'running'
+export default function StatusDot({ status, pulse }: { status: Status, pulse?: boolean }) {
   return (
     <span
       className={`block w-2 h-2 rounded-full`}
@@ -15,8 +14,9 @@ export default function StatusDot({ status }: { status: Agent['status'] }) {
   )
 }
 
-export const statusColors: Record<Agent['status'], Property.BackgroundColor> = {
+export const statusColors: Record<Status, Property.BackgroundColor> = {
   running: 'var(--color-accent-green)',
+  warning: 'var(--color-accent-orange)',
   done: 'var(--color-accent-gray)',
   error: 'var(--color-accent-red)',
   none: '',
