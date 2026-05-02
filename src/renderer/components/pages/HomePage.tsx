@@ -30,8 +30,22 @@ export default function HomePage() {
     isLoading,
     error
   } = useSessions({ pageSize: 15 })
+  const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
 
-  const totalActive = projects.list.reduce((acc, p) => acc + p.activeAgents, 0)
+  const filteredSessions = sessions.reduce(
+    (acc, session) => {
+      if (isToday(session.updateTime)) acc.today.push(session);
+
+      if (ACTIVE_STATES.includes(session.state)) acc.active.push(session);
+      else if (WAITING_STATES.includes(session.state)) acc.waiting.push(session);
+
+      return acc;
+    },
+    { today: [] as Session[], active: [] as Session[], waiting: [] as Session[] }
+  );
+
+  const dailySessionsUsage = filteredSessions.today.length / dailySessionsLimit;
+
   const totalPRs = projects.list.reduce((acc, p) => acc + p.pullRequests.length, 0)
 
   const stats: Parameters<typeof StatsCard>[0][] = [
