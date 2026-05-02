@@ -33,11 +33,12 @@ export default function HomePage() {
     error: sourcesError
   } = useSources();
 
+  const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
   const {
     data: { sessions: sessionsData } = { sessions: [] },
     isLoading: isSessionsLoading,
     error: sessionsError
-  } = useSessions({ pageSize: 15 })
+  } = useSessions({ pageSize: dailySessionsLimit })
   const sessions = sessionsData.reduce(
     (acc, session) => {
       if (isToday(session.updateTime)) acc.today.push(session);
@@ -49,7 +50,6 @@ export default function HomePage() {
     },
     { today: [] as Session[], record: {} as Partial<Record<SessionState, Session[]>> }
   );
-  const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
   const dailySessionsUsage = sessions.today.length / dailySessionsLimit;
 
   const inProgressCount = sessions.record[SessionState.IN_PROGRESS]?.length ?? 0
