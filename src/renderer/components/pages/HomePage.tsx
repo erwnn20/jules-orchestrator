@@ -32,13 +32,8 @@ export default function HomePage() {
 
   const totalActive = projects.list.reduce((acc, p) => acc + p.activeAgents, 0)
   const totalPRs = projects.list.reduce((acc, p) => acc + p.pullRequests.length, 0)
-  const stats: {
-    children?: ReactNode
-    label: string,
-    value: number,
-    accent: Property.Color,
-    icon: LucideIcon
-  }[] = [
+
+  const stats: Parameters<typeof StatsCard>[0][] = [
     {
       label: 'Agents actifs',
       value: totalActive,
