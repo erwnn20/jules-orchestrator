@@ -135,17 +135,16 @@ export default function HomePage() {
         </div>
         {isLoading && <p className="text-meta text-secondary-foreground">Loading...</p> /*TODO*/}
         {error &&
-          <CardWide>
-            <div className="flex-1">
+            <CardWide>
+                <div className="flex-1">
               <span className='flex items-center gap-1 text-base text-accent-red'>
                 <TriangleAlert className='h-4 w-4'/> Error : {error.name}
               </span>
-              <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
-                {error.message}
-              </p>
-            </div>
-          </CardWide>
-        }
+                    <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
+                      {error.message}
+                    </p>
+                </div>
+            </CardWide>}
       </Section>
     </BasePage>
   )
