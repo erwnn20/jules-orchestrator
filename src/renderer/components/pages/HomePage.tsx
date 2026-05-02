@@ -6,6 +6,7 @@ import { Session } from "@jules/sessions/session.model";
 import { SessionState } from "@jules/sessions/session.types";
 import BasePage from "@pages/BasePage";
 import { useSessions } from "@renderer/hooks/jules/sessions.hooks";
+import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { Property } from "csstype";
 import { formatDistanceToNow, isToday } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -24,6 +25,12 @@ import { NavLink } from "react-router";
 
 export default function HomePage() {
   const { projects } = useApp()
+
+  const {
+    data: { sources } = { sources: [] },
+    isLoading: isSourcesLoading,
+    error: sourcesError
+  } = useSources();
 
   const {
     data: { sessions } = { sessions: [] },
@@ -109,9 +116,11 @@ export default function HomePage() {
     },
     {
       label: 'Projets connectés',
-      value: projects.list.filter(p => p.hasJulesAccess).length,
+      value: sources.length,
       accent: 'var(--color-accent-blue)',
       icon: Folders,
+      isLoading: isSourcesLoading,
+      error: sourcesError?.message,
     },
   ]
 
