@@ -3,6 +3,7 @@ import StatusDot from "@components/helpers/StatusDot";
 import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
 import { Session } from "@jules/sessions/session.model";
+import { SessionState } from "@jules/sessions/session.types";
 import BasePage from "@pages/BasePage";
 import { useSessions } from "@renderer/hooks/jules/sessions.hooks";
 import { Property } from "csstype";
@@ -121,6 +122,13 @@ export default function HomePage() {
     </BasePage>
   )
 }
+
+//
+
+const ACTIVE_STATES: SessionState[] = [SessionState.IN_PROGRESS, SessionState.PLANNING]
+const WAITING_STATES: SessionState[] = [
+  SessionState.QUEUED, SessionState.AWAITING_PLAN_APPROVAL, SessionState.AWAITING_USER_FEEDBACK
+]
 
 //
 
