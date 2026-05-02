@@ -27,8 +27,8 @@ export default function HomePage() {
 
   const {
     data: { sessions } = { sessions: [] },
-    isLoading,
-    error
+    isLoading: isSessionsLoading,
+    error: sessionsError
   } = useSessions({ pageSize: 15 })
   const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
 
@@ -70,7 +70,9 @@ export default function HomePage() {
                 {filteredSessions.waiting.length} en attente
               </span>
         </div>
-      )
+      ),
+      isLoading: isSessionsLoading,
+      error: sessionsError?.message,
     },
     {
       label: 'Sessions du Jour',
@@ -88,7 +90,9 @@ export default function HomePage() {
           </div>
           <span className="text-label text-muted">{(dailySessionsUsage * 100).toFixed(0)} %</span>
         </div>
-      )
+      ),
+      isLoading: isSessionsLoading,
+      error: sessionsError?.message,
     },
     {
       label: 'Pull Requests en attente',
@@ -133,15 +137,16 @@ export default function HomePage() {
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
-        {isLoading && <p className="text-meta text-secondary-foreground">Loading...</p> /*TODO*/}
-        {error &&
+        {isSessionsLoading &&
+            <p className="text-meta text-secondary-foreground">Loading...</p> /*TODO*/}
+        {sessionsError &&
             <CardWide>
                 <div className="flex-1">
               <span className='flex items-center gap-1 text-base text-accent-red'>
-                <TriangleAlert className='h-4 w-4'/> Error : {error.name}
+                <TriangleAlert className='h-4 w-4'/> Error : {sessionsError.name}
               </span>
                     <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
-                      {error.message}
+                      {sessionsError.message}
                     </p>
                 </div>
             </CardWide>}
