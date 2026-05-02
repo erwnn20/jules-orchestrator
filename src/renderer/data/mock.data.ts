@@ -1,5 +1,4 @@
 ﻿import { Project } from "@renderer/interfaces/project.interface";
-import { RecentActivity } from "@renderer/interfaces/recentActivity.interface";
 
 
 export const MOCK_PROJECTS: Project[] = [
@@ -89,25 +88,3 @@ export const MOCK_PROJECTS: Project[] = [
     pullRequests: [],
   },
 ] // TODO: from github
-
-export const RECENT_ACTIVITY: RecentActivity[] = [
-  {
-    project: MOCK_PROJECTS[0],
-    action: 'Refactor agent launcher module',
-    time: '3 min ago',
-    status: 'running'
-  },
-  {
-    project: MOCK_PROJECTS[3],
-    action: 'Migrate to Prisma ORM',
-    time: '12 min ago',
-    status: 'error'
-  },
-  { project: MOCK_PROJECTS[1], action: 'Update dependencies', time: '1h ago', status: 'done' },
-  {
-    project: MOCK_PROJECTS[0],
-    action: 'Add unit tests for pipeline',
-    time: '2h ago',
-    status: 'running'
-  },
-] // TODO: from jules
