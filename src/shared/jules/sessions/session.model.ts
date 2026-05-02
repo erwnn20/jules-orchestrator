@@ -46,7 +46,7 @@ export class Session {
     this.sourceContext = sourceContext
     this.url = url
     this.createTime = new Date(createTime ?? Date.now())
-    this.updateTime = new Date(updateTime ?? Date.now())
+    this.updateTime = new Date(updateTime ?? this.createTime)
     this.outputs = outputs
     this.automationMode = automationMode
     this.requirePlanApproval = requirePlanApproval
