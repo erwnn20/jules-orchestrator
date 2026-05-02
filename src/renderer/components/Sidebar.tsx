@@ -8,42 +8,6 @@ import { version } from '@renderer/package.json';
 import { NavLink as NavLinkReact } from 'react-router-dom'
 
 
-function NavLink({ route }: { route: Route }) {
-  const { path, label, icon: Icon } = route
-
-  return (
-    <NavLinkReact
-      to={path}
-      className={({ isActive }) =>
-        'flex items-center gap-1.5 py-2 px-3.5 cursor-pointer text-subtitle ' +
-        (isActive ? 'bg-elevated text-primary-foreground' : 'bg-transparent text-muted')}
-    >
-      {Icon ? <Icon size={14}/> : <span style={{ height: 14, width: 14 }}></span>} {label}
-    </NavLinkReact>
-  )
-}
-
-function NavProject({ project }: { project: Project }) {
-  return (
-    <NavLinkReact
-      to={`/projects/${project.id}`}
-      className={({ isActive }) =>
-        'flex items-center gap-1.5 mb-0.5 py-1.5 px-2 rounded-md cursor-pointer ' +
-        (isActive ? 'bg-elevated' : 'bg-transparent')}
-    >
-      <StatusDot
-        status={project.hasJulesAccess ? (project.activeAgents > 0 ? 'running' : 'done') : 'none'}/>
-      <span
-        className='text-base text-secondary-foreground overflow-hidden text-ellipsis whitespace-nowrap'
-      >
-          {project.name}
-      </span>
-    </NavLinkReact>
-  )
-}
-
-//
-
 export default function Sidebar() {
   const { projects } = useApp()
   const navRoutes = routes.filter(route => route.isNav)
@@ -83,5 +47,41 @@ export default function Sidebar() {
         <ThemeToggle/>
       </div>
     </aside>
+  )
+}
+
+//
+
+function NavLink({ route }: { route: Route }) {
+  const { path, label, icon: Icon } = route
+
+  return (
+    <NavLinkReact
+      to={path}
+      className={({ isActive }) =>
+        'flex items-center gap-1.5 py-2 px-3.5 cursor-pointer text-subtitle ' +
+        (isActive ? 'bg-elevated text-primary-foreground' : 'bg-transparent text-muted')}
+    >
+      {Icon ? <Icon size={14}/> : <span style={{ height: 14, width: 14 }}></span>} {label}
+    </NavLinkReact>
+  )
+}
+
+function NavProject({ project }: { project: Project }) {
+  return (
+    <NavLinkReact
+      to={`/projects/${project.id}`}
+      className={({ isActive }) =>
+        'flex items-center gap-1.5 mb-0.5 py-1.5 px-2 rounded-md cursor-pointer ' +
+        (isActive ? 'bg-elevated' : 'bg-transparent')}
+    >
+      <StatusDot
+        status={project.hasJulesAccess ? (project.activeAgents > 0 ? 'running' : 'done') : 'none'}/>
+      <span
+        className='text-base text-secondary-foreground overflow-hidden text-ellipsis whitespace-nowrap'
+      >
+          {project.name}
+      </span>
+    </NavLinkReact>
   )
 }
