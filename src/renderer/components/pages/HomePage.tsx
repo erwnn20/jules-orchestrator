@@ -1,18 +1,34 @@
-import Badge from "@components/helpers/Badge";
 import CardWide from "@components/helpers/CardWide";
 import StatusDot from "@components/helpers/StatusDot";
 import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
+import { Session } from "@jules/sessions/session.model";
 import BasePage from "@pages/BasePage";
-import { RecentActivity } from "@renderer/interfaces/recentActivity.interface";
+import { useSessions } from "@renderer/hooks/jules/sessions.hooks";
 import { Property } from "csstype";
-import { Activity, Bot, Folders, GitPullRequest, LucideIcon } from "lucide-react";
+import { formatDistanceToNow, isToday } from "date-fns";
+import { fr } from "date-fns/locale";
+import {
+  Activity,
+  Bot,
+  Folders,
+  GitBranch,
+  GitPullRequest,
+  LucideIcon,
+  TriangleAlert
+} from "lucide-react";
 import { ReactNode } from "react";
 import { NavLink } from "react-router";
 
 
 export default function HomePage() {
-  const { projects, activities } = useApp()
+  const { projects } = useApp()
+
+  const {
+    data: { sessions: activities } = { sessions: [] },
+    isLoading,
+    error
+  } = useSessions({ pageSize: 15 })
 
   const totalActive = projects.list.reduce((acc, p) => acc + p.activeAgents, 0)
   const totalPRs = projects.list.reduce((acc, p) => acc + p.pullRequests.length, 0)
@@ -52,7 +68,7 @@ export default function HomePage() {
     },
     {
       label: 'Sessions du Jour',
-      value: 12,
+      value: activities.filter(activity => isToday(activity.updateTime)).length,
       accent: 'var(--color-accent-gray)',
       icon: Activity,
       children: (
@@ -90,12 +106,25 @@ export default function HomePage() {
       </div>
 
       {/* Recent activity */}
-      <Section title={'ACTIVITÉ RÉCENTE'}>
+      <Section title={'Séssions récentes'}>
         <div className="space-y-2">
-          {activities.list.map((activity, index) => (
+          {activities.map((activity, index) => (
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
+        {isLoading && <p className="text-meta text-secondary-foreground">Loading...</p> /*TODO*/}
+        {error &&
+          <CardWide>
+            <div className="flex-1">
+              <span className='flex items-center gap-1 text-base text-accent-red'>
+                <TriangleAlert className='h-4 w-4'/> Error : {error.name}
+              </span>
+              <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
+                {error.message}
+              </p>
+            </div>
+          </CardWide>
+        }
       </Section>
     </BasePage>
   )
@@ -133,37 +162,41 @@ function StatsCard({ children, label, value, accent, icon: Icon }: {
   )
 }
 
-function ActivityCard({ activity, }: { activity: RecentActivity }) {
+function ActivityCard({ activity }: { activity: Session }) {
+  const status: Record<Session["state"], Parameters<typeof StatusDot>[0]> = {
+    AWAITING_PLAN_APPROVAL: { status: "warning", pulse: true },
+    AWAITING_USER_FEEDBACK: { status: "warning", pulse: true },
+    COMPLETED: { status: "done" },
+    FAILED: { status: "error" },
+    IN_PROGRESS: { status: "running", pulse: true },
+    PAUSED: { status: "warning" },
+    PLANNING: { status: "running", pulse: true },
+    QUEUED: { status: "running" },
+    STATE_UNSPECIFIED: { status: "done" }
+  };
+
   return (
     <CardWide>
-      <StatusDot status={activity.status}/>
+      <StatusDot status={status[activity.state].status} pulse={status[activity.state].pulse}/>
       <div className="flex-1">
-        <div className="flex items-center gap-2">
-          <NavLink to={`/projects/${activity.project.id}`}
+        <div className="flex items-center gap-3">
+          <NavLink to={`/${activity.sourceContext.source}`}
                    className="text-base text-accent-blue hover:underline">
-            {activity.project.name}
+            {activity.sourceContext.source.split("/").slice(2).join("/")}
           </NavLink>
 
-          <div className="flex items-center gap-1">
-            {!activity.project.hasJulesAccess && <Badge>no jules access</Badge>}
-            {activity.status === 'error' && <Badge variant='error'>error</Badge>}
-            {activity.project.activeAgents > 0 && (
-              <Badge variant="agent">
-                {activity.project.activeAgents} agent{activity.project.activeAgents > 1 ? 's' : ''}
-              </Badge>
-            )}
-            {activity.project.pullRequests.length > 0 && (
-              <Badge variant="pr">
-                {activity.project.pullRequests.length} PR{activity.project.pullRequests.length > 1 ? 's' : ''}
-              </Badge>
-            )}
-          </div>
+          <span className='flex items-center gap-1 text-label text-muted'>
+            <GitBranch className='h-3 w-3'/>
+            {activity.sourceContext.githubRepoContext.startingBranch}
+          </span>
         </div>
-        <p className="text-meta text-secondary-foreground mt-1">
-          {activity.action}
+        <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
+          {activity.title ?? activity.prompt}
         </p>
       </div>
-      <span className="text-meta text-faint">{activity.time}</span>
+      <span className="text-meta text-faint">{formatDistanceToNow(
+        activity.updateTime, { addSuffix: true, locale: fr }
+      )}</span>
     </CardWide>
   )
 }
