@@ -202,18 +202,20 @@ function AgentCardWide({ agent, project: { githubRepo: { url: repoUrl } }, hover
         <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
           {agent.title ?? agent.prompt}
         </span>
-        <div className='flex items-center gap-1 text-label text-muted'>
-          <div className='flex items-center gap-1'>
-            {!pr?.headRef && 'from'}
-            <GitBranch className='h-3 w-3'/> {agent.sourceContext.githubRepoContext.startingBranch}
-          </div>
-          {pr?.headRef && <>
-              <span className="text-faint">→</span>
-              <div className='flex items-center gap-1'>
-                  <GitBranchPlus className='h-3 w-3'/> {pr.headRef}
-              </div>
-          </>}
-        </div>
+        {agent.sourceContext.githubRepoContext.startingBranch &&
+            <div className='flex items-center gap-1 text-label text-muted'>
+                <div className='flex items-center gap-1'>
+                  {!pr?.headRef && 'from'}
+                    <GitBranch
+                        className='h-3 w-3'/> {agent.sourceContext.githubRepoContext.startingBranch}
+                </div>
+              {pr?.headRef && <>
+                  <span className="text-faint">→</span>
+                  <div className='flex items-center gap-1'>
+                      <GitBranchPlus className='h-3 w-3'/> {pr.headRef}
+                  </div>
+              </>}
+            </div>}
       </div>
       <div className='flex items-center-safe gap-2.5'>
         <CardLink to={agent.url} text={'conversation'}/>
