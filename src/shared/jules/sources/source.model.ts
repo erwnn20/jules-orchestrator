@@ -1,4 +1,4 @@
-﻿import { GitHubRepo } from "@jules/github/github.interfaces";
+﻿import { GitHubRepo } from "@jules/github/github.model";
 import { GetSourceResponse } from "@jules/sources/source.interfaces";
 
 /**
@@ -18,7 +18,7 @@ export class Source {
 
   constructor({ id, name, githubRepo }: GetSourceResponse) {
     this.id = id
-    this.githubRepo = githubRepo
+    this.githubRepo = new GitHubRepo(githubRepo)
     this.name = name
 
     this.shortname = this._shortname
