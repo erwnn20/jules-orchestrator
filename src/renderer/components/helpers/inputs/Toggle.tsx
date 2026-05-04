@@ -9,7 +9,7 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
       <label className={'group inline-flex items-center'}>
         <div
           className={
-            'inline-flex items-center gap-3 ' +
+            'inline-flex items-center gap-2 ' +
             'cursor-pointer group-has-disabled:cursor-default ' +
             'group-has-disabled:opacity-50' +
             ` ${className}`

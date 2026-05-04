@@ -21,7 +21,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           'group-has-disabled:opacity-50 ' +
           ` ${className}`
         }>
-          <div className="relative ">
+          <div className="relative">
             <input
               ref={ref}
               type="checkbox"

@@ -6,11 +6,11 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
   helperText?: string;
-  placeholder?: Omit<Option, 'value'>
+  placeholder?: string | Omit<Option, 'value' | 'selected'>
   options: Option[];
 }
 
-type Option = { value: string; label: string }
+export type Option = { value: string; label: string, selected?: boolean }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ label, error, helperText, placeholder, options, className = '', ...props }, ref) => {
@@ -39,12 +39,12 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             {...props}
           >
             {placeholder && (
-              <option key={'placeholder'} value={''} className={'text-ghost'}>
-                {placeholder.label}
+              <option key={'placeholder'} value={''} className={'text-ghost'} selected>
+                {typeof placeholder === 'string' ? placeholder : placeholder.label}
               </option>
             )}
             {options.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option key={option.value} value={option.value} selected={option.selected}>
                 {option.label}
               </option>
             ))}
