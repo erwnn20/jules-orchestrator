@@ -26,7 +26,16 @@ export function useCreateSession() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: CreateSessionRequest) => JulesService.createSession(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sessions'] }),
+    onSuccess: (_, { sourceContext: { source } }) => {
+      queryClient.invalidateQueries({ queryKey: ['sessions'] })
+      queryClient.invalidateQueries({
+        queryKey: [
+          'sources',
+          source.startsWith('sources/') ? source.slice('sources/'.length) : source,
+          'sessions'
+        ]
+      })
+    },
   })
 }
 
