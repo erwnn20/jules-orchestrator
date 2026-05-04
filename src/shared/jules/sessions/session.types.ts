@@ -25,6 +25,13 @@ export const SessionState = {
 } as const;
 export type SessionState = (typeof SessionState)[keyof typeof SessionState];
 
+export const ACTIVE_STATES: SessionState[] = [SessionState.IN_PROGRESS, SessionState.PLANNING]
+export const WAITING_STATES: SessionState[] = [
+  SessionState.QUEUED, SessionState.AWAITING_PLAN_APPROVAL, SessionState.AWAITING_USER_FEEDBACK
+]
+
+//
+
 export const AutomationMode = {
   /** No automation (default) */
   AUTOMATION_MODE_UNSPECIFIED: 'AUTOMATION_MODE_UNSPECIFIED',
