@@ -1,7 +1,9 @@
 ﻿import Button from "@components/helpers/Button";
 import CardWide from "@components/helpers/CardWide";
 import Input from "@components/helpers/Input";
+import Select, { Option as SelectOption } from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";
+import Toggle from "@components/helpers/inputs/Toggle";
 import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
 import { PullRequest } from "@jules/github/github.interfaces";
@@ -9,6 +11,7 @@ import { Session } from "@jules/sessions/session.model";
 import { ACTIVE_STATES, WAITING_STATES } from "@jules/sessions/session.types";
 import { Source } from "@jules/sources/source.model";
 import BasePage from "@pages/BasePage";
+import { useCreateSession } from "@renderer/hooks/jules/sessions.hooks";
 import { useSessionsBySource, useSource } from "@renderer/hooks/jules/sources.hooks";
 import {
   ExternalLink,
@@ -16,34 +19,56 @@ import {
   GitBranchPlus,
   GitPullRequest,
   LucideIcon,
-  Play,
   TriangleAlert
 } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router";
 import { To } from "react-router-dom";
 
 
 export default function SourcePage() {
-  const [task, setTask] = useState('')
   const [activeSessionsOnly, setActiveSessionsOnly] = useState(true)
   const [hoveredIndex, setHoveredIndex] = useState<string | null>(null)
 
+  const [task, setTask] = useState('')
+  const [baseBranch, setBaseBranch] = useState('')
+  const [autoCreatePR, setAutoCreatePR] = useState(false)
+  const [autoValidatePlan, setAutoValidatePlan] = useState(true)
+  const createSession = useCreateSession()
+
   const { '*': id } = useParams();
+  const { data: source, isLoading, error } = useSource(id ?? '');
+  const {
+    data: sessionsData,
+    isLoading: isSessionsLoading,
+    error: errorSessions
+  } = useSessionsBySource(id ?? '')
+
+  //
+
+  const sessions = (activeSessionsOnly
+    ? sessionsData?.filter(session => ACTIVE_STATES.includes(session.state) || WAITING_STATES.includes(session.state))
+    : sessionsData) ?? []
+  const pullRequests = sessionsData?.map((session) => session.outputs?.find(
+    (output): output is { pullRequest: PullRequest } => 'pullRequest' in output
+  )?.pullRequest).filter(session => !!session)
+  const branches = (source?.githubRepo.branches ?? []).map(
+    ({ displayName: branch }) => ({ value: branch, label: `📍 ${branch}` } as SelectOption)
+  )
+
+  useEffect(() => {
+    if (branches && branches.length > 0 && baseBranch === '')
+      setBaseBranch(branches.find(branch => branch.selected)?.value ?? branches[0].value)
+  }, [branches])
+
+  //
+
   if (!id)
     return (
       <div className='flex p-10 text-base text-accent-red'>
         <TriangleAlert className="w-4 h-4 mr-1"/> Aucun ID renseigné.
       </div>
     )
-
-  const { data: source, isLoading, error } = useSource(id);
-  const {
-    data: sessionsData,
-    isLoading: isSessionsLoading,
-    error: errorSessions
-  } = useSessionsBySource(id)
-
   if (isLoading)
     return <p className="p-10 text-base text-secondary-foreground">Loading...</p> /*TODO*/
   if (error)
@@ -57,7 +82,6 @@ export default function SourcePage() {
         </p>
       </div>
     )
-
   if (!source)
     return (
       <div className='flex p-10 text-base text-faint'>
@@ -65,12 +89,27 @@ export default function SourcePage() {
       </div>
     )
 
-  const sessions = (activeSessionsOnly
-    ? sessionsData?.filter(session => ACTIVE_STATES.includes(session.state) || WAITING_STATES.includes(session.state))
-    : sessionsData) ?? []
-  const pullRequests = sessionsData?.map((session) => session.outputs?.find(
-    (output): output is { pullRequest: PullRequest } => 'pullRequest' in output
-  )?.pullRequest).filter(session => !!session)
+  const handleLunchAgent = async () => {
+    if (!task.trim()) return
+    createSession.mutate(
+      {
+        prompt: task.trim(),
+        sourceContext: {
+          source: `sources/${source.id}`,
+          githubRepoContext: { startingBranch: baseBranch }
+        },
+        automationMode: autoCreatePR ? "AUTO_CREATE_PR" : "AUTOMATION_MODE_UNSPECIFIED",
+        requirePlanApproval: !autoValidatePlan,
+      },
+      {
+        onSuccess: (data) => {
+          console.log('Session créée :', data) /*todo confirmer par affichage (notif)*/
+          setTask('')
+        },
+        onError: (error) => console.error('Erreur :', error) /*todo confirmer par affichage (notif)*/,
+      }
+    )
+  }
 
   return (
     <BasePage
@@ -100,30 +139,57 @@ export default function SourcePage() {
 
       {/* Lancer un agent */}
       <Section title={'LANCER UN NOUVEL AGENT'}>
-        <div className={
-          'p-4 flex flex-col gap-1 ' +
-          'bg-panel border border-border-color rounded-lg'
-        }>
-          <Textarea
-            value={task}
-            onChange={e => setTask(e.target.value)}
-            placeholder="Décris la tâche ou colle un plan d'implémentation (.md)..."
-            className={'w-full min-h-24 resize-y box-border'}
-          />
-          <div className='flex items-center gap-2'>
-            <Input type={"toggle"} label={"Auto create PR"}
-                   disabled={!task.trim() /*|| !project.hasJulesAccess*/}
+        <div className="bg-panel border border-border-color rounded-lg p-4">
+          <div className="space-y-4">
+            <Textarea
+              value={task}
+              onChange={(e) => setTask(e.target.value)}
+              placeholder="Décrivez la tâche à accomplir..."
+              rows={5}
+              className={'w-full resize-y box-border'}
+              disabled={createSession.isPending}
             />
-            <span className="text-faint">·</span>
-            <Input type={"toggle"} label={"Auto approve Plan"} disabled/>
-            <Button
-              size={'sm'}
-              disabled={!task.trim() /*|| !project.hasJulesAccess*/}
-              className={'ms-auto'}
-              // onClick={}
-            >
-              <Play className={'h-3 w-3 me-1 fill-current stroke-0'}/> lancer l'agent
-            </Button>
+
+            <div className="flex flex-col xl:flex-row gap-4 xl:items-center">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="sm:w-48">
+                    <Select
+                      value={baseBranch}
+                      onChange={(e) => {setBaseBranch(e.target.value)}}
+                      options={source.githubRepo.branches.map(
+                        ({ displayName: name }) => ({ value: name, label: `📍 ${name}` })
+                      )}
+                      className="w-full"
+                      disabled={createSession.isPending}
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap gap-3 items-center">
+                    <Toggle
+                      label="Auto PR"
+                      checked={autoCreatePR}
+                      onChange={(e) => setAutoCreatePR(e.target.checked)}
+                      disabled={createSession.isPending}
+                    />
+                    <Toggle
+                      label="Auto plan"
+                      checked={autoValidatePlan}
+                      onChange={(e) => setAutoValidatePlan(e.target.checked)}
+                      disabled={createSession.isPending}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                disabled={!task.trim() /*|| !project.hasJulesAccess*/ || createSession.isPending}
+                className="xl:w-auto w-full"
+                onClick={handleLunchAgent}
+              >
+                {createSession.isPending ? 'Création...' : "Lancer l'agent"}
+              </Button>
+            </div>
           </div>
         </div>
       </Section>
