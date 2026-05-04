@@ -18,6 +18,7 @@ declare global {
         source: {
           get: (id: string) => Promise<Source>,
           list: (pagination?: Pagination) => Promise<ListSources>,
+          getSessions: (id: string) => Promise<Session[]>,
         },
         session: {
           get: (id: string) => Promise<Session>,

@@ -1,6 +1,7 @@
 import HomePage from "@pages/HomePage";
 import ProjectPage from "@pages/ProjectPage";
 import ProjectsPage from "@pages/ProjectsPage";
+import SourcePage from "@pages/SourcePage";
 import { Route } from "@renderer/interfaces/route.interface";
 import { Folder, FolderOpen, House } from "lucide-react";
 
@@ -12,7 +13,7 @@ export const routes: Route[] = [
 
   { path: '/projects', icon: Folder, label: 'Projects', component: ProjectsPage, isNav: true },
   { path: '/projects/:id', icon: FolderOpen, label: 'Project', component: ProjectPage },
-  { path: '/sources/:id', icon: FolderOpen, label: 'Project', component: ProjectPage },
+  { path: '/sources/*', icon: FolderOpen, label: 'Project', component: SourcePage },
 
   { path: '/sessions', label: 'Sessions', component: DEFAULT_COMPONENT, isNav: true },
 

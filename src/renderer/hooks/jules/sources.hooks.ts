@@ -17,3 +17,11 @@ export function useSource(id: string) {
     enabled: !!id,
   })
 }
+
+export function useSessionsBySource(id: string) {
+  return useQuery({
+    queryKey: ['sources', id, 'sessions'],
+    queryFn: () => JulesService.getSessionsBySource(id),
+    enabled: !!id,
+  })
+}

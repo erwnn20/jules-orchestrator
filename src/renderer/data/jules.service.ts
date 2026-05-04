@@ -16,6 +16,7 @@ export abstract class JulesService {
 
   static getSource: (id: string) => Promise<Source> = window.api.jules.source.get;
   static getSources: (pagination?: Pagination) => Promise<ListSources> = window.api.jules.source.list;
+  static getSessionsBySource: (sourceId: string) => Promise<Session[]> = window.api.jules.source.getSessions;
 
   //
 

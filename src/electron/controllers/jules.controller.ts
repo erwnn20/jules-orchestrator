@@ -16,8 +16,8 @@ import {
 import { Session } from "@jules/sessions/session.model";
 import {
   GetSourceResponse,
-  ListSources,
-  ListSourceResponse
+  ListSourceResponse,
+  ListSources
 } from "@jules/sources/source.interfaces";
 import { Source } from "@jules/sources/source.model";
 
@@ -35,6 +35,10 @@ export class JulesController extends BaseController {
       {
         channel: 'jules:source:list',
         listener: (_, pagination?: Pagination) => this.getSources(pagination)
+      },
+      {
+        channel: 'jules:source:sessions',
+        listener: (_, id: string) => this.getSessionsBySource(id)
       },
 
       { channel: 'jules:session:get', listener: (_, id: string) => this.getSession(id) },
@@ -79,6 +83,24 @@ export class JulesController extends BaseController {
       sources: data.sources.map(source => new Source(source)),
       nextPageToken: data.nextPageToken
     }
+  }
+
+  private async getSessionsBySource(sourceId: string): Promise<Session[]> {
+    const sessions: GetSessionResponse[] = []
+    let pageToken: string | undefined
+
+    do {
+      const { data } = await this.httpClient.get<ListSessionsResponse>({
+        path: '/sessions',
+        config: { params: { pageSize: 100, ...(pageToken && { pageToken }) } }
+      })
+      sessions.push(...data.sessions)
+      pageToken = data.nextPageToken
+    } while (pageToken)
+
+    return sessions
+    .filter(s => s.sourceContext.source === `sources/${sourceId}`)
+    .map(s => new Session(s))
   }
 
   //

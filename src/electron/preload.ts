@@ -12,6 +12,8 @@ contextBridge.exposeInMainWorld('api', {
     source: {
       get: (id: string) => ipcRenderer.invoke('jules:source:get', id),
       list: (pagination?: Pagination) => ipcRenderer.invoke('jules:source:list', pagination),
+
+      getSessions: (id: string) => ipcRenderer.invoke('jules:source:sessions', id),
     },
     session: {
       get: (id: string) => ipcRenderer.invoke('jules:session:get', id),
