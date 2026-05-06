@@ -1,4 +1,11 @@
-﻿declare global {
+﻿import {
+  GetRepositoryRequest,
+  ListRepositoryRequest
+} from "@github/repositories/repository.interfaces";
+import { Repository } from "@github/repositories/repository.model";
+
+
+declare global {
   interface Window {
     api: {
       jules: {
@@ -14,6 +21,12 @@
 
           message: (args: SendMessageRequest) => Promise<SendMessageResponse>,
           approvePlan: (args: ApprovePlanRequest) => Promise<ApprovePlanResponse>,
+        }
+      },
+      github: {
+        repository: {
+          get: (args: GetRepositoryRequest) => Promise<Repository>,
+          list: (args: ListRepositoryRequest) => Promise<Repository[]>,
         }
       },
     }
