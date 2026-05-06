@@ -13,6 +13,9 @@
       "@jules/*": [
         "./src/shared/jules/*"
       ],
+      "@github/*": [
+        "./src/shared/github/*"
+      ],
       "@components/*": [
         "./src/renderer/components/*"
       ],

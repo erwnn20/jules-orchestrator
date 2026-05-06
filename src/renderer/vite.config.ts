@@ -15,6 +15,7 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './components'),
       '@services': path.resolve(__dirname, './services'),
       '@jules': path.resolve(__dirname, '../../src/shared/jules/'),
+      '@github': path.resolve(__dirname, '../../src/shared/github/'),
     },
   },
 })
