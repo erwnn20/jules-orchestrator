@@ -10,16 +10,10 @@
           get: (id: string) => Promise<Session>,
           list: (pagination?: Pagination) => Promise<ListSessionsResponse>,
           create: (data: CreateSessionRequest) => Promise<Session>,
-          delete: (id: string) => Promise<void>,
+          delete: (id: string) => Promise<{}>,
 
-          message: ({ id, data }: {
-            id: string,
-            data: SendMessageRequest
-          }) => Promise<SendMessageResponse>,
-          approvePlan: ({ id, data }: {
-            id: string,
-            data?: ApprovePlanRequest
-          }) => Promise<ApprovePlanResponse>,
+          message: (args: SendMessageRequest) => Promise<SendMessageResponse>,
+          approvePlan: (args: ApprovePlanRequest) => Promise<ApprovePlanResponse>,
         }
       },
     }

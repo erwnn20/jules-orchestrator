@@ -19,14 +19,8 @@ contextBridge.exposeInMainWorld('api', {
       create: (data: CreateSessionRequest) => ipcRenderer.invoke('jules:session:create', data),
       delete: (id: string) => ipcRenderer.invoke('jules:session:delete', id),
 
-      message: ({ id, data }: {
-        id: string,
-        data: SendMessageRequest
-      }) => ipcRenderer.invoke('jules:session:message', { id, data }),
-      approvePlan: ({ id, data = {} }: {
-        id: string,
-        data: ApprovePlanRequest
-      }) => ipcRenderer.invoke('jules:session:approvePlan', { id, data }),
+      message: (args: SendMessageRequest) => ipcRenderer.invoke('jules:session:message', args),
+      approvePlan: (args: ApprovePlanRequest) => ipcRenderer.invoke('jules:session:approvePlan', args),
     }
   },
 })

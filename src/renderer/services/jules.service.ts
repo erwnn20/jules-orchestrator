@@ -22,15 +22,9 @@ export abstract class JulesService {
   static getSession: (id: string) => Promise<Session> = window.api.jules.session.get;
   static getSessions: (pagination?: Pagination) => Promise<ListSessionsResponse> = window.api.jules.session.list;
   static createSession: (data: CreateSessionRequest) => Promise<Session> = window.api.jules.session.create;
-  static deleteSession: (id: string) => Promise<void> = window.api.jules.session.delete;
+  static deleteSession: (id: string) => Promise<{}> = window.api.jules.session.delete;
 
-  static sendMessageSession: ({ id, data }: {
-    id: string,
-    data: SendMessageRequest
-  }) => Promise<SendMessageResponse> = window.api.jules.session.message;
-  static approvePlanSession: ({ id, data }: {
-    id: string,
-    data?: ApprovePlanRequest
-  }) => Promise<ApprovePlanResponse> = window.api.jules.session.approvePlan;
+  static sendMessageSession: (args: SendMessageRequest) => Promise<SendMessageResponse> = window.api.jules.session.message;
+  static approvePlanSession: (args: ApprovePlanRequest) => Promise<ApprovePlanResponse> = window.api.jules.session.approvePlan;
 
 }

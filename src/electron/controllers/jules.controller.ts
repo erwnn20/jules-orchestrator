@@ -49,17 +49,11 @@ export class JulesController extends BaseController {
       { channel: 'jules:session:delete', listener: (_, id: string) => this.deleteSession(id) },
       {
         channel: 'jules:session:message',
-        listener: (_, { id, data }: {
-          id: string,
-          data: SendMessageRequest
-        }) => this.sendMessageSession({ id, data })
+        listener: (_, args: SendMessageRequest) => this.sendMessageSession(args)
       },
       {
         channel: 'jules:session:approvePlan',
-        listener: (_, { id, data }: {
-          id: string,
-          data: ApprovePlanRequest
-        }) => this.approvePlanSession({ id, data })
+        listener: (_, args: ApprovePlanRequest) => this.approvePlanSession(args)
       },
     ])
   }
@@ -114,21 +108,19 @@ export class JulesController extends BaseController {
     return data
   }
 
-  private async sendMessageSession({ id, data: dta }: {
-    id: string,
-    data: SendMessageRequest
-  }): Promise<SendMessageResponse> {
     const { data } = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
+  private async sendMessageSession({
+                                     id, data: dta
+                                   }: SendMessageRequest): Promise<SendMessageResponse> {
       path: `/sessions/${id}:sendMessage`, body: dta
     })
     return data
   }
 
-  private async approvePlanSession({ id, data: dta }: {
-    id: string,
-    data: ApprovePlanRequest
-  }): Promise<ApprovePlanResponse> {
     const { data } = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
+  private async approvePlanSession({
+                                     id, data: dta = {}
+                                   }: ApprovePlanRequest): Promise<ApprovePlanResponse> {
       path: `/sessions/${id}:approvePlan`, body: dta
     })
     return data
