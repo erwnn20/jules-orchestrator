@@ -22,7 +22,7 @@ import {
 import { Source } from "@jules/sources/source.model";
 
 
-export class JulesController extends BaseController {
+export class JulesController extends BaseController<HttpClient> {
   constructor(httpClient?: HttpClient) {
     const client = httpClient ?? new HttpClient(
       'https://jules.googleapis.com/v1alpha/',
@@ -59,14 +59,14 @@ export class JulesController extends BaseController {
   }
 
   private async getSource(id: string): Promise<Source> {
-    const { data } = await this.httpClient.get<GetSourceResponse>({
+    const { data } = await this.client.get<GetSourceResponse>({
       path: `/sources/${id}`
     })
     return new Source(data)
   }
 
   private async getSources(pagination?: Pagination): Promise<ListSource> {
-    const { data } = await this.httpClient.get<ListSourceResponse>({
+    const { data } = await this.client.get<ListSourceResponse>({
       path: '/sources', config: { params: pagination }
     })
     return {
@@ -78,14 +78,14 @@ export class JulesController extends BaseController {
   //
 
   private async getSession(id: string): Promise<Session> {
-    const { data } = await this.httpClient.get<GetSessionResponse>({
+    const { data } = await this.client.get<GetSessionResponse>({
       path: `/sessions/${id}`
     })
     return new Session(data)
   }
 
   private async getSessions(pagination?: Pagination): Promise<ListSessions> {
-    const { data } = await this.httpClient.get<ListSessionsResponse>({
+    const { data } = await this.client.get<ListSessionsResponse>({
       path: '/sessions', config: { params: pagination }
     })
     return {
@@ -95,32 +95,32 @@ export class JulesController extends BaseController {
   }
 
   private async createSession(dta: CreateSessionRequest): Promise<Session> {
-    const { data } = await this.httpClient.post<CreateSessionResponse, CreateSessionRequest>({
+    const { data } = await this.client.post<CreateSessionResponse, CreateSessionRequest>({
       path: '/sessions', body: dta,
     })
     return new Session(data)
   }
 
   private async deleteSession(id: string): Promise<{}> {
-    const { data } = await this.httpClient.delete<{}>({
+    const { data } = await this.client.delete<{}>({
       path: `/sessions/${id}`
     })
     return data
   }
 
-    const { data } = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
   private async sendMessageSession({
                                      id, data: dta
                                    }: SendMessageRequest): Promise<SendMessageResponse> {
+    const { data } = await this.client.post<SendMessageRequest, SendMessageResponse>({
       path: `/sessions/${id}:sendMessage`, body: dta
     })
     return data
   }
 
-    const { data } = await this.httpClient.post<SendMessageRequest, SendMessageResponse>({
   private async approvePlanSession({
                                      id, data: dta = {}
                                    }: ApprovePlanRequest): Promise<ApprovePlanResponse> {
+    const { data } = await this.client.post<SendMessageRequest, SendMessageResponse>({
       path: `/sessions/${id}:approvePlan`, body: dta
     })
     return data

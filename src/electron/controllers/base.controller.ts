@@ -1,9 +1,8 @@
-﻿import { HttpClient } from "@electron/utils/http-client";
-import { ipcMain } from "electron";
+﻿import { ipcMain } from "electron";
 
-export abstract class BaseController {
+export abstract class BaseController<Client> {
   protected constructor(
-    protected readonly httpClient: HttpClient,
+    protected readonly client: Client,
     protected readonly handlers: {
       channel: string,
       listener: (event: Electron.IpcMainInvokeEvent, ...args: any[]) => any
