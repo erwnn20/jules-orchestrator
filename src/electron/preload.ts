@@ -1,4 +1,8 @@
-﻿import { Pagination } from "@jules/jules.interfaces";
+﻿import {
+  GetRepositoryRequest,
+  ListRepositoryRequest
+} from "@github/repositories/repository.interfaces";
+import { Pagination } from "@jules/jules.interfaces";
 import {
   ApprovePlanRequest,
   CreateSessionRequest,
@@ -21,6 +25,12 @@ contextBridge.exposeInMainWorld('api', {
 
       message: (args: SendMessageRequest) => ipcRenderer.invoke('jules:session:message', args),
       approvePlan: (args: ApprovePlanRequest) => ipcRenderer.invoke('jules:session:approvePlan', args),
+    }
+  },
+  github: {
+    repository: {
+      get: (args: GetRepositoryRequest) => ipcRenderer.invoke('github:repository:get', args),
+      list: (args: ListRepositoryRequest) => ipcRenderer.invoke('github:repository:list', args),
     }
   },
 })
