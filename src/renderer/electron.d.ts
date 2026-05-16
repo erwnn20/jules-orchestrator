@@ -1,4 +1,5 @@
-﻿import {
+﻿import { ListIssuesRequest, ListIssuesResponse } from "@github/pr/pr.interfaces";
+import {
   GetRepositoryRequest,
   ListRepositoryRequest
 } from "@github/repositories/repository.interfaces";
@@ -27,6 +28,9 @@ declare global {
         repository: {
           get: (args: GetRepositoryRequest) => Promise<Repository>,
           list: (args: ListRepositoryRequest) => Promise<Repository[]>,
+        },
+        pr: {
+          list: (args: ListIssuesRequest) => Promise<ListIssuesResponse>,
         }
       },
     }

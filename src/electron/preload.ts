@@ -1,4 +1,5 @@
-﻿import {
+﻿import { ListIssuesRequest } from "@github/pr/pr.interfaces";
+import {
   GetRepositoryRequest,
   ListRepositoryRequest
 } from "@github/repositories/repository.interfaces";
@@ -31,6 +32,9 @@ contextBridge.exposeInMainWorld('api', {
     repository: {
       get: (args: GetRepositoryRequest) => ipcRenderer.invoke('github:repository:get', args),
       list: (args: ListRepositoryRequest) => ipcRenderer.invoke('github:repository:list', args),
+    },
+    pr: {
+      list: (args: ListIssuesRequest) => ipcRenderer.invoke('github:pr:list', args),
     }
   },
 })
