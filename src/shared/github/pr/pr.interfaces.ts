@@ -1,5 +1,5 @@
 ﻿import { Pagination } from "@github/github.interface";
-import { Order, SearchType, SortIssues } from "@github/pr/header.types";
+import { Order, SearchType, SortIssues, SortPR } from "@github/pr/header.types";
 import {
   AuthorAssociation,
   LexicalFallbackReason,
@@ -7,7 +7,10 @@ import {
   PRState,
   QueryParam
 } from "@github/pr/pr.types";
-import { GetRepositoryResponse } from "@github/repositories/repository.interfaces";
+import {
+  GetRepositoryRequest,
+  GetRepositoryResponse
+} from "@github/repositories/repository.interfaces";
 import { Repository } from "@github/repositories/repository.model";
 import { Team, User } from "@github/users/user.interfaces";
 import { RestEndpointMethodTypes } from "@octokit/rest";
@@ -64,6 +67,16 @@ export interface GetPRResponse {
   deletions: number
   changed_files: number
 }
+
+export type ListPRRequest = GetRepositoryRequest & Partial<{
+  state: PRState | 'all',
+  head: string,
+  base: string,
+  sort: SortPR,
+  direction: Order,
+} & Pagination>
+
+export type ListPRResponse = RestEndpointMethodTypes["pulls"]["list"]["response"]["data"]
 
 export type ListIssuesRequest = Partial<{
   query: QueryParam[],

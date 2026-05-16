@@ -1,4 +1,20 @@
-﻿
+﻿/**
+ * `popularity` will sort by the number of comments.
+ * `long-running` will sort by date created and will limit the results to pull requests that have
+ * been open for more than a month and have had activity within the past month.
+ * Par défaut: `created`
+ * @header
+ */
+export const SortPR = {
+  CREATED: 'created',
+  UPDATED: 'updated',
+  POPULARITY: 'popularity',
+  LONG_RUNNING: 'long-running',
+} as const;
+export type SortPR = (typeof SortPR)[keyof typeof SortPR];
+
+//
+
 /**
  * @header
  */
