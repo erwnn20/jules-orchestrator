@@ -35,6 +35,6 @@ contextBridge.exposeInMainWorld('api', {
     },
     pr: {
       list: (args: ListIssuesRequest) => ipcRenderer.invoke('github:pr:list', args),
-    }
+    },
   },
 })

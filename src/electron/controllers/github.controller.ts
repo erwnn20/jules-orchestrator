@@ -58,11 +58,10 @@ export class GithubController extends BaseController<Octokit> {
 
   //
 
-  private async getIssuesPR({ q, ...args }: ListIssuesRequest): Promise<ListIssuesResponse> {
-    const query = ['is:pr', 'involves:@me', ...(q ? q : [])].join(' ')
+  private async getIssuesPR({ query, ...args }: ListIssuesRequest): Promise<ListIssuesResponse> {
+    const q = ['is:pr', 'involves:@me', ...(query ? query : [])].join(' ')
     const { data } = await this.client.rest.search.issuesAndPullRequests({
-      q: query,
-      ...args,
+      q, ...args,
     })
     return data
   }

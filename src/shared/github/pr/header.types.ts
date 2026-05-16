@@ -2,7 +2,7 @@
 /**
  * @header
  */
-export const Sort = {
+export const SortIssues = {
   COMMENTS: 'comments',
   REACTIONS: 'reactions',
   REACTIONS_UP: 'reactions-+1',
@@ -15,7 +15,7 @@ export const Sort = {
   CREATED: 'created',
   UPDATED: 'updated',
 } as const;
-export type Sort = (typeof Sort)[keyof typeof Sort];
+export type SortIssues = (typeof SortIssues)[keyof typeof SortIssues];
 
 /**
  * Determines whether the first search result returned is the highest number of matches (`desc`) or lowest number of matches (`asc`).

@@ -1,5 +1,5 @@
 ﻿import { Pagination } from "@github/github.interface";
-import { Order, SearchType, Sort } from "@github/pr/header.types";
+import { Order, SearchType, SortIssues } from "@github/pr/header.types";
 import {
   AuthorAssociation,
   LexicalFallbackReason,
@@ -65,8 +65,8 @@ export interface GetPRResponse {
 }
 
 export type ListIssuesRequest = Partial<{
-  q: QueryParam[],
-  sort: Sort
+  query: QueryParam[],
+  sort: SortIssues
   order: Order
   search_type: SearchType
 } & Pagination>
