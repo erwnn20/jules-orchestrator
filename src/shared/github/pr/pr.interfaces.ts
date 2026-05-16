@@ -10,6 +10,7 @@ import {
 import { GetRepositoryResponse } from "@github/repositories/repository.interfaces";
 import { Repository } from "@github/repositories/repository.model";
 import { Team, User } from "@github/users/user.interfaces";
+import { RestEndpointMethodTypes } from "@octokit/rest";
 
 
 export interface GetPRRequest {}
@@ -106,10 +107,8 @@ interface IssueListElement extends Pick<
   type?: IssueType | null
 }
 
-export interface ListIssuesResponse {
-  total_count: number
-  incomplete_results: boolean
-  items: IssueListElement[]
+export type ListIssuesResponse =
+  RestEndpointMethodTypes["search"]["issuesAndPullRequests"]["response"]["data"] & {
   search_type?: SearchType
   lexical_fallback_reason?: LexicalFallbackReason
 }
