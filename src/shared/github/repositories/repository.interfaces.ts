@@ -135,4 +135,6 @@ export type ListRepositoryRequest = Partial<{
   type: Type,
   sort: Sort,
   direction: Direction
+  since: Date
+  before: Date
 } & Pagination>
