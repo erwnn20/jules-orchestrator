@@ -6,9 +6,9 @@ const QUERY_VALUES = {
   author: ['@me', FREE],
   assignee: ['@me', FREE],
   'review-requested': ['@me'],
-  repo: [FREE],
-  user: [FREE],
-  label: [FREE],
+  repo: [FREE], /* todo: error */
+  user: [FREE], /* todo: error */
+  label: [FREE], /* todo: error */
 } as const
 type QueryValues = typeof QUERY_VALUES
 
@@ -25,6 +25,8 @@ export type QueryParam = {
     ? `${K}:${StrictValues<QueryValues[K]>}`
     : `${K}:${Exclude<QueryValues[K][number], typeof FREE>}` | `${K}:${FreePattern<K>}`
 }[keyof QueryValues]
+
+// const test: QueryParam = 'repo:dsf' /* todo: error */
 
 //
 
