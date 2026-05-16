@@ -1,5 +1,6 @@
 ﻿import { BaseController } from "@electron/controllers/base.controller";
 import { getEnv } from "@electron/utils/env.util";
+import { ListIssuesRequest, ListIssuesResponse } from "@github/pr/pr.interfaces";
 import {
   GetRepositoryRequest,
   ListRepositoryRequest
@@ -28,6 +29,10 @@ export class GithubController extends BaseController<Octokit> {
         channel: 'github:repository:list',
         listener: (_, args: ListRepositoryRequest) => this.getRepos(args)
       },
+      {
+        channel: 'github:pr:list',
+        listener: (_, args: ListIssuesRequest) => this.getIssuesPR(args)
+      },
     ]);
   }
 
@@ -49,6 +54,17 @@ export class GithubController extends BaseController<Octokit> {
       before: before?.toISOString(),
     })
     return data.map(repo => new Repository(repo))
+  }
+
+  //
+
+  private async getIssuesPR({ q, ...args }: ListIssuesRequest): Promise<ListIssuesResponse> {
+    const query = ['is:pr', 'involves:@me', ...(q ? q : [])].join(' ')
+    const { data } = await this.client.rest.search.issuesAndPullRequests({
+      q: query,
+      ...args,
+    })
+    return data
   }
 
 }
