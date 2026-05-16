@@ -9,6 +9,18 @@ import {
   ListRepositoryRequest
 } from "@github/repositories/repository.interfaces";
 import { Repository } from "@github/repositories/repository.model";
+import { Pagination } from "@jules/jules.interfaces";
+import {
+  ApprovePlanRequest,
+  ApprovePlanResponse,
+  CreateSessionRequest,
+  ListSessionsResponse,
+  SendMessageRequest,
+  SendMessageResponse
+} from "@jules/sessions/session.interfaces";
+import { Session } from "@jules/sessions/session.model";
+import { ListSourceResponse } from "@jules/sources/source.interfaces";
+import { Source } from "@jules/sources/source.model";
 
 
 declare global {
