@@ -1,6 +1,8 @@
 ﻿import { BaseController } from "@electron/controllers/base.controller";
 import { getEnv } from "@electron/utils/env.util";
 import {
+  GetPRRequest,
+  GetPRResponse,
   ListIssuesRequest,
   ListIssuesResponse,
   ListPRRequest,
@@ -35,6 +37,10 @@ export class GithubController extends BaseController<Octokit> {
         listener: (_, args: ListRepositoryRequest) => this.getRepos(args)
       },
       {
+        channel: 'github:repository:pr:get',
+        listener: (_, args: GetPRRequest) => this.getPR(args)
+      },
+      {
         channel: 'github:repository:pr:list',
         listener: (_, args: ListPRRequest) => this.getRepoPRs(args)
       },
@@ -66,6 +72,11 @@ export class GithubController extends BaseController<Octokit> {
   }
 
   //
+
+  private async getPR({ repo, owner, pull_number }: GetPRRequest): Promise<GetPRResponse> {
+    const { data } = await this.client.rest.pulls.get({ repo, owner, pull_number })
+    return data
+  }
 
   private async getRepoPRs({ owner, repo, ...args }: ListPRRequest): Promise<ListPRResponse> {
     const { data } = await this.client.rest.pulls.list({ owner, repo, ...args })

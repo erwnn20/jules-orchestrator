@@ -1,4 +1,6 @@
 ﻿import {
+  GetPRRequest,
+  GetPRResponse,
   ListIssuesRequest,
   ListIssuesResponse,
   ListPRRequest,
@@ -46,6 +48,7 @@ declare global {
           get: (args: GetRepositoryRequest) => Promise<Repository>,
           list: (args: ListRepositoryRequest) => Promise<Repository[]>,
           pr: {
+            get: (args: GetPRRequest) => Promise<GetPRResponse>,
             list: (args: ListPRRequest) => Promise<ListPRResponse>,
           },
         },
