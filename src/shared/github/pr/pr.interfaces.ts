@@ -1,18 +1,9 @@
 ﻿import { Pagination } from "@github/github.interface";
 import { Order, SearchType, SortIssues, SortPR } from "@github/pr/header.types";
-import {
-  AuthorAssociation,
-  LexicalFallbackReason,
-  MergeMethod,
-  PRState,
-  QueryParam
-} from "@github/pr/pr.types";
-import {
-  GetRepositoryRequest,
-  GetRepositoryResponse
-} from "@github/repositories/repository.interfaces";
+import { LexicalFallbackReason, PRState, QueryParam } from "@github/pr/pr.types";
+import { GetRepositoryRequest } from "@github/repositories/repository.interfaces";
 import { Repository } from "@github/repositories/repository.model";
-import { Team, User } from "@github/users/user.interfaces";
+import { User } from "@github/users/user.interfaces";
 import { RestEndpointMethodTypes } from "@octokit/rest";
 
 
@@ -36,41 +27,6 @@ export type ListIssuesRequest = Partial<{
   order: Order
   search_type: SearchType
 } & Pagination>
-
-interface IssueListElement extends Pick<
-  GetPRResponse,
-  | 'id' | 'node_id' | 'number' | 'title' | 'url'
-  | 'comments_url' | 'html_url' | 'locked' | 'active_lock_reason'
-  | 'labels' | 'milestone'
-  | 'comments' | 'created_at' | 'updated_at' | 'closed_at'
-  | 'author_association' | 'draft'
-> {
-  repository_url: string,
-  labels_url: string
-  events_url: string,
-  assignees?: User[] | null
-  user: User | null
-  sub_issues_summary?: SubIssuesSummary
-  issue_dependencies_summary?: IssueDependenciesSummary
-  issue_field_values?: IssueFieldValue []
-  state: string /*TODO*/
-  state_reason?: string | null
-  text_matches?: SearchResultTextMatches[]
-  pull_request?: {
-    merged_at?: string | null
-    diff_url: string | null
-    html_url: string | null
-    patch_url: string | null
-    url: string | null
-  }
-  body?: string
-  score: number
-  repository?: GetRepositoryResponse
-  body_html?: string
-  body_text?: string
-  timeline_url?: string,
-  type?: IssueType | null
-}
 
 export type ListIssuesResponse =
   RestEndpointMethodTypes["search"]["issuesAndPullRequests"]["response"]["data"] & {
@@ -159,7 +115,7 @@ interface IssueType {
 
 interface AutoMerge {
   enabled_by: User
-  merge_method: MergeMethod
+  // merge_method: MergeMethod
   commit_title: string,
   commit_message: string,
 }
