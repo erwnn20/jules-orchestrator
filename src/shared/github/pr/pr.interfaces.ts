@@ -16,57 +16,9 @@ import { Team, User } from "@github/users/user.interfaces";
 import { RestEndpointMethodTypes } from "@octokit/rest";
 
 
-export interface GetPRRequest {}
+export type GetPRRequest = GetRepositoryRequest & { pull_number: number }
 
-export interface GetPRResponse {
-  url: string,
-  id: number,
-  node_id: string
-  html_url: string,
-  diff_url: string,
-  patch_url: string,
-  issue_url: string,
-  commits_url: string,
-  review_comments_url: string,
-  review_comment_url: string
-  comments_url: string,
-  statuses_url: string,
-  number: number
-  state: PRState
-  locked: boolean
-  title: string
-  user: User
-  body: string | null
-  labels: Label[]
-  milestone: Milestone | null
-  active_lock_reason?: string | null
-  created_at: string /* TODO dtae */
-  updated_at: string /* TODO dtae */
-  closed_at: string | null /* TODO dtae */
-  merged_at: string | null /* TODO dtae */
-  assignees?: User []
-  requested_reviewers?: User []
-  requested_teams?: Team[]
-  head: Branch,
-  base: Branch,
-  author_association: AuthorAssociation
-  /** The status of auto merging a pull request. */
-  auto_merge: AutoMerge | null
-  draft?: boolean
-  merged: boolean
-  mergeable: boolean | null
-  rebaseable?: boolean | null
-  mergeable_state: string
-  merged_by: User | null
-  comments: number
-  review_comments: number
-  /** Indicates whether maintainers can modify the pull request. */
-  maintainer_can_modify: boolean
-  commits: number
-  additions: number
-  deletions: number
-  changed_files: number
-}
+export type GetPRResponse = RestEndpointMethodTypes["pulls"]["get"]["response"]["data"]
 
 export type ListPRRequest = GetRepositoryRequest & Partial<{
   state: PRState | 'all',
