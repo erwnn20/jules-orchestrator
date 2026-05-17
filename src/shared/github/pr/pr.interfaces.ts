@@ -12,7 +12,7 @@ export type GetPRRequest = GetRepositoryRequest & { pull_number: number }
 export type GetPRResponse = RestEndpointMethodTypes["pulls"]["get"]["response"]["data"]
 
 export type ListPRRequest = GetRepositoryRequest & Partial<{
-  state: PRState | 'all',
+  state: PRState,
   head: string,
   base: string,
   sort: SortPR,

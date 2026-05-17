@@ -39,13 +39,7 @@ type StrictValues<T extends ReadonlyArray<unknown>> =
 
 //
 
-export type PRState = 'open' | 'closed'
-
-export enum MergeMethod {
-  merge,
-  squash,
-  rebase,
-}
+export type PRState = 'open' | 'closed' | 'all'
 
 export enum LexicalFallbackReason {
   "no_text_terms",
