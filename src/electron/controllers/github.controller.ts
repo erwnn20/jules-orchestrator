@@ -67,8 +67,8 @@ export class GithubController extends BaseController<Octokit> {
 
   //
 
-  private async getRepoPRs(args: ListPRRequest): Promise<ListPRResponse> {
-    const { data } = await this.client.rest.pulls.list({ ...args })
+  private async getRepoPRs({ owner, repo, ...args }: ListPRRequest): Promise<ListPRResponse> {
+    const { data } = await this.client.rest.pulls.list({ owner, repo, ...args })
     return data
   }
 
