@@ -1,4 +1,5 @@
-﻿import { GetPRRequest, ListIssuesRequest, ListPRRequest } from "@github/pr/pr.interfaces";
+﻿import { ListBranchesRequest } from "@github/branch/branch.interfaces";
+import { GetPRRequest, ListIssuesRequest, ListPRRequest } from "@github/pr/pr.interfaces";
 import {
   GetRepositoryRequest,
   ListRepositoryRequest
@@ -32,6 +33,9 @@ contextBridge.exposeInMainWorld('api', {
     repository: {
       get: (args: GetRepositoryRequest) => ipcRenderer.invoke('github:repository:get', args),
       list: (args: ListRepositoryRequest) => ipcRenderer.invoke('github:repository:list', args),
+      branch: {
+        list: (args: ListBranchesRequest) => ipcRenderer.invoke('github:repository:branch:list', args),
+      },
       pr: {
         get: (args: GetPRRequest) => ipcRenderer.invoke('github:repository:pr:get', args),
         list: (args: ListPRRequest) => ipcRenderer.invoke('github:repository:pr:list', args),

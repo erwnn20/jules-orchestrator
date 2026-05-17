@@ -1,4 +1,5 @@
-﻿import {
+﻿import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch.interfaces";
+import {
   GetPRRequest,
   GetPRResponse,
   ListIssuesRequest,
@@ -17,6 +18,8 @@ export abstract class GithubService {
 
   static getRepo: (args: GetRepositoryRequest) => Promise<Repository> = window.api.github.repository.get;
   static getRepos: (args: ListRepositoryRequest) => Promise<Repository[]> = window.api.github.repository.list;
+
+  static getRepoBranches: (args: ListBranchesRequest) => Promise<ListBranchesResponse> = window.api.github.repository.branch.list;
 
   //
 

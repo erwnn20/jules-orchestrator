@@ -1,5 +1,6 @@
 ﻿import { BaseController } from "@electron/controllers/base.controller";
 import { getEnv } from "@electron/utils/env.util";
+import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch.interfaces";
 import {
   GetPRRequest,
   GetPRResponse,
@@ -37,6 +38,10 @@ export class GithubController extends BaseController<Octokit> {
         listener: (_, args: ListRepositoryRequest) => this.getRepos(args)
       },
       {
+        channel: 'github:repository:branch:list',
+        listener: (_, args: ListBranchesRequest) => this.getRepoBranches(args)
+      },
+      {
         channel: 'github:repository:pr:get',
         listener: (_, args: GetPRRequest) => this.getPR(args)
       },
@@ -69,6 +74,13 @@ export class GithubController extends BaseController<Octokit> {
       before: before?.toISOString(),
     })
     return data.map(repo => new Repository(repo))
+  }
+
+  private async getRepoBranches({
+                                  owner, repo, ...args
+                                }: ListBranchesRequest): Promise<ListBranchesResponse> {
+    const { data } = await this.client.rest.repos.listBranches({ owner, repo, ...args })
+    return data
   }
 
   //
