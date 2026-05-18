@@ -1,4 +1,5 @@
 ﻿import { Permissions } from "@github/repositories/repository.interfaces";
+import { Visibility } from "@github/repositories/repository.types";
 import { User, UserArgs } from "@github/users/user.model";
 
 
@@ -10,7 +11,7 @@ export class Repository {
   readonly description?: string
   readonly owner: User
   readonly isPrivate: boolean
-  readonly visibility?: string
+  readonly visibility?: Visibility | string
   readonly createdAt: Date | null
   readonly updatedAt: Date | null
   readonly pushedAt?: Date
@@ -93,7 +94,7 @@ export interface RepositoryArgs {
   owner: UserArgs
   description: string | null
   private: boolean
-  visibility?: string
+  visibility?: Visibility | string
   created_at: string | null
   updated_at: string | null
   pushed_at: string | null
@@ -110,5 +111,4 @@ export interface RepositoryArgs {
   contributors_url: string
   language: string | null
   permissions?: Permissions
-
 }

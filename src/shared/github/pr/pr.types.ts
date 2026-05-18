@@ -42,25 +42,13 @@ type StrictValues<T extends ReadonlyArray<unknown>> =
 export type PRState = 'open' | 'closed'
 export type PRStateFilter = PRState | 'all'
 
-export enum LexicalFallbackReason {
-  "no_text_terms",
-  "quoted_text",
-  "non_issue_target",
-  "or_boolean_not_supported",
-  "no_accessible_repos",
-  "server_error",
-  "only_non_semantic_fields_requested"
-}
-
-/** How the author is associated with the repository */
-export const AuthorAssociation = {
-  COLLABORATOR: "COLLABORATOR",
-  CONTRIBUTOR: "CONTRIBUTOR",
-  FIRST_TIMER: "FIRST_TIMER",
-  FIRST_TIME_CONTRIBUTOR: "FIRST_TIME_CONTRIBUTOR",
-  MANNEQUIN: "MANNEQUIN",
-  MEMBER: "MEMBER",
-  NONE: "NONE",
-  OWNER: "OWNER",
-} as const;
-export type AuthorAssociation = (typeof AuthorAssociation)[keyof typeof AuthorAssociation];
+export const LexicalFallbackReason = {
+  NO_TEXT_TERMS: "no_text_terms",
+  QUOTED_TEXT: "quoted_text",
+  NON_ISSUE_TARGET: "non_issue_target",
+  OU_BOOLEAN_NOT_SUPPORTED: "or_boolean_not_supported",
+  NO_ACCESSIBLE_REPOS: "no_accessible_repos",
+  SERVER_ERROR: "server_error",
+  ONLY_NON_SEMANTIC_FIELDS_REQUESTED: "only_non_semantic_fields_requested"
+} as const
+export type LexicalFallbackReason = (typeof LexicalFallbackReason)[keyof typeof LexicalFallbackReason];
