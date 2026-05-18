@@ -61,6 +61,7 @@ export class GithubController extends BaseController<Octokit> {
     const { data } = await this.client.rest.repos.get({
       owner, repo,
     })
+
     return new Repository(data)
   }
 
@@ -74,6 +75,7 @@ export class GithubController extends BaseController<Octokit> {
       since: since?.toISOString(),
       before: before?.toISOString(),
     })
+
     return data.map(repo => new Repository(repo))
   }
 
@@ -81,6 +83,7 @@ export class GithubController extends BaseController<Octokit> {
                                   owner, repo, ...args
                                 }: ListBranchesRequest): Promise<ListBranchesResponse> {
     const { data } = await this.client.rest.repos.listBranches({ owner, repo, ...args })
+
     return data
   }
 
@@ -94,6 +97,7 @@ export class GithubController extends BaseController<Octokit> {
 
   private async getRepoPRs({ owner, repo, ...args }: ListPRRequest): Promise<PullRequestList[]> {
     const { data } = await this.client.rest.pulls.list({ owner, repo, ...args })
+
     return data.map(pr => new PullRequestList(pr))
   }
 
@@ -102,6 +106,7 @@ export class GithubController extends BaseController<Octokit> {
     const { data: { items, ...data } } = await this.client.rest.search.issuesAndPullRequests({
       q, ...args,
     })
+
     return {
       items: items.map(pr => new IssuePullRequest(pr)),
       ...data

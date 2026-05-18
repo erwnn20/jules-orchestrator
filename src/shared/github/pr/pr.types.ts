@@ -52,3 +52,5 @@ export const LexicalFallbackReason = {
   ONLY_NON_SEMANTIC_FIELDS_REQUESTED: "only_non_semantic_fields_requested"
 } as const
 export type LexicalFallbackReason = (typeof LexicalFallbackReason)[keyof typeof LexicalFallbackReason];
+
+export type MergeMethod = 'merge' | 'squash' | 'rebase'

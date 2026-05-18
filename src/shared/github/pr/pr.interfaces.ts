@@ -1,7 +1,7 @@
 ﻿import { Pagination } from "@github/github.interface";
 import { Order, SearchType, SortIssues, SortPR } from "@github/pr/header.types";
 import { IssuePullRequest } from "@github/pr/issue.model";
-import { LexicalFallbackReason, PRStateFilter, QueryParam } from "@github/pr/pr.types";
+import { LexicalFallbackReason, MergeMethod, PRStateFilter, QueryParam } from "@github/pr/pr.types";
 import { GetRepositoryRequest } from "@github/repositories/repository.interfaces";
 import { RepositoryArgs } from "@github/repositories/repository.model";
 import { User } from "@github/users/user.interfaces";
@@ -32,6 +32,16 @@ export type ListIssuesResponse =
   search_type?: SearchType
   lexical_fallback_reason?: LexicalFallbackReason
 }
+
+export type AcceptPRRequest = GetPRRequest & {
+  commit_title: string
+  commit_message?: string
+  merge_method?: MergeMethod
+}
+
+export type AcceptPRResponse = RestEndpointMethodTypes["pulls"]["merge"]["response"]["data"]
+
+export type RejectPRRequest = GetPRRequest & { comment?: string }
 
 //
 
