@@ -1,18 +1,17 @@
-﻿import { User as IUser } from "@github/users/user.interfaces";
-
-
-export class User {
+﻿export class User {
   readonly id: number
   readonly nodeId: string
-  readonly gravatarId: string | null
-  readonly name?: string | null
-  readonly email?: string | null
+  readonly gravatarId?: string
+
+  readonly name?: string
+  readonly email?: string
   readonly login: string
   readonly avatarUrl: string
-  readonly url: string
+  readonly type: string
+
+  readonly apiUrl: string
   readonly htmlUrl: string
   readonly reposUrl: string
-  readonly type: string
 
   constructor({
                 id,
@@ -26,17 +25,31 @@ export class User {
                 html_url,
                 repos_url,
                 type
-              }: IUser) {
+              }: UserArgs) {
     this.id = id
     this.nodeId = node_id
-    this.gravatarId = gravatar_id
-    this.name = name
-    this.email = email
+    this.gravatarId = gravatar_id || undefined
+    this.name = name || undefined
+    this.email = email || undefined
     this.login = login
     this.avatarUrl = avatar_url
-    this.url = url
+    this.apiUrl = url
     this.htmlUrl = html_url
     this.reposUrl = repos_url
     this.type = type
   }
+}
+
+export interface UserArgs {
+  id: number;
+  node_id: string;
+  gravatar_id: string | null;
+  name?: string | null;
+  email?: string | null;
+  login: string;
+  avatar_url: string;
+  url: string;
+  html_url: string;
+  repos_url: string;
+  type: string;
 }

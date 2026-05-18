@@ -36,7 +36,7 @@ export type ListIssuesResponse =
 
 //
 
-interface Branch {
+export interface Branch {
   label: string
   ref: string
   repo: Repository
@@ -44,14 +44,14 @@ interface Branch {
   user: User
 }
 
-interface Label {
-  id?: number,
-  node_id?: string
-  url?: string
-  name?: string
-  color?: string
-  default?: boolean
-  description?: string | null
+export interface Label {
+  id: number,
+  node_id: string
+  url: string
+  name: string
+  description: string | null
+  color: string
+  default: boolean
 }
 
 interface SubIssuesSummary {
