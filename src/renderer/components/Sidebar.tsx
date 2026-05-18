@@ -1,4 +1,5 @@
-﻿import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
+﻿import Loader from "@components/helpers/Loader";
+import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import ThemeToggle from "@components/ThemeToggle";
 import { Session } from "@jules/sessions/session.model";
 import { routes } from "@renderer/config/routes.config";
@@ -56,14 +57,15 @@ export default function Sidebar() {
 
       {/* Recent projects */}
       <div className='px-2 py-3 flex-1 overflow-y-auto'>
-        {!isLoading && !error && sessions.length > 0 && <>
+        {isLoading ? <Loader/> /*TODO fix */ :
+          !error && sessions.length > 0 && (<>
             <p className='pb-1 px-1 text-label text-muted uppercase tracking-wider'>
-                RÉCENTS
+              RÉCENTS
             </p>
-          {sessions.map((session, index) => (
-            <NavSources session={session} key={index}/>)
-          )}
-        </>}
+            {sessions.map((session, index) => (
+              <NavSources session={session} key={index}/>)
+            )}
+          </>)}
       </div>
 
       <div className='px-3 py-2 border-t border-t-border-color'> {/*TODO*/}

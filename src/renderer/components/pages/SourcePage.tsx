@@ -4,6 +4,7 @@ import Input from "@components/helpers/Input";
 import Select, { Option as SelectOption } from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";
 import Toggle from "@components/helpers/inputs/Toggle";
+import Loader from "@components/helpers/Loader";
 import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
 import { PullRequest } from "@jules/github/github.interfaces";
@@ -70,7 +71,7 @@ export default function SourcePage() {
       </div>
     )
   if (isLoading)
-    return <p className="p-10 text-base text-secondary-foreground">Loading...</p> /*TODO*/
+    return <Loader/>
   if (error)
     return (
       <div className="flex-1 p-10">
@@ -212,8 +213,7 @@ export default function SourcePage() {
               ))}
             </div>
         )}
-        {isSessionsLoading &&
-            <p className="text-meta text-secondary-foreground">Loading...</p> /*TODO*/}
+        {isSessionsLoading && <Loader/>}
         {errorSessions &&
             <CardWide>
                 <div className="flex-1">

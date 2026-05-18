@@ -1,4 +1,5 @@
 import CardWide from "@components/helpers/CardWide";
+import Loader from "@components/helpers/Loader";
 import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
@@ -143,8 +144,7 @@ export default function HomePage() {
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
-        {isSessionsLoading &&
-            <p className="text-meta text-secondary-foreground">Loading...</p> /*TODO*/}
+        {isSessionsLoading && <Loader/>}
         {sessionsError &&
             <CardWide>
                 <div className="flex-1">
@@ -186,7 +186,7 @@ function StatsCard({ children, label, value, info, accent, icon: Icon, isLoading
         </div>
       </div>
       <div className="flex items-baseline gap-2 min-h-8">
-        {isLoading ? <p className="text-meta text-secondary-foreground mt-auto">Loading...</p> // TODO
+        {isLoading ? <Loader/>
           : error ? <p className="text-meta text-accent-red">{error}</p>
             : <>
               <p className="text-2xl text-primary-foreground font-semibold">{value}</p>
