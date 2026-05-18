@@ -8,7 +8,7 @@ import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
 import BasePage from "@pages/BasePage";
 import { Agent } from "@renderer/interfaces/agent.interface";
-import { Project } from "@renderer/interfaces/project.interface";
+import { IProject as Project } from "@renderer/interfaces/project.interface";
 import { PullRequest } from "@renderer/interfaces/pullRequest.interface";
 import { ExternalLink, GitBranch, LucideIcon, Play, TriangleAlert } from "lucide-react";
 import { useState } from "react";

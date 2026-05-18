@@ -2,7 +2,7 @@
 import { PullRequest } from "@renderer/interfaces/pullRequest.interface";
 
 
-export interface Project {
+export interface IProject {
   id: string
   name: string
   repoUrl: string

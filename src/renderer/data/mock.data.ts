@@ -1,7 +1,7 @@
-﻿import { Project } from "@renderer/interfaces/project.interface";
+﻿import { IProject } from "@renderer/interfaces/project.interface";
 
 
-export const MOCK_PROJECTS: Project[] = [
+export const MOCK_PROJECTS: IProject[] = [
   {
     id: 'p1',
     name: 'jules-orchestrator',
