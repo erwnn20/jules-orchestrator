@@ -1,16 +1,3 @@
-import { Pagination } from "@jules/jules.interfaces";
-import {
-  ApprovePlanRequest,
-  ApprovePlanResponse,
-  CreateSessionRequest,
-  ListSessions,
-  SendMessageRequest,
-  SendMessageResponse
-} from "@jules/sessions/session.interfaces";
-import { Session } from "@jules/sessions/session.model";
-import { ListSources } from "@jules/sources/source.interfaces";
-import { Source } from "@jules/sources/source.model";
-
 import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch.interfaces";
 import { PullRequestList } from "@github/pr/list.model";
 import {
@@ -28,10 +15,18 @@ import {
   ListRepositoryRequest
 } from "@github/repositories/repository.interfaces";
 import { Repository } from "@github/repositories/repository.model";
+import { Pagination } from "@jules/jules.interfaces";
 import {
-  ListSessionsResponse,
+  ApprovePlanRequest,
+  ApprovePlanResponse,
+  CreateSessionRequest,
+  ListSessions,
+  SendMessageRequest,
+  SendMessageResponse
 } from "@jules/sessions/session.interfaces";
-import { ListSourceResponse } from "@jules/sources/source.interfaces";
+import { Session } from "@jules/sessions/session.model";
+import { ListSources } from "@jules/sources/source.interfaces";
+import { Source } from "@jules/sources/source.model";
 
 
 declare global {

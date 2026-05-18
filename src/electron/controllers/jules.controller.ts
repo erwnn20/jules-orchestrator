@@ -66,13 +66,15 @@ export class JulesController extends BaseController<HttpClient> {
     const { data } = await this.client.get<GetSourceResponse>({
       path: `/sources/${id}`
     })
+
     return new Source(data)
   }
 
   private async getSources(pagination?: Pagination): Promise<ListSources> {
-      const { data } = await this.client.get<ListSourceResponse>({
+    const { data } = await this.client.get<ListSourceResponse>({
       path: '/sources', config: { params: pagination }
     })
+
     return {
       sources: data.sources.map(source => new Source(source)),
       nextPageToken: data.nextPageToken
@@ -84,7 +86,7 @@ export class JulesController extends BaseController<HttpClient> {
     let pageToken: string | undefined
 
     do {
-      const { data } = await this.httpClient.get<ListSessionsResponse>({
+      const { data } = await this.client.get<ListSessionsResponse>({
         path: '/sessions',
         config: { params: { pageSize: 100, ...(pageToken && { pageToken }) } }
       })
@@ -103,6 +105,7 @@ export class JulesController extends BaseController<HttpClient> {
     const { data } = await this.client.get<GetSessionResponse>({
       path: `/sessions/${id}`
     })
+
     return new Session(data)
   }
 
@@ -110,6 +113,7 @@ export class JulesController extends BaseController<HttpClient> {
     const { data } = await this.client.get<ListSessionsResponse>({
       path: '/sessions', config: { params: pagination }
     })
+
     return {
       sessions: data.sessions.map(session => new Session(session)),
       nextPageToken: data.nextPageToken
@@ -120,6 +124,7 @@ export class JulesController extends BaseController<HttpClient> {
     const { data } = await this.client.post<CreateSessionResponse, CreateSessionRequest>({
       path: '/sessions', body: dta,
     })
+
     return new Session(data)
   }
 
@@ -127,6 +132,7 @@ export class JulesController extends BaseController<HttpClient> {
     const { data } = await this.client.delete<{}>({
       path: `/sessions/${id}`
     })
+
     return data
   }
 
@@ -136,6 +142,7 @@ export class JulesController extends BaseController<HttpClient> {
     const { data } = await this.client.post<SendMessageRequest, SendMessageResponse>({
       path: `/sessions/${id}:sendMessage`, body: dta
     })
+
     return data
   }
 
@@ -145,6 +152,7 @@ export class JulesController extends BaseController<HttpClient> {
     const { data } = await this.client.post<SendMessageRequest, SendMessageResponse>({
       path: `/sessions/${id}:approvePlan`, body: dta
     })
+
     return data
   }
 }

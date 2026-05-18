@@ -50,8 +50,7 @@ export function useDeleteSession() {
 export function useMessageSession() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (args: { id: string, data: SendMessageRequest }) =>
-      JulesService.sendMessageSession(args),
+    mutationFn: (args: SendMessageRequest) => JulesService.sendMessageSession(args),
     onSuccess: (_, { id }) => queryClient.invalidateQueries({ queryKey: ['sessions', id] }),
   })
 }
@@ -59,8 +58,7 @@ export function useMessageSession() {
 export function useApprouvePlanSession() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (args: { id: string, data: ApprovePlanRequest }) =>
-      JulesService.approvePlanSession(args),
+    mutationFn: (args: ApprovePlanRequest) => JulesService.approvePlanSession(args),
     onSuccess: (_, { id }) => queryClient.invalidateQueries({ queryKey: ['sessions', id] }),
   })
 }
