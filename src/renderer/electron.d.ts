@@ -1,10 +1,13 @@
 ﻿import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch.interfaces";
 import { PullRequestList } from "@github/pr/list.model";
 import {
+  AcceptPRRequest,
+  AcceptPRResponse,
   GetPRRequest,
   ListIssuesRequest,
   ListIssuesResponse,
-  ListPRRequest
+  ListPRRequest,
+  RejectPRRequest
 } from "@github/pr/pr.interfaces";
 import { PullRequest } from "@github/pr/pr.model";
 import {
@@ -54,6 +57,8 @@ declare global {
           pr: {
             get: (args: GetPRRequest) => Promise<PullRequest>,
             list: (args: ListPRRequest) => Promise<PullRequestList[]>,
+            accept: (args: AcceptPRRequest) => Promise<AcceptPRResponse>,
+            reject: (args: RejectPRRequest) => Promise<PullRequest>,
           },
         },
         pr: {

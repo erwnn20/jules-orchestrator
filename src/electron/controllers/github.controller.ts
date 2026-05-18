@@ -4,10 +4,13 @@ import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch
 import { IssuePullRequest } from "@github/pr/issue.model";
 import { PullRequestList } from "@github/pr/list.model";
 import {
+  AcceptPRRequest,
+  AcceptPRResponse,
   GetPRRequest,
   ListIssuesRequest,
   ListIssuesResponse,
-  ListPRRequest
+  ListPRRequest,
+  RejectPRRequest
 } from "@github/pr/pr.interfaces";
 import { PullRequest } from "@github/pr/pr.model";
 import {
@@ -49,6 +52,14 @@ export class GithubController extends BaseController<Octokit> {
       {
         channel: 'github:repository:pr:list',
         listener: (_, args: ListPRRequest) => this.getRepoPRs(args)
+      },
+      {
+        channel: 'github:repository:pr:accept',
+        listener: (_, args: AcceptPRRequest) => this.acceptPR(args)
+      },
+      {
+        channel: 'github:repository:pr:reject',
+        listener: (_, args: RejectPRRequest) => this.rejectPR(args)
       },
       {
         channel: 'github:pr:list',
@@ -113,4 +124,46 @@ export class GithubController extends BaseController<Octokit> {
     }
   }
 
+  /**
+   * sur une deja mergée: success, aucun changement
+   * sur une pas merge, avc conflit: Error 405, message: 'Pull Request has merge conflicts'
+   * sur une pas merge, sans conflit: success
+   */
+  private async acceptPR({
+                           owner,
+                           repo,
+                           pull_number,
+                           merge_method = 'merge',
+                           ...args
+                         }: AcceptPRRequest): Promise<AcceptPRResponse> {
+    const { data } = await this.client.rest.pulls.merge({
+      owner, repo, pull_number, merge_method, ...args
+    })
+    /* TODO: add optional delete branch */
+
+    return data
+  }
+
+  /**
+   * sur une deja mergée: success, rajoute un commentaire
+   * sur une pas merge, avc conflit: close
+   * sur une pas merge, sans conflit: success
+   */
+  private async rejectPR({
+                           owner,
+                           repo,
+                           pull_number,
+                           comment
+                         }: RejectPRRequest): Promise<PullRequest> {
+    if (comment)
+      await this.client.rest.issues.createComment({
+        owner, repo, issue_number: pull_number, body: comment
+      })
+    const { data } = await this.client.pulls.update({
+      owner, repo, pull_number, state: 'closed'
+    })
+    /* TODO: add optional delete branch */
+
+    return new PullRequest(data)
+  }
 }
