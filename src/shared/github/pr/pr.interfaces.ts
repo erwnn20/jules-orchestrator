@@ -1,6 +1,6 @@
 ﻿import { Pagination } from "@github/github.interface";
 import { Order, SearchType, SortIssues, SortPR } from "@github/pr/header.types";
-import { LexicalFallbackReason, PRState, QueryParam } from "@github/pr/pr.types";
+import { LexicalFallbackReason, PRStateFilter, QueryParam } from "@github/pr/pr.types";
 import { GetRepositoryRequest } from "@github/repositories/repository.interfaces";
 import { Repository } from "@github/repositories/repository.model";
 import { User } from "@github/users/user.interfaces";
@@ -12,7 +12,7 @@ export type GetPRRequest = GetRepositoryRequest & { pull_number: number }
 export type GetPRResponse = RestEndpointMethodTypes["pulls"]["get"]["response"]["data"]
 
 export type ListPRRequest = GetRepositoryRequest & Partial<{
-  state: PRState,
+  state: PRStateFilter,
   head: string,
   base: string,
   sort: SortPR,

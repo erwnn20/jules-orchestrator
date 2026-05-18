@@ -39,7 +39,8 @@ type StrictValues<T extends ReadonlyArray<unknown>> =
 
 //
 
-export type PRState = 'open' | 'closed' | 'all'
+export type PRState = 'open' | 'closed'
+export type PRStateFilter = PRState | 'all'
 
 export enum LexicalFallbackReason {
   "no_text_terms",
