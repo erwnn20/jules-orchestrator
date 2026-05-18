@@ -1,14 +1,15 @@
 ﻿import { BaseController } from "@electron/controllers/base.controller";
 import { getEnv } from "@electron/utils/env.util";
 import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch.interfaces";
+import { IssuePullRequest } from "@github/pr/issue.model";
+import { PullRequestList } from "@github/pr/list.model";
 import {
   GetPRRequest,
-  GetPRResponse,
   ListIssuesRequest,
   ListIssuesResponse,
-  ListPRRequest,
-  ListPRResponse
+  ListPRRequest
 } from "@github/pr/pr.interfaces";
+import { PullRequest } from "@github/pr/pr.model";
 import {
   GetRepositoryRequest,
   ListRepositoryRequest
@@ -85,22 +86,26 @@ export class GithubController extends BaseController<Octokit> {
 
   //
 
-  private async getPR({ repo, owner, pull_number }: GetPRRequest): Promise<GetPRResponse> {
+  private async getPR({ repo, owner, pull_number }: GetPRRequest): Promise<PullRequest> {
     const { data } = await this.client.rest.pulls.get({ repo, owner, pull_number })
-    return data
+
+    return new PullRequest(data)
   }
 
-  private async getRepoPRs({ owner, repo, ...args }: ListPRRequest): Promise<ListPRResponse> {
+  private async getRepoPRs({ owner, repo, ...args }: ListPRRequest): Promise<PullRequestList[]> {
     const { data } = await this.client.rest.pulls.list({ owner, repo, ...args })
-    return data
+    return data.map(pr => new PullRequestList(pr))
   }
 
   private async getIssuesPR({ query, ...args }: ListIssuesRequest): Promise<ListIssuesResponse> {
     const q = ['is:pr', 'involves:@me', ...(query ? query : [])].join(' ')
-    const { data } = await this.client.rest.search.issuesAndPullRequests({
+    const { data: { items, ...data } } = await this.client.rest.search.issuesAndPullRequests({
       q, ...args,
     })
-    return data
+    return {
+      items: items.map(pr => new IssuePullRequest(pr)),
+      ...data
+    }
   }
 
 }

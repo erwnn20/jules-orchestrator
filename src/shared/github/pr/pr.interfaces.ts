@@ -1,5 +1,6 @@
 ﻿import { Pagination } from "@github/github.interface";
 import { Order, SearchType, SortIssues, SortPR } from "@github/pr/header.types";
+import { IssuePullRequest } from "@github/pr/issue.model";
 import { LexicalFallbackReason, PRStateFilter, QueryParam } from "@github/pr/pr.types";
 import { GetRepositoryRequest } from "@github/repositories/repository.interfaces";
 import { RepositoryArgs } from "@github/repositories/repository.model";
@@ -29,7 +30,9 @@ export type ListIssuesRequest = Partial<{
 } & Pagination>
 
 export type ListIssuesResponse =
-  RestEndpointMethodTypes["search"]["issuesAndPullRequests"]["response"]["data"] & {
+  Pick<RestEndpointMethodTypes["search"]["issuesAndPullRequests"]["response"]["data"], 'total_count' | 'incomplete_results'>
+  & {
+  items: IssuePullRequest[]
   search_type?: SearchType
   lexical_fallback_reason?: LexicalFallbackReason
 }

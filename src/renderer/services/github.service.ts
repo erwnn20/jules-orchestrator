@@ -1,12 +1,12 @@
 ﻿import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch.interfaces";
+import { PullRequestList } from "@github/pr/list.model";
 import {
   GetPRRequest,
-  GetPRResponse,
   ListIssuesRequest,
   ListIssuesResponse,
-  ListPRRequest,
-  ListPRResponse
+  ListPRRequest
 } from "@github/pr/pr.interfaces";
+import { PullRequest } from "@github/pr/pr.model";
 import {
   GetRepositoryRequest,
   ListRepositoryRequest
@@ -23,8 +23,8 @@ export abstract class GithubService {
 
   //
 
-  static getPR: (args: GetPRRequest) => Promise<GetPRResponse> = window.api.github.repository.pr.get;
-  static getRepoPRs: (args: ListPRRequest) => Promise<ListPRResponse> = window.api.github.repository.pr.list;
+  static getPR: (args: GetPRRequest) => Promise<PullRequest> = window.api.github.repository.pr.get;
+  static getRepoPRs: (args: ListPRRequest) => Promise<PullRequestList[]> = window.api.github.repository.pr.list;
 
   static getIssuesPR: (args: ListIssuesRequest) => Promise<ListIssuesResponse> = window.api.github.pr.list;
 
