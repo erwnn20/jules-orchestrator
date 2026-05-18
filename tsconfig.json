@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "lib": ["ESNext", "DOM"],
     "strict": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -15,6 +12,9 @@
     "paths": {
       "@jules/*": [
         "./src/shared/jules/*"
+      ],
+      "@github/*": [
+        "./src/shared/github/*"
       ],
       "@context/*": [
         "./src/renderer/context/*"
@@ -36,7 +36,5 @@
       ]
     }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

@@ -25,13 +25,7 @@ export abstract class JulesService {
   static createSession: (data: CreateSessionRequest) => Promise<Session> = window.api.jules.session.create;
   static deleteSession: (id: string) => Promise<{}> = window.api.jules.session.delete;
 
-  static sendMessageSession: ({ id, data }: {
-    id: string,
-    data: SendMessageRequest
-  }) => Promise<SendMessageResponse> = window.api.jules.session.message;
-  static approvePlanSession: ({ id, data }: {
-    id: string,
-    data?: ApprovePlanRequest
-  }) => Promise<ApprovePlanResponse> = window.api.jules.session.approvePlan;
+  static sendMessageSession: (args: SendMessageRequest) => Promise<SendMessageResponse> = window.api.jules.session.message;
+  static approvePlanSession: (args: ApprovePlanRequest) => Promise<ApprovePlanResponse> = window.api.jules.session.approvePlan;
 
 }

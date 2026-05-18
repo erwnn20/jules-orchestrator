@@ -54,13 +54,19 @@ export interface CreateSessionResponse extends Omit<GetSessionResponse, 'state' 
 //
 
 export interface SendMessageRequest {
-  prompt: string
+  id: string
+  data: {
+    prompt: string
+  }
 }
 
 export interface SendMessageResponse {}
 
 //
 
-export interface ApprovePlanRequest {}
+export interface ApprovePlanRequest {
+  id: string
+  data?: {}
+}
 
 export interface ApprovePlanResponse {}

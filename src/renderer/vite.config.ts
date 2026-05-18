@@ -1,4 +1,4 @@
-import tailwindcss from "@tailwindcss/vite";
+﻿import tailwindcss from "@tailwindcss/vite";
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { defineConfig } from 'vite'
@@ -14,6 +14,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@jules': path.resolve(__dirname, '../../src/shared/jules/'),
+      '@github': path.resolve(__dirname, '../../src/shared/github/'),
       '@context': path.resolve(__dirname, './context'),
       '@services': path.resolve(__dirname, './services'),
       '@pages': path.resolve(__dirname, './components/pages'),

@@ -1,4 +1,5 @@
 import '@electron/env'
+import { GithubController } from "@electron/controllers/github.controller";
 import { JulesController } from "@electron/controllers/jules.controller";
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
@@ -39,3 +40,4 @@ app.on('window-all-closed', () => {
 //
 
 new JulesController().registerHandlers()
+new GithubController().registerHandlers()
