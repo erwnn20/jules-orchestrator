@@ -18,6 +18,8 @@ export default function StatusDot({ status, pulse }: { status: Status, pulse?: b
 
 //
 
+export type DotStatus = Parameters<typeof StatusDot>[0]
+
 export const statusColors: Record<Status, Property.BackgroundColor> = {
   running: 'var(--color-accent-green)',
   warning: 'var(--color-accent-orange)',
