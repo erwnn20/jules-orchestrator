@@ -11,8 +11,8 @@ const DEFAULT_COMPONENT = () => (<></>)
 export const routes: Route[] = [
   { path: '/', label: 'Home', icon: House, component: HomePage, isNav: true },
 
+  { path: '/projects/:owner/:repo', icon: FolderOpen, label: 'Project', component: ProjectPage },
   { path: '/projects', icon: Folder, label: 'Projects', component: ProjectsPage, isNav: true },
-  { path: '/projects/:id', icon: FolderOpen, label: 'Project', component: ProjectPage },
   { path: '/sources/*', icon: FolderOpen, label: 'Project', component: SourcePage },
 
   { path: '/sessions', label: 'Sessions', component: DEFAULT_COMPONENT, isNav: true },

@@ -29,7 +29,7 @@ function ProjectCardBase({ children, project, isFirst }: {
 
   return (
     <NavLink
-      to={`/projects/${repository.id}` /*todo correct id*/}
+      to={`/projects/${repository.owner.login}/${repository.name}`}
       className={(isFirst ? 'lg:col-span-2 ' : '') +
         "flex flex-col h-full p-5 " +
         "bg-panel " +
@@ -203,7 +203,7 @@ function ProjectCardWide({ project }: { project: Project }) {
   const { data: prs = [], isLoading: isPRsLoading, error: prsError } = prsQuery
 
   return (
-    <NavLink to={`/projects/${repository.id}` /*todo correct id*/} className={'group'}>
+    <NavLink to={`/projects/${repository.owner.login}/${repository.name}`} className={'group'}>
       <CardWide className={
         'group-hover:border-border-hover cursor-pointer ' +
         'transition-colors duration-150'
