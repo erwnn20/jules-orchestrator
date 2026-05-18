@@ -2,7 +2,7 @@
 import { Order, SearchType, SortIssues, SortPR } from "@github/pr/header.types";
 import { LexicalFallbackReason, PRStateFilter, QueryParam } from "@github/pr/pr.types";
 import { GetRepositoryRequest } from "@github/repositories/repository.interfaces";
-import { Repository } from "@github/repositories/repository.model";
+import { RepositoryArgs } from "@github/repositories/repository.model";
 import { User } from "@github/users/user.interfaces";
 import { RestEndpointMethodTypes } from "@octokit/rest";
 
@@ -39,9 +39,9 @@ export type ListIssuesResponse =
 export interface Branch {
   label: string
   ref: string
-  repo: Repository
+  repo: RepositoryArgs
   sha: string
-  user: User
+  user: User | null
 }
 
 export interface Label {

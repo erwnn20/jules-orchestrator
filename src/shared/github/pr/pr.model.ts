@@ -1,20 +1,10 @@
-﻿import { PullRequestBase, PullRequestBaseArgs } from "@github/pr/base.model";
-import { Branch } from "@github/pr/pr.interfaces";
-import { Team } from "@github/users/user.interfaces";
+﻿import { PullRequestList, PullRequestListArgs } from "@github/pr/list.model";
 import { User, UserArgs } from "@github/users/user.model";
 
-export class PullRequest extends PullRequestBase {
-  readonly base: Branch
-  readonly head: Branch
-
-  readonly requested: {
-    readonly reviewers: User[]
-    readonly teams: Team[]
-  }
+export class PullRequest extends PullRequestList {
   readonly mergeable?: boolean
   readonly mergeableState: string
   readonly merged: boolean
-  readonly mergedAt?: Date
   readonly mergedBy?: User
   readonly maintainerCanModify: boolean
 
@@ -26,14 +16,9 @@ export class PullRequest extends PullRequestBase {
   }
 
   constructor({
-                base,
-                head,
-                requested_reviewers,
-                requested_teams,
                 mergeable,
                 mergeable_state,
                 merged,
-                merged_at,
                 merged_by,
                 maintainer_can_modify,
                 commits,
@@ -43,18 +28,9 @@ export class PullRequest extends PullRequestBase {
                 ...args
               }: PullRequestArgs) {
     super(args)
-
-    this.base = base
-    this.head = head
-
-    this.requested = {
-      reviewers: requested_reviewers?.map(reviewer => new User(reviewer)) || [],
-      teams: requested_teams || []
-    }
     this.mergeable = !!mergeable
     this.mergeableState = mergeable_state
     this.merged = merged
-    this.mergedAt = merged_at ? new Date(merged_at) : undefined
     this.mergedBy = merged_by ? new User(merged_by) : undefined
     this.maintainerCanModify = maintainer_can_modify
 
@@ -62,12 +38,7 @@ export class PullRequest extends PullRequestBase {
   }
 }
 
-interface PullRequestArgs extends PullRequestBaseArgs {
-  requested_reviewers?: UserArgs[]
-  requested_teams?: Team[]
-  head: Branch
-  base: Branch
-  merged_at: string | null
+interface PullRequestArgs extends PullRequestListArgs {
   merged: boolean
   mergeable: boolean | null
   mergeable_state: string
