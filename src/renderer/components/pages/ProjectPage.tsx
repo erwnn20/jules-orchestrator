@@ -7,8 +7,9 @@ import StatusDot from "@components/helpers/StatusDot";
 import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
 import { PullRequest } from "@github/pr/pr.model";
+import { Repository } from "@github/repositories/repository.model";
+import { Session } from "@jules/sessions/session.model";
 import BasePage from "@pages/BasePage";
-import { Agent } from "@renderer/interfaces/agent.interface";
 import { IProject as Project } from "@renderer/interfaces/project.interface";
 import { ExternalLink, GitBranch, LucideIcon, Play, TriangleAlert } from "lucide-react";
 import { useState } from "react";
@@ -117,22 +118,27 @@ export default function ProjectPage() {
 
 //
 
-function AgentCardWide({ agent, project: { repoUrl } }: { agent: Agent, project: Project }) {
+function AgentCardWide({ agent, repository: { htmlUrl: repoUrl } }: {
+  agent: Session,
+  repository: Repository
+}) {
+  const branch = agent.sourceContext.githubRepoContext.startingBranch
+
   return (
     <CardWide>
-      <StatusDot status={agent.status}/>
+      <SessionStatusDot session={agent}/>
       <div className='flex-1'>
         <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
-          {agent.task}
+          {agent.title ?? agent.prompt}
         </span>
         <span className='flex items-center gap-1 text-label text-muted'>
-          <GitBranch className='h-3 w-3'/> {agent.branch}
+          <GitBranch className='h-3 w-3'/> {branch}
         </span>
       </div>
       <div className='flex items-center-safe gap-2.5'>
-        <CardLink to={agent.convUrl} text={'conversation'}/>
+        <CardLink to={agent.url} text={'conversation'}/>
         <span className='border-l border-border-color h-5'/>
-        <CardLink to={`${repoUrl}/tree/${agent.branch}`} text={'branche'}/>
+        <CardLink to={`${repoUrl}/tree/${branch}`} text={'branche'}/>
       </div>
     </CardWide>
   )
