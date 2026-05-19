@@ -6,10 +6,10 @@ import Textarea from "@components/helpers/inputs/Textarea";
 import StatusDot from "@components/helpers/StatusDot";
 import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
+import { PullRequest } from "@github/pr/pr.model";
 import BasePage from "@pages/BasePage";
 import { Agent } from "@renderer/interfaces/agent.interface";
 import { IProject as Project } from "@renderer/interfaces/project.interface";
-import { PullRequest } from "@renderer/interfaces/pullRequest.interface";
 import { ExternalLink, GitBranch, LucideIcon, Play, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { NavLink, useParams } from "react-router";
@@ -147,10 +147,10 @@ function PullRequestCardWide({ pr }: { pr: PullRequest }) {
           {pr.title}
         </span>
         <span className='flex items-center gap-1 text-label text-muted'>
-          <GitBranch className='h-3 w-3'/> {pr.branch} · {pr.createdAt}
+          <GitBranch className='h-3 w-3'/> {pr.head.ref} · {pr.createdAt.toLocaleString('fr-Fr')}
         </span>
       </div>
-      <CardLink to={pr.url} text='voir PR'/>
+      <CardLink to={pr.htmlUrl} text='voir PR'/>
     </CardWide>
   )
 }
