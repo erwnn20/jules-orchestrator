@@ -3,14 +3,16 @@ import Button from "@components/helpers/Button";
 import CardWide from "@components/helpers/CardWide";
 import Input from "@components/helpers/Input";
 import Textarea from "@components/helpers/inputs/Textarea";
-import StatusDot from "@components/helpers/StatusDot";
+import Loader from "@components/helpers/Loader";
+import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
-import { useApp } from "@context/AppContext";
 import { PullRequest } from "@github/pr/pr.model";
 import { Repository } from "@github/repositories/repository.model";
 import { Session } from "@jules/sessions/session.model";
 import BasePage from "@pages/BasePage";
-import { IProject as Project } from "@renderer/interfaces/project.interface";
+import { useRepository } from "@renderer/hooks/github/repositories.hooks";
+import { useSources } from "@renderer/hooks/jules/sources.hooks";
+import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { ExternalLink, GitBranch, LucideIcon, Play, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { NavLink, useParams } from "react-router";
@@ -18,25 +20,36 @@ import { To } from "react-router-dom";
 
 
 export default function ProjectPage() {
-  const { projects } = useApp()
-  const { id } = useParams();
-  const project = projects.list.find(p => p.id === id);
+  const { owner, repo } = useParams();
+
+  const { data: repositoryData, isLoading, error } = useRepository({
+    owner: owner ?? '',
+    repo: repo ?? ''
+  });
+  const { data: { sources = [] } = {} } = useSources()
+
+  const project = new Project(repositoryData, sources)
+
+  const repository = project.repository
+  const { data: agents = [], isLoading: isAgentsLoading } = project.agents
+  const { data: prs = [], isLoading: isPRsLoading } = project.prs
 
   const [task, setTask] = useState('')
 
-  if (!project)
-    return (
-      <div className='flex p-10 text-base text-faint'>
-        <TriangleAlert className="w-4 h-4 mr-1 text-accent-orange"/> Aucun projet avec cet ID.
-      </div>
-    )
+  if (isLoading) return <Loader/>
+  if (!repository) return (
+    <div className='flex p-10 text-base text-faint'>
+      <TriangleAlert className="w-4 h-4 mr-1 text-accent-orange"/>
+      Aucun repository de {owner} s'appelle {repo}.
+    </div>
+  )
 
   return (
     <BasePage
       title={
         <div className='flex'>
           <h1 className='text-title text-primary-foreground mb-1 font-semibold'>
-            {project.name}
+            {repository.name}
           </h1>
           {!project.hasJulesAccess && (<div className='ms-2'>
             <Badge>jules non connecté</Badge>
@@ -44,11 +57,11 @@ export default function ProjectPage() {
         </div>
       }
       subtitle={
-        <NavLink to={project.repoUrl}
+        <NavLink to={repository.htmlUrl}
                  className='flex items-center mb-8 text-meta text-accent-blue hover:underline'
                  target='_blank'>
           <ExternalLink className='h-3 w-3 me-1'/>
-          {project.repoUrl.replace('https://github.com/', '')}
+          {repository.owner.login}/{repository.name}
         </NavLink>
       }>
 
@@ -83,33 +96,35 @@ export default function ProjectPage() {
       </Section>
 
       {/* Agents actifs */}
-      <Section title={`AGENTS (${project.agents.length})`}>
-        {project.agents.length === 0 ? (
-          <span className='text-base text-faint'>
+      <Section title={`AGENTS (${agents.length})`}>
+        {agents.length === 0 ?
+          !isAgentsLoading &&
+          (<span className='text-base text-faint'>
             — aucun agent actif
-          </span>
-        ) : (
-          <div className='flex flex-col gap-1.5'>
-            {project.agents.map((agent, index) => (
-              <AgentCardWide key={index} agent={agent} project={project}/>
+          </span>) :
+          (<div className='flex flex-col gap-1.5'>
+            {agents.map((agent, index) => (
+              <AgentCardWide key={index} agent={agent} repository={repository}/>
             ))}
-          </div>
-        )}
+          </div>)
+        }
+        {isAgentsLoading && <Loader/>}
       </Section>
 
       {/* Pull Requests */}
-      <Section title={`PULL REQUESTS (${project.pullRequests.length})`}>
-        {project.pullRequests.length === 0 ? (
-          <span className='text-base text-faint'>
+      <Section title={`PULL REQUESTS (${prs.length})`}>
+        {prs.length === 0 ?
+          !isPRsLoading &&
+          (<span className='text-base text-faint'>
             — aucune PR en attente
-          </span>
-        ) : (
-          <div className='flex flex-col gap-1.5'>
-            {project.pullRequests.map((pr, index) => (
+          </span>) :
+          (<div className='flex flex-col gap-1.5'>
+            {prs.map((pr, index) => (
               <PullRequestCardWide key={index} pr={pr}/>
             ))}
-          </div>
-        )}
+          </div>)
+        }
+        {isPRsLoading && <Loader/>}
       </Section>
 
     </BasePage>
