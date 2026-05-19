@@ -1,8 +1,9 @@
-﻿import { Repository } from "@github/repositories/repository.model";
+﻿import { PullRequest } from "@github/pr/pr.model";
+import { Repository } from "@github/repositories/repository.model";
 import { Source } from "@jules/sources/source.model";
 import { useSessionsBySource } from "@renderer/hooks/jules/sources.hooks";
 import { Agent } from "@renderer/interfaces/agent.interface";
-import { PullRequest } from "@renderer/interfaces/pullRequest.interface";
+import { PullRequest as IPullRequest } from "@renderer/interfaces/pullRequest.interface";
 
 
 export interface IProject {
@@ -13,7 +14,7 @@ export interface IProject {
   activeAgents: number
   lastActivity?: Date
   agents: Agent[]
-  pullRequests: PullRequest[]
+  pullRequests: IPullRequest[]
 }
 
 export class Project {
