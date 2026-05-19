@@ -10,7 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 export function useRepository({ owner, repo }: GetRepositoryRequest) {
   return useQuery({
     queryKey: ['repositories', owner, repo],
-    queryFn: () => GithubService.getRepo({ owner, repo })
+    queryFn: () => GithubService.getRepo({ owner, repo }),
+    enabled: !!owner && !!repo,
   })
 }
 
@@ -21,9 +22,9 @@ export function useRepositories(args: ListRepositoryRequest) {
   })
 }
 
-export function useRepoBranches({ owner, repo,...args }: ListBranchesRequest) {
+export function useRepoBranches({ owner, repo, ...args }: ListBranchesRequest) {
   return useQuery({
     queryKey: ['repositories', owner, repo, 'branches', args],
-    queryFn: () => GithubService.getRepoBranches({ owner, repo,...args })
+    queryFn: () => GithubService.getRepoBranches({ owner, repo, ...args })
   })
 }
