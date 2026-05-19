@@ -17,12 +17,13 @@ export interface IProject {
   pullRequests: IPullRequest[]
 }
 
-export class Project {
+export class ProjectOptionalRepo {
   static readonly MAX_PR = 9
 
   readonly source?: Source
 
-  constructor(readonly repository: Repository, sources: Source[]) {
+  constructor(readonly repository?: Repository, sources: Source[] = []) {
+    if (!repository) return
     this.source = sources.find(({ githubRepo: { repo, owner } }) =>
       repo === repository.name && owner === repository.owner.login)
   }
@@ -46,5 +47,11 @@ export class Project {
     error?: any
   } {
     return { isLoading: true } /* TODO : get PR*/
+  }
+}
+
+export class Project extends ProjectOptionalRepo {
+  constructor(readonly repository: Repository, sources: Source[] = []) {
+    super(repository, sources)
   }
 }
