@@ -23,7 +23,7 @@ function ProjectCardBase({ children, project, isFirst }: {
   const { repository, hasJulesAccess, activeAgents, prs: prsQuery } = project
 
   const numberActiveAgents = activeAgents.length
-  const { data: prs = [], isLoading: isPRsLoading } = prsQuery
+  const { data: prs = [], isLoading: isPRsLoading } = prsQuery()
 
   return (
     <NavLink
@@ -194,7 +194,7 @@ function ProjectCardWide({ project }: { project: Project }) {
   const { repository, hasJulesAccess, activeAgents, prs: prsQuery } = project
 
   const numberActiveAgents = activeAgents.length
-  const { data: prs = [], isLoading: isPRsLoading, error: prsError } = prsQuery
+  const { data: prs = [], isLoading: isPRsLoading, error: prsError } = prsQuery()
 
   return (
     <NavLink to={`/projects/${repository.owner.login}/${repository.name}`} className={'group'}>
