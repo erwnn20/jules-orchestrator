@@ -6,4 +6,8 @@ export type ListBranchesRequest = GetRepositoryRequest & Partial<{
   protected?: boolean
 } & Pagination>
 
-export type ListBranchesResponse = RestEndpointMethodTypes["repos"]["listBranches"]["response"]["data"]
+export type ListBranchesResponse = Branch[]
+
+//
+
+export type Branch = RestEndpointMethodTypes["repos"]["listBranches"]["response"]["data"][number]
