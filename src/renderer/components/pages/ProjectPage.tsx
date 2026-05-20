@@ -49,8 +49,8 @@ export default function ProjectPage() {
     activeAgents
   } = new Project(repositoryData, sources)
 
-  const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery
   const { data: prs = [], isLoading: isPRsLoading } = prsQuery
+  const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery()
   const { data: agents = [], isLoading: isAgentsLoading } = agentsQuery
 
   const [task, setTask] = useState('')
