@@ -24,6 +24,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         <div className="relative">
           <select
             ref={ref}
+            defaultValue={options.find(opt => opt.selected)?.value}
             className={
               'px-3 py-2 pr-9 peer ' +
               'bg-elevated text-base text-primary-foreground ' +
@@ -44,7 +45,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               </option>
             )}
             {options.map((option) => (
-              <option key={option.value} value={option.value} selected={option.selected}>
+              <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
