@@ -21,6 +21,7 @@ import {
   ExternalLink,
   GitBranch,
   GitBranchPlus,
+  GitPullRequest,
   LucideIcon,
   TriangleAlert
 } from "lucide-react";
@@ -224,15 +225,13 @@ export default function ProjectPage() {
       </Section>
 
       {/* Pull Requests */}
-      <Section title={`PULL REQUESTS (${prs.length})`}>
+      <Section title={`PULL REQUESTS (${prs.length ?? 0})`}>
         {prs.length === 0 ?
           !isPRsLoading &&
-          (<span className='text-base text-faint'>
-            — aucune PR en attente
-          </span>) :
+            <span className='text-base text-faint'> — aucune PR {/* en attente */}</span> :
           (<div className='flex flex-col gap-1.5'>
             {prs.map((pr, index) => (
-              <PullRequestCardWide key={index} pr={pr}/>
+              <PullRequestCardWide key={index} pr={pr} setHoveredIndex={setHoveredIndex}/>
             ))}
           </div>)
         }
@@ -288,20 +287,32 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
   )
 }
 
-function PullRequestCardWide({ pr }: { pr: PullRequest }) {
+function PullRequestCardWide({ pr, setHoveredIndex }: {
+  pr: PullRequest,
+  setHoveredIndex: (id: string | null) => void
+}) {
+  const id = String(pr.number)
+
   return (
-    <CardWide>
-      <span className='text-base text-primary'>⊕</span>
-      <div className='flex-1'>
-        <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
-          {pr.title}
+    <div {...(id && {
+      onMouseEnter: () => setHoveredIndex(id),
+      onMouseLeave: () => setHoveredIndex(null)
+    })}>
+      <CardWide
+        className='hover:bg-elevated hover:border-border-hover transition-colors duration-150'>
+        <GitPullRequest className='h-3 w-3 text-accent-orange'/>
+        <div className='flex-1'>
+          <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
+            {pr.title}
+          </span>
+          <span className='flex items-center gap-1 text-label text-muted'>
+          <GitBranch className='h-3 w-3'/>
+            {pr.head.ref} · {pr.base.ref /*TODO change by creation/update date*/}
         </span>
-        <span className='flex items-center gap-1 text-label text-muted'>
-          <GitBranch className='h-3 w-3'/> {pr.head.ref} · {pr.createdAt.toLocaleString('fr-Fr')}
-        </span>
-      </div>
-      <CardLink to={pr.htmlUrl} text='voir PR'/>
-    </CardWide>
+        </div>
+        <CardLink to={pr.htmlUrl} text='voir PR'/>
+      </CardWide>
+    </div>
   )
 }
 
