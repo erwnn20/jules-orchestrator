@@ -1,6 +1,7 @@
 ﻿import { Branch } from "@github/branch/branch.interfaces";
 import { PullRequest } from "@github/pr/pr.model";
 import { Repository } from "@github/repositories/repository.model";
+import { ACTIVE_STATES } from "@jules/sessions/session.types";
 import { Source } from "@jules/sources/source.model";
 import { useRepoBranches } from "@renderer/hooks/github/repositories.hooks";
 import { useSessionsBySource } from "@renderer/hooks/jules/sources.hooks";
@@ -41,7 +42,7 @@ export class ProjectOptionalRepo {
 
   get activeAgents() {
     const { data: agents = [] } = this.agents
-    return agents.filter(({ state }) => true /*ACTIVE_STATES.includes(state)*/)
+    return agents.filter(({ state }) => ACTIVE_STATES.includes(state))
   }
 
   get branches(): UseQueryResult<ProjectBranch[]> {
