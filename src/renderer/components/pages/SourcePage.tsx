@@ -5,8 +5,8 @@ import Input from "@components/helpers/Input";
 import Select, { Option as SelectOption } from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";
 import Toggle from "@components/helpers/inputs/Toggle";
+import Link from "@components/helpers/Link";
 import Loader from "@components/helpers/Loader";
-import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
 import { PullRequest } from "@jules/github/github.interfaces";
 import { Session } from "@jules/sessions/session.model";
@@ -20,12 +20,10 @@ import {
   GitBranch,
   GitBranchPlus,
   GitPullRequest,
-  LucideIcon,
   TriangleAlert
 } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Link, NavLink, useParams } from "react-router";
-import { To } from "react-router-dom";
+import { NavLink, useParams } from "react-router";
 
 
 export default function SourcePage() {
@@ -285,10 +283,10 @@ function AgentCardWide({ agent, project: { githubRepo: { url: repoUrl } }, hover
             </div>}
       </div>
       <div className='flex items-center-safe gap-2.5'>
-        <CardLink to={agent.url} text={'conversation'}/>
+        <Link to={agent.url} text={'conversation'}/>
         {pr?.headRef && <>
             <span className='border-l border-border-color h-5'/>
-            <CardLink to={`${repoUrl}/tree/${pr.headRef}`} text={'branche'}/>
+            <Link to={`${repoUrl}/tree/${pr.headRef}`} text={'branche'}/>
         </>}
       </div>
     </CardWide>
@@ -318,23 +316,8 @@ function PullRequestCardWide({ pr, setHoveredIndex }: {
             className='h-3 w-3'/> {pr.headRef} · {pr.baseRef /*TODO change by creation/update date*/}
         </span>
         </div>
-        <CardLink to={pr.url} text='voir PR'/>
+        <Link to={pr.url} text='voir PR'/>
       </CardWide>
     </div>
-  )
-}
-
-//
-
-function CardLink({ to, icon: Icon = ExternalLink, text }: {
-  to: To,
-  icon?: LucideIcon,
-  text: string
-}) {
-  return (
-    <Link to={to} target={'_blank'}
-          className='flex items-start text-label text-accent-blue hover:underline'>
-      {text} <Icon className='w-3 h-3 ms-1'/>
-    </Link>
   )
 }
