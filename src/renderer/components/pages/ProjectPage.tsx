@@ -17,7 +17,7 @@ import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { ExternalLink, GitBranch, LucideIcon, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router";
+import { Link, NavLink, useParams } from "react-router";
 import { To } from "react-router-dom";
 
 
@@ -264,9 +264,9 @@ function CardLink({ to, icon: Icon = ExternalLink, text }: {
   text: string
 }) {
   return (
-    <NavLink to={to} target={'_blank'}
-             className='flex items-start text-label text-accent-blue hover:underline'>
+    <Link to={to} target={'_blank'}
+          className='flex items-start text-label text-accent-blue hover:underline'>
       {text} <Icon className='w-3 h-3 ms-1'/>
-    </NavLink>
+    </Link>
   )
 }
