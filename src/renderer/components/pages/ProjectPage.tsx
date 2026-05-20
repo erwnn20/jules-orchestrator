@@ -5,6 +5,7 @@ import Input from "@components/helpers/Input";
 import Select from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";
 import Toggle from "@components/helpers/inputs/Toggle";
+import Link from "@components/helpers/Link";
 import Loader from "@components/helpers/Loader";
 import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
@@ -27,8 +28,7 @@ import {
   TriangleAlert
 } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Link, NavLink, useParams } from "react-router";
-import { To } from "react-router-dom";
+import { NavLink, useParams } from "react-router";
 
 
 export default function ProjectPage() {
@@ -282,10 +282,10 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
         </div>
       </div>
       <div className='flex items-center-safe gap-2.5'>
-        <CardLink to={agent.url} text={'conversation'}/>
+        <Link to={agent.url} text={'conversation'}/>
         {headRef && (<>
           <span className='border-l border-border-color h-5'/>
-          <CardLink to={`${repoUrl}/tree/${headRef}`} text={'branche'}/>
+          <Link to={`${repoUrl}/tree/${headRef}`} text={'branche'}/>
         </>)}
       </div>
     </CardWide>
@@ -318,20 +318,5 @@ function PullRequestCardWide({ pr, setHoveredIndex }: {
         <CardLink to={pr.htmlUrl} text='voir PR'/>
       </CardWide>
     </div>
-  )
-}
-
-//
-
-function CardLink({ to, icon: Icon = ExternalLink, text }: {
-  to: To,
-  icon?: LucideIcon,
-  text: string
-}) {
-  return (
-    <Link to={to} target={'_blank'}
-          className='flex items-start text-label text-accent-blue hover:underline'>
-      {text} <Icon className='w-3 h-3 ms-1'/>
-    </Link>
   )
 }
