@@ -1,5 +1,5 @@
-﻿import Loader from "@components/helpers/Loader";
-import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
+﻿import SessionStatusDot from "@components/helpers/dots/SessionStatusDot";
+import Loader from "@components/helpers/Loader";
 import ThemeToggle from "@components/ThemeToggle";
 import { Session } from "@jules/sessions/session.model";
 import { routes } from "@renderer/config/routes.config";

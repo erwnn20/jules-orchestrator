@@ -1,5 +1,6 @@
 ﻿import Button from "@components/helpers/Button";
-import CardWide from "@components/helpers/CardWide";
+import CardWide from "@components/helpers/cards/CardWide";
+import SessionStatusDot from "@components/helpers/dots/SessionStatusDot";
 import Input from "@components/helpers/Input";
 import Select, { Option as SelectOption } from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";

@@ -1,6 +1,6 @@
 ﻿import Badge from "@components/helpers/Badge";
-import CardWide from "@components/helpers/CardWide";
-import StatusDot, { DotStatus, statusColors } from "@components/helpers/StatusDot";
+import CardWide from "@components/helpers/cards/CardWide";
+import StatusDot, { DotStatus, statusColors } from "@components/helpers/dots/StatusDot";
 import { Project } from "@renderer/interfaces/project.interface";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";

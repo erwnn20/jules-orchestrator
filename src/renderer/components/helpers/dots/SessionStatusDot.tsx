@@ -1,4 +1,4 @@
-﻿import StatusDot, { DotStatus } from "@components/helpers/StatusDot";
+﻿import StatusDot, { DotStatus } from "@components/helpers/dots/StatusDot";
 import { Session } from "@jules/sessions/session.model";
 
 

@@ -1,6 +1,6 @@
-import CardWide from "@components/helpers/CardWide";
+import CardWide from "@components/helpers/cards/CardWide";
+import SessionStatusDot from "@components/helpers/dots/SessionStatusDot";
 import Loader from "@components/helpers/Loader";
-import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
 import { useApp } from "@context/AppContext";
 import { Session } from "@jules/sessions/session.model";
