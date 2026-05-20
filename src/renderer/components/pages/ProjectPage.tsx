@@ -8,6 +8,7 @@ import Toggle from "@components/helpers/inputs/Toggle";
 import Loader from "@components/helpers/Loader";
 import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
+import { PullRequestList } from "@github/pr/list.model";
 import { PullRequest } from "@github/pr/pr.model";
 import { Repository } from "@github/repositories/repository.model";
 import { PullRequest as JulesPullRequest } from '@jules/github/github.interfaces'
@@ -49,8 +50,12 @@ export default function ProjectPage() {
     activeAgents
   } = new Project(repositoryData, sources)
 
-  const { data: prs = [], isLoading: isPRsLoading } = prsQuery
   const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery()
+  const { data: prs = [], isLoading: isPRsLoading } = prsQuery({
+    sort: 'updated',
+    direction: 'desc',
+    // state: 'all',
+  })
   const { data: agents = [], isLoading: isAgentsLoading } = agentsQuery
 
   const [task, setTask] = useState('')
@@ -288,7 +293,7 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
 }
 
 function PullRequestCardWide({ pr, setHoveredIndex }: {
-  pr: PullRequest,
+  pr: PullRequest | PullRequestList,
   setHoveredIndex: (id: string | null) => void
 }) {
   const id = String(pr.number)
