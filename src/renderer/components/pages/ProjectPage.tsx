@@ -46,24 +46,21 @@ export default function ProjectPage() {
 
   return (
     <BasePage
-      title={
-        <div className='flex'>
-          <h1 className='text-title text-primary-foreground mb-1 font-semibold'>
-            {repository.name}
-          </h1>
-          {!project.hasJulesAccess && (<div className='ms-2'>
-            <Badge>jules non connecté</Badge>
-          </div>)}
-        </div>
-      }
-      subtitle={
-        <NavLink to={repository.htmlUrl}
-                 className='flex items-center mb-8 text-meta text-accent-blue hover:underline'
-                 target='_blank'>
-          <ExternalLink className='h-3 w-3 me-1'/>
-          {repository.owner.login}/{repository.name}
-        </NavLink>
-      }>
+      title={<div className='flex'>
+        <h1 className='text-title text-primary-foreground mb-1 font-semibold'>
+          {repository.name}
+        </h1>
+        {!hasJulesAccess && (<div className='ms-2'>
+          <Badge>jules non connecté</Badge>
+        </div>)}
+      </div>}
+      subtitle={<NavLink
+        to={repository.htmlUrl}
+        className='flex items-center mb-8 text-meta text-accent-blue hover:underline'
+        target='_blank'>
+        <ExternalLink className='h-3 w-3 me-1'/>
+        {repository.owner.login}/{repository.name}
+      </NavLink>}>
 
       {/* Lancer un agent */}
       <Section title={'LANCER UN NOUVEL AGENT'}>
