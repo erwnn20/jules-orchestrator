@@ -1,6 +1,7 @@
 ﻿import Badge from "@components/helpers/Badge";
 import Button from "@components/helpers/Button";
 import CardWide from "@components/helpers/CardWide";
+import Input from "@components/helpers/Input";
 import Select from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";
 import Toggle from "@components/helpers/inputs/Toggle";
@@ -9,14 +10,21 @@ import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
 import { PullRequest } from "@github/pr/pr.model";
 import { Repository } from "@github/repositories/repository.model";
+import { PullRequest as JulesPullRequest } from '@jules/github/github.interfaces'
 import { Session } from "@jules/sessions/session.model";
 import BasePage from "@pages/BasePage";
 import { useRepository } from "@renderer/hooks/github/repositories.hooks";
 import { useCreateSession } from "@renderer/hooks/jules/sessions.hooks";
 import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
-import { ExternalLink, GitBranch, LucideIcon, TriangleAlert } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  ExternalLink,
+  GitBranch,
+  GitBranchPlus,
+  LucideIcon,
+  TriangleAlert
+} from "lucide-react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router";
 import { To } from "react-router-dom";
 
@@ -37,6 +45,7 @@ export default function ProjectPage() {
     source,
     hasJulesAccess,
     agents: agentsQuery,
+    activeAgents
   } = new Project(repositoryData, sources)
 
   const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery
@@ -85,6 +94,10 @@ export default function ProjectPage() {
     if (branches.length > 0 && baseBranch === '')
       setBaseBranch(branches.find(branch => branch.isDefault)?.name ?? branches[0].name)
   }, [branches, baseBranch])
+
+  const [activeAgentsOnly, setActiveAgentsOnly] = useState(true)
+  const selectedAgents = activeAgentsOnly ? activeAgents : agents
+  const [hoveredIndex, setHoveredIndex] = useState<string | null>(null)
 
   //
 
@@ -175,20 +188,39 @@ export default function ProjectPage() {
         </div>
       </Section>
 
-      {/* Agents actifs */}
-      <Section title={`AGENTS (${agents.length})`}>
-        {agents.length === 0 ?
+      {/* Agents */}
+      <Section title={`AGENTS ${activeAgentsOnly ? 'actifs ' : ''}(${selectedAgents.length ?? 0})`}
+               addon={<Input
+                 type={'checkbox'} label={'Actifs seulement'}
+                 checked={activeAgentsOnly}
+                 onChange={(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) =>
+                   setActiveAgentsOnly(e.target.checked)}/>}>
+        {selectedAgents.length === 0 ?
           !isAgentsLoading &&
-          (<span className='text-base text-faint'>
-            — aucun agent actif
-          </span>) :
+            <span className='text-base text-faint'>
+                — aucun agent {activeAgentsOnly && 'actif'}
+            </span> :
           (<div className='flex flex-col gap-1.5'>
-            {agents.map((agent, index) => (
-              <AgentCardWide key={index} agent={agent} repository={repository}/>
-            ))}
+            {selectedAgents.map((agent, index) =>
+              <AgentCardWide key={index}
+                             agent={agent}
+                             repository={repository}
+                             hoveredIndex={hoveredIndex}/>
+            )}
           </div>)
         }
         {isAgentsLoading && <Loader/>}
+        {/*errorAgents &&
+            <CardWide>
+                <div className="flex-1">
+              <span className='flex items-center gap-1 text-base text-accent-red'>
+                <TriangleAlert className='h-4 w-4'/> Error : {errorAgents.name}
+              </span>
+                    <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
+                      {errorAgents.message}
+                    </p>
+                </div>
+            </CardWide> TODO */}
       </Section>
 
       {/* Pull Requests */}
@@ -213,27 +245,44 @@ export default function ProjectPage() {
 
 //
 
-function AgentCardWide({ agent, repository: { htmlUrl: repoUrl } }: {
+function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }: {
   agent: Session,
-  repository: Repository
+  repository: Repository,
+  hoveredIndex: string | null,
 }) {
-  const branch = agent.sourceContext.githubRepoContext.startingBranch
+  const baseRef = agent.sourceContext.githubRepoContext.startingBranch
+  const { headRef, url: prUrl } = agent.outputs?.find(
+    (output): output is { pullRequest: JulesPullRequest } => 'pullRequest' in output
+  )?.pullRequest ?? {};
 
   return (
-    <CardWide>
+    <CardWide className={
+      'transition-colors duration-150 ' +
+      (prUrl && prUrl.split('/').pop() === hoveredIndex && 'bg-elevated border-border-hover')
+    }>
       <SessionStatusDot session={agent}/>
       <div className='flex-1'>
         <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
           {agent.title ?? agent.prompt}
         </span>
-        <span className='flex items-center gap-1 text-label text-muted'>
-          <GitBranch className='h-3 w-3'/> {branch}
-        </span>
+        <div className='flex items-center gap-1 text-label text-muted'>
+          <div className='flex items-center gap-1'>
+            {!headRef && 'from'} <GitBranch className='h-3 w-3'/> {baseRef}
+          </div>
+          {headRef && (<>
+            <span className="text-faint">→</span>
+            <div className='flex items-center gap-1'>
+              <GitBranchPlus className='h-3 w-3'/> {headRef}
+            </div>
+          </>)}
+        </div>
       </div>
       <div className='flex items-center-safe gap-2.5'>
         <CardLink to={agent.url} text={'conversation'}/>
-        <span className='border-l border-border-color h-5'/>
-        <CardLink to={`${repoUrl}/tree/${branch}`} text={'branche'}/>
+        {headRef && (<>
+          <span className='border-l border-border-color h-5'/>
+          <CardLink to={`${repoUrl}/tree/${headRef}`} text={'branche'}/>
+        </>)}
       </div>
     </CardWide>
   )
