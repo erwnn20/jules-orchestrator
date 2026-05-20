@@ -28,11 +28,15 @@ export default function ProjectPage() {
   });
   const { data: { sources = [] } = {} } = useSources()
 
-  const project = new Project(repositoryData, sources)
+  const {
+    repository,
+    prs: prsQuery,
+    hasJulesAccess,
+    agents: agentsQuery,
+  } = new Project(repositoryData, sources)
 
-  const repository = project.repository
-  const { data: agents = [], isLoading: isAgentsLoading } = project.agents
-  const { data: prs = [], isLoading: isPRsLoading } = project.prs
+  const { data: prs = [], isLoading: isPRsLoading } = prsQuery
+  const { data: agents = [], isLoading: isAgentsLoading } = agentsQuery
 
   const [task, setTask] = useState('')
 
