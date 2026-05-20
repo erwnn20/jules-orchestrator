@@ -69,13 +69,12 @@ export class ProjectOptionalRepo {
       return { ...query, data: sorted }
     }
 
-  get prs(): {
-    data?: PullRequest[],
-    isLoading: boolean,
-    error?: any
-  } {
-    return { isLoading: true } /* TODO : get PR*/
-  }
+  prs =
+    (args: Omit<Parameters<typeof useRepoPRs>[0], 'repo' | 'owner'> = {}) => useRepoPRs({
+      owner: this.repository?.owner.login ?? '',
+      repo: this.repository?.name ?? '',
+      ...args,
+    })
 }
 
 export class Project extends ProjectOptionalRepo {
