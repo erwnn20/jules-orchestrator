@@ -25,6 +25,7 @@ export function useRepositories(args: ListRepositoryRequest) {
 export function useRepoBranches({ owner, repo, ...args }: ListBranchesRequest) {
   return useQuery({
     queryKey: ['repositories', owner, repo, 'branches', args],
-    queryFn: () => GithubService.getRepoBranches({ owner, repo, ...args })
+    queryFn: () => GithubService.getRepoBranches({ owner, repo, ...args }),
+    enabled: !!owner && !!repo,
   })
 }
