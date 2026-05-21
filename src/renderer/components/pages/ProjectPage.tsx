@@ -1,4 +1,5 @@
-﻿import Badge from "@components/helpers/Badge";
+﻿import { PullRequestCard } from "@components/cards/PullRequestCard";
+import Badge from "@components/helpers/Badge";
 import Button from "@components/helpers/Button";
 import CardWide from "@components/helpers/cards/CardWide";
 import SessionStatusDot from "@components/helpers/dots/SessionStatusDot";
@@ -8,7 +9,6 @@ import Textarea from "@components/helpers/inputs/Textarea";
 import Toggle from "@components/helpers/inputs/Toggle";
 import Link from "@components/helpers/Link";
 import Loader from "@components/helpers/Loader";
-import SessionStatusDot from "@components/helpers/session/SessionStatusDot";
 import Section from "@components/Section";
 import { PullRequestList } from "@github/pr/list.model";
 import { PullRequest } from "@github/pr/pr.model";
@@ -20,14 +20,7 @@ import { useRepository } from "@renderer/hooks/github/repositories.hooks";
 import { useCreateSession } from "@renderer/hooks/jules/sessions.hooks";
 import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
-import {
-  ExternalLink,
-  GitBranch,
-  GitBranchPlus,
-  GitPullRequest,
-  LucideIcon,
-  TriangleAlert
-} from "lucide-react";
+import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router";
 
@@ -263,7 +256,7 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
   return (
     <CardWide className={
       'transition-colors duration-150 ' +
-      (prUrl && prUrl.split('/').pop() === hoveredIndex && 'bg-elevated border-border-hover')
+      (prUrl && prUrl.split('/').pop() === hoveredIndex && 'bg-elevated border-border-hover' /*TODO bg not applied*/)
     }>
       <SessionStatusDot session={agent}/>
       <div className='flex-1'>
@@ -304,20 +297,10 @@ function PullRequestCardWide({ pr, setHoveredIndex }: {
       onMouseEnter: () => setHoveredIndex(id),
       onMouseLeave: () => setHoveredIndex(null)
     })}>
-      <CardWide
-        className='hover:bg-elevated hover:border-border-hover transition-colors duration-150'>
-        <GitPullRequest className='h-3 w-3 text-accent-orange'/>
-        <div className='flex-1'>
-          <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
-            {pr.title}
-          </span>
-          <span className='flex items-center gap-1 text-label text-muted'>
-          <GitBranch className='h-3 w-3'/>
-            {pr.head.ref} · {pr.base.ref /*TODO change by creation/update date*/}
-        </span>
-        </div>
-        <CardLink to={pr.htmlUrl} text='voir PR'/>
-      </CardWide>
+      <PullRequestCard
+        pr={pr}
+        className={'hover:bg-elevated hover:border-border-hover transition-colors duration-150'}
+      />
     </div>
   )
 }
