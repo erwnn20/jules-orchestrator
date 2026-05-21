@@ -250,11 +250,12 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
   const { headRef, url: prUrl } = agent.outputs?.find(
     (output): output is { pullRequest: JulesPullRequest } => 'pullRequest' in output
   )?.pullRequest ?? {};
+  const hovered = prUrl?.split('/').pop() === hoveredIndex
 
   return (
-    <CardWide className={
-      'transition-colors duration-150 ' +
-      (prUrl && prUrl.split('/').pop() === hoveredIndex && 'bg-elevated border-border-hover' /*TODO bg not applied*/)
+    <CardWide id={agent.id} className={
+      'transition-colors duration-350 hover:bg-elevated hover:border-border-hover ' +
+      (hovered ? 'bg-elevated border-border-hover' : '')
     }>
       <SessionStatusDot session={agent}/>
       <div className='flex-1'>
@@ -297,7 +298,7 @@ function PullRequestCardWide({ pr, setHoveredIndex }: {
     })}>
       <PullRequestCard
         pr={pr}
-        className={'hover:bg-elevated hover:border-border-hover transition-colors duration-150'}
+        className={'hover:bg-elevated hover:border-border-hover transition-colors duration-350'}
       />
     </div>
   )
