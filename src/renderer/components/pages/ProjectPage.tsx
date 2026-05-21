@@ -151,13 +151,7 @@ export default function ProjectPage() {
                       value={baseBranch}
                       onChange={(e) => {setBaseBranch(e.target.value)}}
                       options={isBranchesLoading ? [{ value: '', label: 'Chargement...' }] :
-                        branches.map(
-                          ({ name, isDefault }) => ({
-                            value: name,
-                            label: `📍 ${name}`,
-                            selected: isDefault
-                          })
-                        )}
+                        branches.map(({ name }) => ({ value: name, label: `📍 ${name}` }))}
                       className="w-full"
                       disabled={createSession.isPending}
                     />
