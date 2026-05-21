@@ -6,11 +6,11 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
   helperText?: string;
-  placeholder?: string | Omit<Option, 'value' | 'selected'>
+  placeholder?: string | Omit<Option, 'value'>
   options: Option[];
 }
 
-export type Option = { value: string; label: string, selected?: boolean }
+export type Option = { value: string; label: string }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ label, error, helperText, placeholder, options, className = '', ...props }, ref) => {
@@ -24,7 +24,6 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         <div className="relative">
           <select
             ref={ref}
-            defaultValue={options.find(opt => opt.selected)?.value}
             className={
               'px-3 py-2 pr-9 peer ' +
               'bg-elevated text-base text-primary-foreground ' +
@@ -40,7 +39,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             {...props}
           >
             {placeholder && (
-              <option key={'placeholder'} value={''} className={'text-ghost'} selected>
+              <option key={'placeholder'} value={''} className={'text-ghost'}>
                 {typeof placeholder === 'string' ? placeholder : placeholder.label}
               </option>
             )}
