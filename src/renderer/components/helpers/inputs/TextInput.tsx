@@ -6,6 +6,7 @@ import {
   ReactNode,
   useState
 } from 'react';
+import { twMerge } from "tailwind-merge";
 
 
 const TEXT_INPUT_TYPES = [
@@ -84,18 +85,17 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           <input
             type={typ}
             ref={ref}
-            className={
-              `${Icon ? padding : paddings.noIcon} peer ` +
-              'bg-elevated text-base text-primary-foreground placeholder:text-ghost ' +
-              'border rounded-md ' +
-              'focus:outline-none cursor-text ' +
-              'disabled:opacity-50 disabled:cursor-default ' +
-              'transition-colors duration-150 ' +
-              (error
-                ? 'border-accent-red focus:border-accent-red'
-                : 'border-border-input focus:border-border-hover') +
-              ` ${className}`
-            }
+            className={twMerge(
+              Icon ? padding : paddings.noIcon,
+              'peer',
+              'bg-elevated text-base text-primary-foreground placeholder:text-ghost',
+              'border border-border-input focus:border-border-hover rounded-md',
+              'focus:outline-none cursor-text',
+              'disabled:opacity-50 disabled:cursor-default',
+              'transition-colors duration-150',
+              error && 'border-accent-red focus:border-accent-red',
+              className
+            )}
             {...props}
           />
           {iconPosition !== 'noIcon' && Icon &&

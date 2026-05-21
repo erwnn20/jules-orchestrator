@@ -1,4 +1,5 @@
 import { forwardRef, TextareaHTMLAttributes } from 'react';
+import { twMerge } from "tailwind-merge";
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -17,19 +18,17 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
         <textarea
           ref={ref}
-          className={
-            'px-3 py-2 ' +
-            'bg-elevated text-base text-primary-foreground ' +
-            ' border rounded-md ' +
-            'placeholder:text-ghost ' +
-            'transition-colors duration-150 ' +
-            'focus:outline-none ' +
-            'disabled:opacity-50 disabled:cursor-default' +
-            (error
-              ? ' border-accent-red focus:border-accent-red'
-              : ' border-border-input focus:border-border-hover') +
-            ` ${className}`
-          }
+          className={twMerge(
+            'px-3 py-2',
+            'bg-elevated text-base text-primary-foreground',
+            ' border border-border-input focus:border-border-hover rounded-md',
+            'placeholder:text-ghost',
+            'transition-colors duration-150',
+            'focus:outline-none',
+            'disabled:opacity-50 disabled:cursor-default',
+            error && 'border-accent-red focus:border-accent-red',
+            className
+          )}
           {...props}
         />
         {error && (

@@ -7,7 +7,7 @@ export default function StatusDot({ status, pulse }: { status: Status, pulse?: b
 
   return (
     <span
-      className={`block w-2 h-2 rounded-full`}
+      className={'block w-2 h-2 rounded-full'}
       style={{
         background: `${color}`,
         boxShadow: pulse ? `0 0 6px ${color}` : 'none',

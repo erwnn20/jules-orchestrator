@@ -22,7 +22,7 @@ const DEFAULT_ICON: LucideIcon = GitPullRequest
 const DEFAULT_STATUS: Status = 'warning'
 
 const statusDots: Record<PullRequestState, { icon?: LucideIcon, status?: Status }> = {
-  approved: { icon: GitPullRequestArrow, status: 'running'},
+  approved: { icon: GitPullRequestArrow, status: 'running' },
   changes_requested: { icon: GitMergeConflict, status: 'warning' },
   closed: { icon: GitPullRequestClosed, status: 'done' },
   draft: { icon: GitPullRequestDraft, status: 'done' },

@@ -1,6 +1,7 @@
 import Toggle from "@components/helpers/inputs/Toggle";
 import { Check, LucideIcon } from 'lucide-react';
 import { forwardRef, InputHTMLAttributes } from 'react';
+import { twMerge } from "tailwind-merge";
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
@@ -15,12 +16,12 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const Icon = innerIcon ?? Check
     return (
       <label className={'group inline-flex items-center'}>
-        <div className={
-          'inline-flex items-center gap-2 ' +
-          'cursor-pointer group-has-disabled:cursor-default ' +
-          'group-has-disabled:opacity-50 ' +
-          ` ${className}`
-        }>
+        <div className={twMerge(
+          'inline-flex items-center gap-2',
+          'cursor-pointer group-has-disabled:cursor-default',
+          'group-has-disabled:opacity-50',
+          className
+        )}>
           <div className="relative">
             <input
               ref={ref}

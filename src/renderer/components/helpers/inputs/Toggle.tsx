@@ -1,5 +1,6 @@
 import { CheckboxProps } from "@components/helpers/inputs/Checkbox";
 import { forwardRef } from 'react';
+import { twMerge } from "tailwind-merge";
 
 export interface ToggleProps extends Omit<CheckboxProps, 'variant'> {}
 
@@ -8,12 +9,12 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
     return (
       <label className={'group inline-flex items-center'}>
         <div
-          className={
-            'inline-flex items-center gap-2 ' +
-            'cursor-pointer group-has-disabled:cursor-default ' +
-            'group-has-disabled:opacity-50' +
-            ` ${className}`
-          }>
+          className={twMerge(
+            'inline-flex items-center gap-2',
+            'cursor-pointer group-has-disabled:cursor-default',
+            'group-has-disabled:opacity-50',
+            className
+          )}>
           <div className="relative">
             <input
               ref={ref}

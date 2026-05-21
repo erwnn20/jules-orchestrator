@@ -1,4 +1,5 @@
 ﻿import React, { ReactNode } from 'react';
+import { twMerge } from "tailwind-merge";
 
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
@@ -49,11 +50,11 @@ export default function Button({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={
-        'inline-flex items-center justify-center ' +
-        'font-semibold transition-all duration-150' +
-        ` ${variantClasses[variant]} ${sizeClasses[size]} ${className}`
-      }>
+      className={twMerge(
+        'inline-flex items-center justify-center font-semibold transition-all duration-150',
+        variantClasses[variant], sizeClasses[size],
+        className
+      )}>
       {children}
     </button>
   );
