@@ -173,17 +173,17 @@ export default function HomePage() {
           ))}
         </div>
         {isSessionsLoading && <Loader/>}
-        {sessionsError &&
-            <CardWide>
-                <div className="flex-1">
+        {sessionsError && (
+          <CardWide>
+            <div className="flex-1">
               <span className='flex items-center gap-1 text-base text-accent-red'>
                 <TriangleAlert className='h-4 w-4'/> Error : {sessionsError.name}
               </span>
-                    <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
-                      {sessionsError.message}
-                    </p>
-                </div>
-            </CardWide>}
+              <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
+                {sessionsError.message}
+              </p>
+            </div>
+          </CardWide>)}
       </Section>
     </BasePage>
   )

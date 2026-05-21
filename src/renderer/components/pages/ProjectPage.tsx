@@ -312,7 +312,7 @@ function PullRequestCardWide({ pr, setHoveredIndex }: {
     })}>
       <PullRequestCard
         pr={pr}
-        className={'hover:bg-elevated hover:border-border-hover transition-colors duration-350'}
+        className={'hover:bg-elevated hover:border-border-hover'}
       />
     </div>
   )

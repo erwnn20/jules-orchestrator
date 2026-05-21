@@ -11,6 +11,7 @@ export default function CardWide({ children, id, className }: {
       'flex items-center gap-3 px-4 py-3',
       'bg-panel',
       'border border-border-color rounded-lg',
+      'transition-colors duration-350',
       className
     )}>
       {children}

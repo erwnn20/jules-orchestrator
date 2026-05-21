@@ -198,10 +198,7 @@ function ProjectCardWide({ project }: { project: Project }) {
 
   return (
     <NavLink to={`/projects/${repository.owner.login}/${repository.name}`} className={'group'}>
-      <CardWide className={
-        'group-hover:border-border-hover cursor-pointer ' +
-        'transition-colors duration-150'
-      }>
+      <CardWide className={'group-hover:border-border-hover cursor-pointer'}>
         <StatusDot
           status={hasJulesAccess ? (numberActiveAgents > 0 ? 'running' : 'done') : 'none'}
         />
