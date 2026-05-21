@@ -14,6 +14,7 @@ export abstract class PullRequestBase {
   readonly user?: User
   readonly assignees?: User[]
   abstract state: PullRequestState
+  readonly apiState: PRState | string
   readonly activeLockReason?: string
   readonly locked: boolean
   abstract labels: Label[] | Partial<Label>[]
@@ -34,6 +35,7 @@ export abstract class PullRequestBase {
       html_url,
       user,
       assignees,
+      state,
       active_lock_reason,
       locked,
       created_at,
@@ -50,6 +52,7 @@ export abstract class PullRequestBase {
     this.htmlUrl = html_url
     this.user = user ? new User(user) : undefined
     this.assignees = assignees?.map(assignee => new User(assignee))
+    this.apiState = state
     this.activeLockReason = active_lock_reason || undefined
     this.locked = locked
     this.createdAt = new Date(created_at)
