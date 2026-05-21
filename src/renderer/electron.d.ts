@@ -63,7 +63,7 @@ declare global {
           },
         },
         pr: {
-          list: (args: ListIssuesRequest) => Promise<ListIssuesResponse>,
+          list: (args?: ListIssuesRequest) => Promise<ListIssuesResponse>,
         }
       },
     }

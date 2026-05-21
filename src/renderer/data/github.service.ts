@@ -29,7 +29,7 @@ export abstract class GithubService {
   static getPR: (args: GetPRRequest) => Promise<PullRequest> = window.api.github.repository.pr.get;
   static getRepoPRs: (args: ListPRRequest) => Promise<PullRequestList[]> = window.api.github.repository.pr.list;
 
-  static getIssuesPR: (args: ListIssuesRequest) => Promise<ListIssuesResponse> = window.api.github.pr.list;
+  static getIssuesPR: (args?: ListIssuesRequest) => Promise<ListIssuesResponse> = window.api.github.pr.list;
 
   static acceptPR: (args: AcceptPRRequest) => Promise<AcceptPRResponse> = window.api.github.repository.pr.accept;
   static rejectPR: (args: RejectPRRequest) => Promise<PullRequest> = window.api.github.repository.pr.reject;

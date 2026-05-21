@@ -25,7 +25,7 @@ export function useRepoPRs({ owner, repo, ...args }: ListPRRequest) {
   })
 }
 
-export function usePRs(args: ListIssuesRequest) {
+export function usePRs(args?: ListIssuesRequest) {
   return useQuery({
     queryKey: ['pr', args],
     queryFn: () => GithubService.getIssuesPR(args)

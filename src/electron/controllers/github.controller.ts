@@ -63,7 +63,7 @@ export class GithubController extends BaseController<Octokit> {
       },
       {
         channel: 'github:pr:list',
-        listener: (_, args: ListIssuesRequest) => this.getIssuesPR(args)
+        listener: (_, args?: ListIssuesRequest) => this.getIssuesPR(args)
       },
     ]);
   }
@@ -112,7 +112,7 @@ export class GithubController extends BaseController<Octokit> {
     return data.map(pr => new PullRequestList(pr))
   }
 
-  private async getIssuesPR({ query, ...args }: ListIssuesRequest): Promise<ListIssuesResponse> {
+  private async getIssuesPR({ query, ...args }: ListIssuesRequest = {}): Promise<ListIssuesResponse> {
     const q = ['is:pr', 'involves:@me', ...(query ? query : [])].join(' ')
     const { data: { items, ...data } } = await this.client.rest.search.issuesAndPullRequests({
       q, ...args,
