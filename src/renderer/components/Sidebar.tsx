@@ -93,9 +93,12 @@ function NavLink({ route }: { route: Route }) {
 }
 
 function NavSources({ session }: { session: Session }) {
+  const { sourceContext: { source, githubRepoContext: { startingBranch } } } = session;
+  const [owner, repo] = source.split('/').slice(2);
+
   return (
     <NavLinkReact
-      to={`/${session.sourceContext.source}`}
+      to={`/projects/${owner}/${repo}`} /*todo add # session.id*/
       className={({ isActive }) =>
         'flex items-center gap-1.5 mb-0.5 py-1.5 px-2 rounded-md cursor-pointer ' +
         (isActive ? 'bg-elevated' : 'bg-transparent')}
@@ -105,11 +108,9 @@ function NavSources({ session }: { session: Session }) {
         'inline-flex items-end gap-2 ' +
         'text-base text-secondary-foreground overflow-hidden text-ellipsis whitespace-nowrap'
       }>
-        {session.sourceContext.source.split('/').at(-1)}
-
+        {repo}
         <span className='inline-flex items-center gap-1 text-label text-muted'>
-            <GitBranch className='h-2.5 w-2.5'/>
-          {session.sourceContext.githubRepoContext.startingBranch}
+            <GitBranch className='h-2.5 w-2.5'/> {startingBranch}
         </span>
       </p>
     </NavLinkReact>
