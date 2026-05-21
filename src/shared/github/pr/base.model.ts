@@ -16,12 +16,12 @@ export abstract class PullRequestBase {
   abstract state: PullRequestState
   readonly activeLockReason?: string
   readonly locked: boolean
-  abstract readonly labels: Label[] | Partial<Label>[]
+  abstract labels: Label[] | Partial<Label>[]
 
   readonly createdAt: Date
   readonly updatedAt: Date
   readonly closedAt?: Date
-  abstract readonly mergedAt?: Date
+  abstract mergedAt?: Date
 
   protected constructor(args: PullRequestBaseArgs) {
     const {
