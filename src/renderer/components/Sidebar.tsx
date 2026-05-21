@@ -15,13 +15,13 @@ export default function Sidebar() {
 
   const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
   const {
-    data: { sessions: sessionsData } = { sessions: [] },
-    isLoading,
-    error
+    data: { sessions } = { sessions: [] },
+    isLoading: isSessionsLoading,
+    error: errorSessions
   } = useSessions({ pageSize: dailySessionsLimit })
 
   const sessionsBySource =
-    sessionsData.reduce((acc, session) => {
+    sessions.reduce((acc, session) => {
       const {
         sourceContext: { source, githubRepoContext: { startingBranch } },
         updateTime
@@ -34,7 +34,7 @@ export default function Sidebar() {
 
       return acc
     }, {} as Record<string, Session>);
-  const sessions = Object.values(sessionsBySource)
+  const recentsSessions = Object.values(sessionsBySource)
 
   return (
     <aside
@@ -57,12 +57,12 @@ export default function Sidebar() {
 
       {/* Recent projects */}
       <div className='px-2 py-3 flex-1 overflow-y-auto'>
-        {isLoading ? <Loader/> /*TODO fix */ :
-          !error && sessions.length > 0 && (<>
+        {isSessionsLoading ? <Loader/> /*TODO fix */ :
+          !errorSessions && recentsSessions.length > 0 && (<>
             <p className='pb-1 px-1 text-label text-muted uppercase tracking-wider'>
               RÉCENTS
             </p>
-            {sessions.map((session, index) => (
+            {recentsSessions.map((session, index) => (
               <NavSources session={session} key={index}/>)
             )}
           </>)}
