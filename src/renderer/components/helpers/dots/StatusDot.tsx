@@ -1,6 +1,6 @@
 ﻿import { Property } from "csstype";
 
-type Status = 'running' | 'warning' | 'done' | 'error' | 'none'
+export type Status = 'running' | 'warning' | 'done' | 'error' | 'none'
 
 export default function StatusDot({ status, pulse }: { status: Status, pulse?: boolean }) {
   const color = statusColors[status]
