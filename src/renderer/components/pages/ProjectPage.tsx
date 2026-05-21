@@ -119,13 +119,16 @@ export default function ProjectPage() {
           <Badge>jules non connecté</Badge>
         </div>)}
       </div>}
-      subtitle={<NavLink
-        to={repository.htmlUrl}
-        className='flex items-center mb-8 text-meta text-accent-blue hover:underline'
-        target='_blank'>
-        <ExternalLink className='h-3 w-3 me-1'/>
-        {repository.owner.login}/{repository.name}
-      </NavLink>}>
+      subtitle={<div className={'mb-8'}>
+        <NavLink to={repository.htmlUrl}
+                 className={
+                   'flex items-center w-fit ' +
+                   'text-meta text-accent-blue hover:underline'
+                 }
+                 target='_blank' rel={'noreferrer'}>
+          <ExternalLink className='h-3 w-3 me-1'/> {repository.owner.login}/{repository.name}
+        </NavLink>
+      </div>}>
 
       {/* Lancer un agent */}
       <Section title={'LANCER UN NOUVEL AGENT'}>
