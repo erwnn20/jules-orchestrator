@@ -1,4 +1,5 @@
-﻿import { PullRequestList, PullRequestListArgs } from "@github/pr/list.model";
+﻿import { PullRequestState } from "@github/pr/base.model";
+import { PullRequestList, PullRequestListArgs } from "@github/pr/list.model";
 import { User, UserArgs } from "@github/users/user.model";
 
 export class PullRequest extends PullRequestList {
@@ -15,19 +16,23 @@ export class PullRequest extends PullRequestList {
     readonly changedFiles: number
   }
 
-  constructor({
-                mergeable,
-                mergeable_state,
-                merged,
-                merged_by,
-                maintainer_can_modify,
-                commits,
-                additions,
-                deletions,
-                changed_files,
-                ...args
-              }: PullRequestArgs) {
-    super(args)
+  constructor(args: PullRequestArgs) {
+    const {
+      mergeable,
+      mergeable_state,
+      merged,
+      merged_by,
+      maintainer_can_modify,
+      commits,
+      additions,
+      deletions,
+      changed_files,
+      ...parentArgs
+    } = args
+
+    super(parentArgs)
+
+    this.state = this.setState(args)
     this.mergeable = !!mergeable
     this.mergeableState = mergeable_state
     this.merged = merged
@@ -35,6 +40,14 @@ export class PullRequest extends PullRequestList {
     this.maintainerCanModify = maintainer_can_modify
 
     this.data = { commits, additions, deletions, changedFiles: changed_files }
+  }
+
+  protected override setState(args: PullRequestArgs): PullRequestState {
+    if (args.draft) return PullRequestState.DRAFT
+    if (args.merged) return PullRequestState.MERGED
+    if (args.state === 'closed') return PullRequestState.CLOSED
+    if (args.mergeable_state === 'dirty') return PullRequestState.MERGE_CONFLICT
+    return super.setState(args)
   }
 }
 

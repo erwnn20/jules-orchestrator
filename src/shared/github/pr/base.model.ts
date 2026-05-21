@@ -13,7 +13,7 @@ export abstract class PullRequestBase {
 
   readonly user?: User
   readonly assignees?: User[]
-  readonly state: PRState | string
+  abstract state: PullRequestState
   readonly activeLockReason?: string
   readonly locked: boolean
   abstract readonly labels: Label[] | Partial<Label>[]
@@ -23,23 +23,24 @@ export abstract class PullRequestBase {
   readonly closedAt?: Date
   abstract readonly mergedAt?: Date
 
-  protected constructor({
-                          id,
-                          node_id,
-                          number,
-                          title,
-                          body,
-                          url,
-                          html_url,
-                          user,
-                          assignees,
-                          state,
-                          active_lock_reason,
-                          locked,
-                          created_at,
-                          updated_at,
-                          closed_at
-                        }: PullRequestBaseArgs) {
+  protected constructor(args: PullRequestBaseArgs) {
+    const {
+      id,
+      node_id,
+      number,
+      title,
+      body,
+      url,
+      html_url,
+      user,
+      assignees,
+      active_lock_reason,
+      locked,
+      created_at,
+      updated_at,
+      closed_at
+    } = args
+
     this.id = id
     this.nodeId = node_id
     this.number = number
@@ -49,12 +50,17 @@ export abstract class PullRequestBase {
     this.htmlUrl = html_url
     this.user = user ? new User(user) : undefined
     this.assignees = assignees?.map(assignee => new User(assignee))
-    this.state = state
     this.activeLockReason = active_lock_reason || undefined
     this.locked = locked
     this.createdAt = new Date(created_at)
     this.updatedAt = new Date(updated_at)
     this.closedAt = closed_at ? new Date(closed_at) : undefined
+  }
+
+  protected setState(args: PullRequestBaseArgs): PullRequestState {
+    if (args.state === 'open') return PullRequestState.OPEN
+    if (args.state === 'closed') return PullRequestState.CLOSED
+    return PullRequestState.UNSPECIFIED
   }
 }
 
@@ -75,3 +81,22 @@ export interface PullRequestBaseArgs {
   closed_at: string | null
   active_lock_reason?: string | null
 }
+
+export const PullRequestState = {
+  OPEN: 'open',
+  /** ouverte, mais pas prête pour review, en cours de modification */
+  DRAFT: 'draft',
+  /** en attente de review */
+  REVIEW_REQUESTED: 'review_requested',
+  /** merge impossible, conflit */
+  MERGE_CONFLICT: 'merge_conflict',
+  /** reviewer a demandé des changements */
+  CHANGES_REQUESTED: 'changes_requested', // needs reviews endpoint
+  /** approuvée par les reviewers, pas encore mergée */
+  APPROVED: 'approved', // needs reviews endpoint
+  MERGED: 'merged',
+  /** fermée sans merge */
+  CLOSED: 'closed',
+  UNSPECIFIED: 'unspecified',
+} as const
+export type PullRequestState = typeof PullRequestState[keyof typeof PullRequestState]
