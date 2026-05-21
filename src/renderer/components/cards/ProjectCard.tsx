@@ -77,7 +77,7 @@ function ProjectCardFirst({ project }: { project: Project }) {
 
   return (
     <ProjectCardBase project={project} isFirst={true}>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full w-full">
         <div className="flex mb-3 shrink-0">
           <div className="flex items-center gap-3">
             <div className={
@@ -150,7 +150,7 @@ function ProjectCardDefault({ project }: { project: Project }) {
 
   return (
     <ProjectCardBase project={project} isFirst={false}>
-      <div className='flex flex-col h-full'>
+      <div className='flex flex-col h-full w-full'>
         <div className="flex mb-3 shrink-0">
           <div className="flex items-center gap-3">
             <div className={
