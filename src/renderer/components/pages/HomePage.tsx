@@ -2,10 +2,10 @@ import CardWide from "@components/helpers/cards/CardWide";
 import SessionStatusDot from "@components/helpers/dots/SessionStatusDot";
 import Loader from "@components/helpers/Loader";
 import Section from "@components/Section";
-import { useApp } from "@context/AppContext";
 import { Session } from "@jules/sessions/session.model";
 import { ACTIVE_STATES, SessionState, WAITING_STATES } from "@jules/sessions/session.types";
 import BasePage from "@pages/BasePage";
+import { usePRs } from "@renderer/hooks/github/pr.hooks";
 import { useSessions } from "@renderer/hooks/jules/sessions.hooks";
 import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { Property } from "csstype";
@@ -25,8 +25,30 @@ import { NavLink } from "react-router";
 
 
 export default function HomePage() {
-  const { projects } = useApp()
-  const totalPRs = projects.list.reduce((acc, p) => acc + p.pullRequests.length, 0)
+  const {
+    data: {
+      total_count: totalOpenPRs,
+      incomplete_results: incompleteOpenPRs
+    } = { total_count: 0, items: [], incomplete_results: true },
+    isLoading: isOpenPRsLoading,
+    error: errorOpenPRs
+  } = usePRs({ query: ['is:open'] })
+  const {
+    data: {
+      total_count: totalDraftPRs,
+      incomplete_results: incompleteDraftPRs
+    } = { total_count: 0, items: [], incomplete_results: true },
+    isLoading: isDraftPRsLoading,
+    error: errorDraftPRs
+  } = usePRs({ query: ['is:draft'] })
+  const {
+    data: {
+      total_count: totalMergedPRs,
+      incomplete_results: incompleteMergedPRs
+    } = { total_count: 0, items: [], incomplete_results: true },
+    isLoading: isMergedPRsLoading,
+    error: errorMergedPRs
+  } = usePRs({ query: ['is:merged'] })
 
   const {
     data: { sources } = { sources: [] },
@@ -101,14 +123,20 @@ export default function HomePage() {
     },
     {
       label: 'Pull Requests en attente',
-      value: totalPRs,
+      value: `${totalOpenPRs} ${incompleteOpenPRs ? '+' : ''}`,
       accent: 'var(--color-accent-orange)',
+      isLoading: isOpenPRsLoading || isDraftPRsLoading || isMergedPRsLoading,
+      error: errorOpenPRs?.message || errorDraftPRs?.message || errorMergedPRs?.message,
       icon: GitPullRequest,
       children: (
         <div className="flex items-center gap-2 text-label">
-          <span className="text-accent-green">8 merged</span>
+          <span className="text-accent-green">
+            {totalMergedPRs}{incompleteMergedPRs ? '+' : ''} merged
+          </span>
           <span className="text-faint">·</span>
-          <span className="text-accent-orange">4 ouvertes</span>
+          <span className="text-accent-orange">
+            {totalOpenPRs + totalDraftPRs}{incompleteOpenPRs || incompleteDraftPRs ? '+' : ''} ouvertes
+          </span>
         </div>
       )
     },
@@ -166,7 +194,7 @@ export default function HomePage() {
 function StatsCard({ children, label, value, info, accent, icon: Icon, isLoading, error }: {
   children?: ReactNode
   label: string,
-  value: number,
+  value: number | string,
   info?: string | number,
   accent: Property.Color,
   icon: LucideIcon,
