@@ -23,6 +23,7 @@ import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.int
 import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router";
+import { useLocation } from "react-router-dom";
 
 
 export default function ProjectPage() {
@@ -252,9 +253,22 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
   )?.pullRequest ?? {};
   const hovered = prUrl?.split('/').pop() === hoveredIndex
 
+  const { hash } = useLocation()
+  const [highlighted, setHighlighted] = useState(false)
+
+  useEffect(() => {
+    const id = hash.replace('#', '')
+    if (id === agent.id) {
+      setHighlighted(true)
+      const timer = setTimeout(() => setHighlighted(false), 1500)
+      return () => clearTimeout(timer)
+    }
+  }, [agent.id])
+
   return (
     <CardWide id={agent.id} className={
       'transition-colors duration-350 hover:bg-elevated hover:border-border-hover ' +
+      (highlighted ? 'bg-elevated border-border-hover ' : '') +
       (hovered ? 'bg-elevated border-border-hover' : '')
     }>
       <SessionStatusDot session={agent}/>

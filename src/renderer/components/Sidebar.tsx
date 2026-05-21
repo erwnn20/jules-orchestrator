@@ -98,7 +98,7 @@ function NavSources({ session }: { session: Session }) {
 
   return (
     <NavLinkReact
-      to={`/projects/${owner}/${repo}`} /*todo add # session.id*/
+      to={`/projects/${owner}/${repo}#${session.id}`}
       className={({ isActive }) =>
         'flex items-center gap-1.5 mb-0.5 py-1.5 px-2 rounded-md cursor-pointer ' +
         (isActive ? 'bg-elevated' : 'bg-transparent')}
