@@ -5,21 +5,8 @@ import { Source } from "@jules/sources/source.model";
 import { useRepoPRs } from "@renderer/hooks/github/pr.hooks";
 import { useRepoBranches } from "@renderer/hooks/github/repositories.hooks";
 import { useSessionsBySource } from "@renderer/hooks/jules/sources.hooks";
-import { Agent } from "@renderer/interfaces/agent.interface";
-import { PullRequest as IPullRequest } from "@renderer/interfaces/pullRequest.interface";
 import { UseQueryResult } from "@tanstack/react-query";
 
-
-export interface IProject {
-  id: string
-  name: string
-  repoUrl: string
-  hasJulesAccess: boolean
-  activeAgents: number
-  lastActivity?: Date
-  agents: Agent[]
-  pullRequests: IPullRequest[]
-}
 
 export class ProjectOptionalRepo {
   static readonly MAX_PR = 9
