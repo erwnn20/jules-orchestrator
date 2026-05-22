@@ -1,6 +1,6 @@
 import { CheckboxProps } from "@components/helpers/inputs/Checkbox";
+import { twMerge } from '@renderer/utils/tw.utils';
 import { forwardRef } from 'react';
-import { twMerge } from "tailwind-merge";
 
 export interface ToggleProps extends Omit<CheckboxProps, 'variant'> {}
 

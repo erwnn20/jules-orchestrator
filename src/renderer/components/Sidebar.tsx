@@ -6,6 +6,7 @@ import { routes } from "@renderer/config/routes.config";
 import { useSessions } from "@renderer/hooks/jules/sessions.hooks";
 import { Route } from "@renderer/interfaces/route.interface";
 import { version } from '@renderer/package.json';
+import { twMerge } from '@renderer/utils/tw.utils';
 import { GitBranch } from "lucide-react";
 import { NavLink as NavLinkReact } from 'react-router-dom'
 
@@ -83,10 +84,11 @@ function NavLink({ route }: { route: Route }) {
   return (
     <NavLinkReact
       to={path}
-      className={({ isActive }) =>
-        'flex items-center gap-1.5 py-2 px-3.5 cursor-pointer text-subtitle ' +
-        (isActive ? 'bg-elevated text-primary-foreground' : 'bg-transparent text-muted')}
-    >
+      className={({ isActive }) => twMerge(
+        'flex items-center gap-1.5 py-2 px-3.5 cursor-pointer',
+        'bg-transparent text-subtitle text-muted',
+        isActive && 'bg-elevated text-primary-foreground'
+      )}>
       {Icon ? <Icon size={14}/> : <span style={{ height: 14, width: 14 }}></span>} {label}
     </NavLinkReact>
   )
@@ -99,15 +101,16 @@ function NavSources({ session }: { session: Session }) {
   return (
     <NavLinkReact
       to={`/projects/${owner}/${repo}#${session.id}`}
-      className={({ isActive }) =>
-        'flex items-center gap-1.5 mb-0.5 py-1.5 px-2 rounded-md cursor-pointer ' +
-        (isActive ? 'bg-elevated' : 'bg-transparent')}
-    >
+      className={({ isActive }) => twMerge(
+        'flex items-center gap-1.5 mb-0.5 py-1.5 px-2 rounded-md cursor-pointer bg-transparent',
+        isActive && 'bg-elevated'
+      )}>
       <SessionStatusDot session={session}/>
-      <p className={
-        'inline-flex items-end gap-2 ' +
-        'text-base text-secondary-foreground overflow-hidden text-ellipsis whitespace-nowrap'
-      }>
+      <p className={twMerge(
+        'inline-flex items-end gap-2',
+        'text-base text-secondary-foreground text-ellipsis',
+        'whitespace-nowrap overflow-hidden'
+      )}>
         {repo}
         <span className='inline-flex items-center gap-1 text-label text-muted'>
             <GitBranch className='h-2.5 w-2.5'/> {startingBranch}

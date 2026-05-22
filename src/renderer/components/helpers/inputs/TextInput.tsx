@@ -1,3 +1,4 @@
+import { twMerge } from '@renderer/utils/tw.utils';
 import { Eye, EyeClosed, LucideIcon, Search } from "lucide-react";
 import {
   forwardRef,
@@ -6,7 +7,6 @@ import {
   ReactNode,
   useState
 } from 'react';
-import { twMerge } from "tailwind-merge";
 
 
 const TEXT_INPUT_TYPES = [

@@ -1,7 +1,7 @@
 import Toggle from "@components/helpers/inputs/Toggle";
+import { twMerge } from '@renderer/utils/tw.utils';
 import { Check, LucideIcon } from 'lucide-react';
 import { forwardRef, InputHTMLAttributes } from 'react';
-import { twMerge } from "tailwind-merge";
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;

@@ -1,5 +1,5 @@
+import { twMerge } from '@renderer/utils/tw.utils';
 import { forwardRef, InputHTMLAttributes } from 'react';
-import { twMerge } from "tailwind-merge";
 
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;

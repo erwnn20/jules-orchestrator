@@ -20,11 +20,11 @@ import { useRepository } from "@renderer/hooks/github/repositories.hooks";
 import { useCreateSession } from "@renderer/hooks/jules/sessions.hooks";
 import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
+import { twMerge } from '@renderer/utils/tw.utils';
 import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router";
 import { useLocation } from "react-router-dom";
-import { twMerge } from "tailwind-merge";
 
 
 export default function ProjectPage() {
@@ -123,10 +123,10 @@ export default function ProjectPage() {
       </div>}
       subtitle={<div className={'mb-8'}>
         <NavLink to={repository.htmlUrl}
-                 className={
-                   'flex items-center w-fit ' +
+                 className={twMerge(
+                   'flex items-center w-fit',
                    'text-meta text-accent-blue hover:underline'
-                 }
+                 )}
                  target='_blank' rel={'noreferrer'}>
           <ExternalLink className='h-3 w-3 me-1'/> {repository.owner.login}/{repository.name}
         </NavLink>

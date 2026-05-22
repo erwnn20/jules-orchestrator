@@ -1,5 +1,5 @@
-﻿import React, { ReactNode } from 'react';
-import { twMerge } from "tailwind-merge";
+﻿import { twMerge } from '@renderer/utils/tw.utils';
+import React, { ReactNode } from 'react';
 
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
@@ -23,21 +23,21 @@ export default function Button({
                                  className = '',
                                }: ButtonProps) {
   const variantClasses: Record<ButtonVariant, string> = {
-    primary:
-      'bg-primary text-void hover:opacity-90 cursor-pointer ' +
-      'disabled:opacity-35 disabled:cursor-default',
-    secondary:
-      'bg-elevated text-primary-foreground hover:opacity-90 cursor-pointer ' +
-      'disabled:opacity-50 disabled:cursor-default',
-    outline:
-      'border border-border-input text-primary-foreground hover:bg-elevated cursor-pointer ' +
-      'disabled:opacity-50 disabled:cursor-default disabled:hover:bg-transparent',
-    ghost:
-      'text-primary-foreground hover:bg-elevated cursor-pointer ' +
-      'disabled:opacity-35 disabled:cursor-default disabled:hover:bg-transparent',
-    danger:
-      'bg-elevated text-accent-red hover:bg-accent-red/35 cursor-pointer ' +
-      'disabled:opacity-50 disabled:hover:bg-elevated disabled:text-muted disabled:cursor-default',
+    primary: twMerge(
+      'bg-primary text-void hover:opacity-90 cursor-pointer',
+      'disabled:opacity-35 disabled:cursor-default'),
+    secondary: twMerge(
+      'bg-elevated text-primary-foreground hover:opacity-90 cursor-pointer',
+      'disabled:opacity-50 disabled:cursor-default'),
+    outline: twMerge(
+      'border border-border-input text-primary-foreground hover:bg-elevated cursor-pointer',
+      'disabled:opacity-50 disabled:cursor-default disabled:hover:bg-transparent'),
+    ghost: twMerge(
+      'text-primary-foreground hover:bg-elevated cursor-pointer',
+      'disabled:opacity-35 disabled:cursor-default disabled:hover:bg-transparent'),
+    danger: twMerge(
+      'bg-elevated text-accent-red hover:bg-accent-red/35 cursor-pointer',
+      'disabled:opacity-50 disabled:hover:bg-elevated disabled:text-muted disabled:cursor-default'),
   };
 
   const sizeClasses: Record<ButtonSize, string> = {

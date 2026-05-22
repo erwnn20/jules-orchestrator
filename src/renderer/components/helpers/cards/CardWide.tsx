@@ -1,5 +1,5 @@
-﻿import { ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
+﻿import { twMerge } from '@renderer/utils/tw.utils';
+import { ReactNode } from "react";
 
 export default function CardWide({ children, id, className }: {
   children: ReactNode,

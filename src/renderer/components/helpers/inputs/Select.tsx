@@ -1,6 +1,6 @@
+import { twMerge } from '@renderer/utils/tw.utils';
 import { ChevronDown } from 'lucide-react';
 import { forwardRef, SelectHTMLAttributes } from 'react';
-import { twMerge } from "tailwind-merge";
 
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {

@@ -1,5 +1,5 @@
+import { twMerge } from '@renderer/utils/tw.utils';
 import { forwardRef, TextareaHTMLAttributes } from 'react';
-import { twMerge } from "tailwind-merge";
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
