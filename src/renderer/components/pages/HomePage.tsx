@@ -130,7 +130,7 @@ export default function HomePage() {
       error: errorOpenPRs?.message || errorDraftPRs?.message || errorMergedPRs?.message,
       icon: GitPullRequest,
       children: (
-        <div className="flex items-center gap-2 text-label">
+        <div className="flex items-center gap-2 text-label mt-2">
           <span className="text-accent-green">
             {totalMergedPRs}{incompleteMergedPRs ? '+' : ''} merged
           </span>
