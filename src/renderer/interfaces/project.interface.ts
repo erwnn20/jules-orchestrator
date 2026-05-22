@@ -4,7 +4,7 @@ import { ACTIVE_STATES } from "@jules/sessions/session.types";
 import { Source } from "@jules/sources/source.model";
 import { useRepoPRs } from "@renderer/hooks/github/pr.hooks";
 import { useRepoBranches } from "@renderer/hooks/github/repositories.hooks";
-import { useSessionsBySource } from "@renderer/hooks/jules/sources.hooks";
+import { useSessionsBySource, useSources } from "@renderer/hooks/jules/sources.hooks";
 import { UseQueryResult } from "@tanstack/react-query";
 
 
@@ -13,10 +13,12 @@ export class ProjectOptionalRepo {
 
   readonly source?: Source
 
-  constructor(readonly repository?: Repository, sources: Source[] = []) {
+  constructor(readonly repository?: Repository) {
+    const { data: { sources } = { sources: [] } } = useSources()
+
     if (!repository) return
     this.source = sources.find(({ githubRepo: { repo, owner } }) =>
-      repo === repository.name && owner === repository.owner.login)
+      repo === repository.name && owner === repository.owner.login) /* TODO get w useSource (need api err catch) */
   }
 
   get hasJulesAccess() {
@@ -65,8 +67,8 @@ export class ProjectOptionalRepo {
 }
 
 export class Project extends ProjectOptionalRepo {
-  constructor(readonly repository: Repository, sources: Source[] = []) {
-    super(repository, sources)
+  constructor(readonly repository: Repository) {
+    super(repository)
   }
 }
 
