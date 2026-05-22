@@ -8,6 +8,7 @@ import BasePage from "@pages/BasePage";
 import { usePRs } from "@renderer/hooks/github/pr.hooks";
 import { useSessions } from "@renderer/hooks/jules/sessions.hooks";
 import { useSources } from "@renderer/hooks/jules/sources.hooks";
+import { twMerge } from "@renderer/utils/tw.utils";
 import { Property } from "csstype";
 import { formatDistanceToNow, isToday } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -228,29 +229,37 @@ function StatsCard({ children, label, value, info, accent, icon: Icon, isLoading
   )
 }
 
-function ActivityCard({ activity }: { activity: Session }) {
+function ActivityCard({ activity }: { activity: Session }) { /* TODO group in component session card */
+  const {
+    title,
+    prompt,
+    sourceContext: { source, githubRepoContext: { startingBranch } },
+    updateTime
+  } = activity;
+  const [owner, repo] = source.split('/').slice(2);
+
   return (
     <CardWide>
       <SessionStatusDot session={activity}/>
       <div className="flex-1">
         <div className="flex items-center gap-2">
-          <NavLink to={`/${activity.sourceContext.source}`}
+          <NavLink to={`/projects/${owner}/${repo}#${activity.id}`}
                    className="text-base text-accent-blue hover:underline">
-            {activity.sourceContext.source.split("/").slice(2).join("/")}
+            {owner}/{repo}
           </NavLink>
 
           <span className='flex items-center gap-1 text-label text-muted'>
             <GitBranch className='h-2.5 w-2.5'/>
-            {activity.sourceContext.githubRepoContext.startingBranch}
+            {startingBranch}
           </span>
         </div>
         <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
-          {activity.title ?? activity.prompt}
+          {title ?? prompt}
         </p>
       </div>
-      <span className="text-meta text-faint">{formatDistanceToNow(
-        activity.updateTime, { addSuffix: true, locale: fr }
-      )}</span>
+      <span className="text-meta text-faint">
+        {formatDistanceToNow(updateTime, { addSuffix: true, locale: fr })}
+      </span>
     </CardWide>
   )
 }
