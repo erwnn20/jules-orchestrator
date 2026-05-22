@@ -4,8 +4,6 @@ import Input from "@components/helpers/Input";
 import Loader from "@components/helpers/Loader";
 import BasePage from "@pages/BasePage";
 import { useRepositories } from "@renderer/hooks/github/repositories.hooks";
-import { useSources } from "@renderer/hooks/jules/sources.hooks";
-import { Project } from "@renderer/interfaces/project.interface";
 import { Plus, SlidersHorizontal } from "lucide-react";
 
 
@@ -15,11 +13,6 @@ export default function ProjectsPage() {
     isLoading: isRepositoriesLoading,
     error: repositoriesError,
   } = useRepositories({ sort: 'updated', direction: 'desc' /* TODO: implement filters */ })
-  const {
-    data: { sources = [] } = {},
-    isLoading: isSourcesLoading,
-    error: sourcesError,
-  } = useSources()
 
   return (
     <BasePage title='Projects' subtitle={`${repositories.length} repositories GitHub`}>
@@ -34,9 +27,9 @@ export default function ProjectsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[200px]">
         {repositories.map((repo, index) =>
-          <ProjectCard key={index} index={index} project={new Project(repo, sources)}/>)}
+          <ProjectCard key={index} index={index} repository={repo}/>)}
 
-        {isRepositoriesLoading || isSourcesLoading ? (<Loader/>) :
+        {isRepositoriesLoading ? (<Loader/>) :
           (<button
             disabled
             className={

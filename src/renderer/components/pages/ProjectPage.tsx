@@ -18,7 +18,6 @@ import { Session } from "@jules/sessions/session.model";
 import BasePage from "@pages/BasePage";
 import { useRepository } from "@renderer/hooks/github/repositories.hooks";
 import { useCreateSession } from "@renderer/hooks/jules/sessions.hooks";
-import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
@@ -34,7 +33,6 @@ export default function ProjectPage() {
     owner: owner ?? '',
     repo: repo ?? ''
   });
-  const { data: { sources = [] } = {} } = useSources()
 
   const {
     repository,
@@ -44,7 +42,7 @@ export default function ProjectPage() {
     hasJulesAccess,
     agents: agentsQuery,
     activeAgents
-  } = new Project(repositoryData, sources)
+  } = new Project(repositoryData)
 
   const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery()
   const { data: prs = [], isLoading: isPRsLoading } = prsQuery({
