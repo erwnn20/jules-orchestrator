@@ -13,4 +13,5 @@ dist/
 *.txt
 subject.md
 Jules Orchestrator.md
+.claude/
 Claude.md
