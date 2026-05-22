@@ -6,8 +6,6 @@ import { Folder, FolderOpen, House } from "lucide-react";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 
-const DEFAULT_COMPONENT = () => (<></>)
-
 export const routes: Route[] = [
   { path: '/', label: 'Home', icon: House, component: HomePage, isNav: true },
 
