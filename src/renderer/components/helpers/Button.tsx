@@ -51,7 +51,9 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       className={twMerge(
-        'inline-flex items-center justify-center font-semibold transition-all duration-150',
+        'inline-flex items-center justify-center font-semibold',
+        'disabled:pointer-events-none',
+        'transition-all duration-150',
         variantClasses[variant], sizeClasses[size],
         className
       )}>
