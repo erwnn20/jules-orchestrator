@@ -105,17 +105,23 @@ function NavSources({ session }: { session: Session }) {
         'flex items-center gap-1.5 mb-0.5 py-1.5 px-2 rounded-md cursor-pointer bg-transparent',
         isActive && 'bg-elevated'
       )}>
-      <SessionStatusDot session={session}/>
-      <p className={twMerge(
-        'inline-flex items-end gap-2',
-        'text-base text-secondary-foreground text-ellipsis',
-        'whitespace-nowrap overflow-hidden'
-      )}>
-        {repo}
-        <span className='inline-flex items-center gap-1 text-label text-muted'>
+      {({ isActive }) => (<>
+        <SessionStatusDot session={session}/>
+        <p className={twMerge(
+          'inline-flex items-end gap-2',
+          'text-base text-muted text-ellipsis',
+          'whitespace-nowrap overflow-hidden',
+          isActive && 'text-secondary-foreground'
+        )}>
+          {repo}
+          <span className={twMerge(
+            'inline-flex items-center gap-1 text-label text-faint',
+            isActive && 'text-muted'
+          )}>
             <GitBranch className='h-2.5 w-2.5'/> {startingBranch}
         </span>
-      </p>
+        </p>
+      </>)}
     </NavLinkReact>
   )
 }
