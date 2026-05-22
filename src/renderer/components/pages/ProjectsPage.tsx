@@ -4,6 +4,7 @@ import Input from "@components/helpers/Input";
 import Loader from "@components/helpers/Loader";
 import BasePage from "@pages/BasePage";
 import { useRepositories } from "@renderer/hooks/github/repositories.hooks";
+import { twMerge } from "@renderer/utils/tw.utils";
 import { Plus, SlidersHorizontal } from "lucide-react";
 
 
@@ -30,35 +31,27 @@ export default function ProjectsPage() {
           <ProjectCard key={index} index={index} repository={repo}/>)}
 
         {isRepositoriesLoading ? (<Loader/>) :
-          (<button
+          (<Button
             disabled
-            className={
-              "flex flex-col items-center justify-center gap-3 " +
-              "bg-void border border-dashed border-border-hover rounded-lg " +
-              "cursor-pointer " +
-              "hover:border-primary/25 hover:bg-primary/10 " +
-              "transition-colors duration-200 " +
-              "disabled:opacity-50 " +
-              "group"
-            }>
+            variant={"outline"} size={"lg"}
+            className={twMerge(
+              "flex-col gap-3",
+              "hover:bg-primary/10 text-secondary-foreground  hover:text-primary",
+              "border-dashed hover:border-primary/25 hover:bg-primary/10",
+              "transition-colors duration-350",
+              "group",
+            )}>
             <div
-              className={
-                "flex items-center justify-center w-12 h-12 " +
-                "bg-panel border border-border-hover rounded-xl " +
-                "group-hover:border-primary/35 "
-              }>
-              <Plus className={
-                "w-5 h-5 text-secondary-foreground group-hover:text-primary " +
-                "transition-colors duration-200"
-              }/>
+              className={twMerge(
+                "flex items-center justify-center w-12 h-12",
+                "bg-panel",
+                "border border-border-hover group-hover:border-primary/35 rounded-xl",
+                "transition-colors duration-350",
+              )}>
+              <Plus className={"w-5 h-5"}/>
             </div>
-            <span className={
-              "text-subtitle text-primary-foreground group-hover:text-primary " +
-              "transition-colors duration-200"
-            }>
-            Connect Repository (WIP)
-          </span>
-          </button>)}
+            <span className={"text-subtitle"}>Connect Repository (WIP)</span>
+          </Button>)}
       </div>
     </BasePage>
   )
