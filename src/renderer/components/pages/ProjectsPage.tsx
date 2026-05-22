@@ -15,6 +15,8 @@ export default function ProjectsPage() {
     error: repositoriesError,
   } = useRepositories({ sort: 'updated', direction: 'desc' /* TODO: implement filters */ })
 
+  const handleConnectRepository = () => {/* TODO connect new repository to jules */}
+
   return (
     <BasePage title='Projects' subtitle={`${repositories.length} repositories GitHub`}>
 
@@ -25,6 +27,7 @@ export default function ProjectsPage() {
           <SlidersHorizontal className="w-3 h-3"/> Filter
         </Button>
         <Button disabled variant={"outline"}
+                onClick={handleConnectRepository}
                 className={twMerge(
                   'p-2 hover:pe-3',
                   'border-dashed hover:border-primary/25 hover:bg-primary/10',
@@ -50,6 +53,7 @@ export default function ProjectsPage() {
           (<Button
             disabled
             variant={"outline"} size={"lg"}
+            onClick={handleConnectRepository}
             className={twMerge(
               "flex-col gap-3",
               "hover:bg-primary/10 text-secondary-foreground  hover:text-primary",
