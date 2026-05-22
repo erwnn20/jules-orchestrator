@@ -241,7 +241,7 @@ export default function ProjectPage() {
 
 //
 
-function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }: {
+function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }: { /* TODO group in component session card */
   agent: Session,
   repository: Repository,
   hoveredIndex: string | null,
@@ -259,7 +259,7 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
     const id = hash.replace('#', '')
     if (id === agent.id) {
       setHighlighted(true)
-      const timer = setTimeout(() => setHighlighted(false), 1000)
+      const timer = setTimeout(() => setHighlighted(false), 5000)
       return () => clearTimeout(timer)
     }
   }, [agent.id])
@@ -268,7 +268,7 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
     <CardWide id={agent.id} className={twMerge(
       'hover:bg-elevated hover:border-border-hover',
       hovered && 'bg-elevated border-border-hover',
-      highlighted && 'bg-primary/15 border-primary/35 hover:bg-primary/15 hover:border-primary/35',
+      highlighted && 'bg-primary/15 border-primary/35 hover:bg-primary/15 hover:border-primary/35 transition-colors duration-750',
     )}>
       <SessionStatusDot session={agent}/>
       <div className='flex-1'>

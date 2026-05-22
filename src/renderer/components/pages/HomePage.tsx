@@ -204,7 +204,12 @@ function StatsCard({ children, label, value, info, accent, icon: Icon, isLoading
 }) {
   return (
     <div
-      className="bg-panel border border-border-color rounded-lg px-5 py-4 hover:border-border-hover transition-colors duration-150">
+      className={twMerge(
+        'px-5 py-4',
+        'bg-panel border hover:bg-elevated',
+        'border-border-color hover:border-border-hover rounded-lg',
+        'transition-colors duration-350',
+      )}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className='w-8 h-8 rounded-md flex items-center justify-center'
