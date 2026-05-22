@@ -1,10 +1,10 @@
 ﻿import Badge from "@components/helpers/Badge";
 import CardWide from "@components/helpers/cards/CardWide";
 import StatusDot, { DotStatus, statusColors } from "@components/helpers/dots/StatusDot";
-import { Project } from "@renderer/interfaces/project.interface";
+import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Image } from "lucide-react";
+import { Image, TriangleAlert } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { NavLink } from "react-router";
 
@@ -24,6 +24,13 @@ function ProjectCardBase({ children, project, isFirst }: {
 
   const numberActiveAgents = activeAgents.length
   const { data: prs = [], isLoading: isPRsLoading } = prsQuery()
+
+  if (!repository) return (
+    <div className='flex text-base text-faint'>
+      <TriangleAlert className="w-4 h-4 mr-1 text-accent-orange"/>
+      Repository introuvable ou pas encore chargé.
+    </div>
+  )
 
   return (
     <NavLink
@@ -71,9 +78,16 @@ function ProjectCardFirst({ project }: { project: Project }) {
 
   const numberActiveAgents = activeAgents.length
 
-  const img = repository.owner.avatarUrl
+  const img = repository?.owner.avatarUrl
   const [imgError, setImgError] = useState(false)
   const [imgLoading, setImgLoading] = useState(true)
+
+  if (!repository) return (
+    <div className='flex text-base text-faint'>
+      <TriangleAlert className="w-4 h-4 mr-1 text-accent-orange"/>
+      Repository introuvable ou pas encore chargé.
+    </div>
+  )
 
   return (
     <ProjectCardBase project={project} isFirst={true}>
@@ -144,9 +158,16 @@ function ProjectCardDefault({ project }: { project: Project }) {
 
   const numberActiveAgents = activeAgents.length
 
-  const img = repository.owner.avatarUrl
+  const img = repository?.owner.avatarUrl
   const [imgError, setImgError] = useState(false)
   const [imgLoading, setImgLoading] = useState(true)
+
+  if (!repository) return (
+    <div className='flex text-base text-faint'>
+      <TriangleAlert className="w-4 h-4 mr-1 text-accent-orange"/>
+      Repository introuvable ou pas encore chargé.
+    </div>
+  )
 
   return (
     <ProjectCardBase project={project} isFirst={false}>
@@ -195,6 +216,13 @@ function ProjectCardWide({ project }: { project: Project }) {
 
   const numberActiveAgents = activeAgents.length
   const { data: prs = [], isLoading: isPRsLoading, error: prsError } = prsQuery()
+
+  if (!repository) return (
+    <div className='flex text-base text-faint'>
+      <TriangleAlert className="w-4 h-4 mr-1 text-accent-orange"/>
+      Repository introuvable ou pas encore chargé.
+    </div>
+  )
 
   return (
     <NavLink to={`/projects/${repository.owner.login}/${repository.name}`} className={'group'}>
