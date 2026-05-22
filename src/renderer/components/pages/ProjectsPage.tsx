@@ -24,6 +24,22 @@ export default function ProjectsPage() {
                 className={'gap-2 bg-elevated hover:border-border-hover'}>
           <SlidersHorizontal className="w-3 h-3"/> Filter
         </Button>
+        <Button disabled variant={"outline"}
+                className={twMerge(
+                  'p-2 hover:pe-3',
+                  'border-dashed hover:border-primary/25 hover:bg-primary/10',
+                  'text-secondary-foreground hover:text-primary',
+                  'transition-all duration-350',
+                  'group'
+                )}>
+          <span className={twMerge(
+            'max-w-0 overflow-hidden whitespace-nowrap duration-500',
+            'group-hover:px-2 group-hover:max-w-24',
+          )}>
+            Connect New
+          </span>
+          <Plus className={'w-5 h-5'}/>
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[200px]">
