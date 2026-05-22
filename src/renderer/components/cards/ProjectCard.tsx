@@ -1,6 +1,7 @@
 ﻿import Badge from "@components/helpers/Badge";
 import CardWide from "@components/helpers/cards/CardWide";
 import StatusDot, { DotStatus, statusColors } from "@components/helpers/dots/StatusDot";
+import { Repository } from "@github/repositories/repository.model";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -9,7 +10,13 @@ import { ReactNode, useState } from "react";
 import { NavLink } from "react-router";
 
 
-export default function ProjectCard({ index, project }: { index: number, project: Project }) {
+export default function ProjectCard({ index, ...args }: { index: number } & (
+  { repository: Repository } | { project: Project }
+  )) {
+  const repository = 'repository' in args ? args.repository : undefined
+  const pjct = 'project' in args ? args.project : undefined
+  const project = pjct || new Project(repository)
+
   if (index === 0)
     return <ProjectCardFirst project={project}/>
   return <ProjectCardDefault project={project}/>
