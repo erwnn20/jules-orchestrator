@@ -8,6 +8,15 @@ import { useSessionsBySource, useSources } from "@renderer/hooks/jules/sources.h
 import { UseQueryResult } from "@tanstack/react-query";
 
 
+type BranchMatcher = string | RegExp | ((branch: ProjectBranch) => boolean)
+type BranchPriorityMap = Record<number, BranchMatcher | BranchMatcher[]>
+
+export const DEFAULT_BRANCH_PRIORITIES: BranchPriorityMap = {
+  0: (branch: ProjectBranch) => !!branch.isDefault,
+  1: ['main', 'master'],
+  2: 'dev',
+}
+
 export class ProjectOptionalRepo {
   static readonly MAX_PR = 9
 
@@ -35,7 +44,11 @@ export class ProjectOptionalRepo {
   }
 
   branches =
-    (args: Omit<Parameters<typeof useRepoBranches>[0], 'repo' | 'owner'> = {}): UseQueryResult<ProjectBranch[]> => {
+    ({ branchPriorities = DEFAULT_BRANCH_PRIORITIES, ...args }:
+       Omit<Parameters<typeof useRepoBranches>[0], 'repo' | 'owner'> & {
+       branchPriorities?: BranchPriorityMap
+     } = {}
+    ): UseQueryResult<ProjectBranch[]> => {
       const query = useRepoBranches({
         repo: this.repository?.name ?? '',
         owner: this.repository?.owner.login ?? '',
@@ -44,16 +57,31 @@ export class ProjectOptionalRepo {
 
       if (!query.data || !this.repository) return query
 
+      const match = (branch: ProjectBranch, matcher: BranchMatcher): boolean => {
+        if (typeof matcher === 'function') return matcher(branch)
+
+        else if (matcher instanceof RegExp) return matcher.test(branch.name)
+
+        else if (matcher.endsWith('*'))
+          return branch.name.startsWith(matcher.slice(0, -1))
+
+        else return branch.name === matcher
+      }
+
+      const rank = (branch: ProjectBranch): number => {
+        for (const [priority, matchers] of Object.entries(branchPriorities)) {
+          const matchersList = Array.isArray(matchers) ? matchers : [matchers]
+          for (const matcher of matchersList) if (match(branch, matcher)) return Number(priority)
+        }
+        return Infinity
+      }
+
       const sorted = [...query.data]
       .map((branch: Branch): ProjectBranch => ({
         ...branch,
         isDefault: branch.name === this.repository?.defaultBranch
       }))
-      .sort((a, b) => {
-        if (a.isDefault) return -1
-        if (b.isDefault) return 1
-        return 0 // TODO fix desired order
-      })
+      .sort((a, b) => rank(a) - rank(b))
 
       return { ...query, data: sorted }
     }
