@@ -18,10 +18,7 @@ import { Session } from "@jules/sessions/session.model";
 import BasePage from "@pages/BasePage";
 import { useRepository } from "@renderer/hooks/github/repositories.hooks";
 import { useCreateSession } from "@renderer/hooks/jules/sessions.hooks";
-import {
-  DEFAULT_BRANCH_PRIORITIES,
-  ProjectOptionalRepo as Project
-} from "@renderer/interfaces/project.interface";
+import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -48,7 +45,7 @@ export default function ProjectPage() {
   } = new Project(repositoryData)
 
   const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery({
-    branchPriorities: { ...DEFAULT_BRANCH_PRIORITIES, 3: 'jules*' }
+    branchFilter: { exclude: /^.+-\d+[a-f0-9]*$/ },
   })
   const { data: prs = [], isLoading: isPRsLoading } = prsQuery({
     sort: 'updated',
