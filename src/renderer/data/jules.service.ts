@@ -13,6 +13,7 @@ import type { Source } from "@jules/sources/source.model";
 
 
 export abstract class JulesService {
+  static readonly DAILY_SESSION_LIMIT = 15; /*TODO get limit by Jules API*/
 
   static getSource: (id: string) => Promise<Source> = window.api.jules.source.get;
   static getSources: (pagination?: Pagination) => Promise<ListSources> = window.api.jules.source.list;

@@ -3,6 +3,7 @@ import Loader from "@components/helpers/Loader";
 import ThemeToggle from "@components/ThemeToggle";
 import { Session } from "@jules/sessions/session.model";
 import { routes } from "@renderer/config/routes.config";
+import { JulesService } from "@renderer/data/jules.service";
 import { useSessions } from "@renderer/hooks/jules/sessions.hooks";
 import { Route } from "@renderer/interfaces/route.interface";
 import { version } from '@renderer/package.json';
@@ -14,12 +15,11 @@ import { NavLink as NavLinkReact } from 'react-router-dom'
 export default function Sidebar() {
   const navRoutes = routes.filter(route => route.isNav)
 
-  const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
   const {
     data: { sessions } = { sessions: [] },
     isLoading: isSessionsLoading,
     error: errorSessions
-  } = useSessions({ pageSize: dailySessionsLimit })
+  } = useSessions({ pageSize: JulesService.DAILY_SESSION_LIMIT })
 
   const sessionsBySource =
     sessions.reduce((acc, session) => {

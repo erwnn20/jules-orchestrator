@@ -5,6 +5,7 @@ import Section from "@components/Section";
 import { Session } from "@jules/sessions/session.model";
 import { ACTIVE_STATES, SessionState, WAITING_STATES } from "@jules/sessions/session.types";
 import BasePage from "@pages/BasePage";
+import { JulesService } from "@renderer/data/jules.service";
 import { usePRs } from "@renderer/hooks/github/pr.hooks";
 import { useSessions } from "@renderer/hooks/jules/sessions.hooks";
 import { useSources } from "@renderer/hooks/jules/sources.hooks";
@@ -57,12 +58,11 @@ export default function HomePage() {
     error: sourcesError
   } = useSources();
 
-  const dailySessionsLimit = 15; /*TODO get limit by Jules API*/
   const {
     data: { sessions: sessionsData } = { sessions: [] },
     isLoading: isSessionsLoading,
     error: sessionsError
-  } = useSessions({ pageSize: dailySessionsLimit })
+  } = useSessions({ pageSize: JulesService.DAILY_SESSION_LIMIT })
   const sessions = sessionsData.reduce(
     (acc, session) => {
       if (isToday(session.updateTime)) acc.today.push(session);
@@ -74,7 +74,7 @@ export default function HomePage() {
     },
     { today: [] as Session[], record: {} as Partial<Record<SessionState, Session[]>> }
   );
-  const dailySessionsUsage = sessions.today.length / dailySessionsLimit;
+  const dailySessionsUsage = sessions.today.length / JulesService.DAILY_SESSION_LIMIT;
 
   const inProgressCount = sessions.record[SessionState.IN_PROGRESS]?.length ?? 0
   const waitingCount = WAITING_STATES.reduce((acc, state) => acc + (sessions.record[state]?.length ?? 0), 0)
@@ -105,7 +105,7 @@ export default function HomePage() {
     {
       label: 'Sessions du Jour',
       value: sessions.today.length,
-      info: `/${dailySessionsLimit}`,
+      info: `/${JulesService.DAILY_SESSION_LIMIT}`,
       accent: 'var(--color-accent-gray)',
       icon: Activity,
       children: (
