@@ -134,12 +134,19 @@ export class GithubController extends BaseController<Octokit> {
                            repo,
                            pull_number,
                            merge_method = 'merge',
+                           deleteBranch = false,
                            ...args
                          }: AcceptPRRequest): Promise<AcceptPRResponse> {
+    const headRef = deleteBranch
+      ? (await this.client.rest.pulls.get({ owner, repo, pull_number })).data.head.ref
+      : null
+
     const { data } = await this.client.rest.pulls.merge({
       owner, repo, pull_number, merge_method, ...args
     })
-    /* TODO: add optional delete branch */
+
+    if (deleteBranch && headRef)
+      await this.client.rest.git.deleteRef({ owner, repo, ref: `heads/${headRef}` })
 
     return data
   }

@@ -37,6 +37,7 @@ export type AcceptPRRequest = GetPRRequest & {
   commit_title: string
   commit_message?: string
   merge_method?: MergeMethod
+  deleteBranch?: boolean
 }
 
 export type AcceptPRResponse = RestEndpointMethodTypes["pulls"]["merge"]["response"]["data"]
