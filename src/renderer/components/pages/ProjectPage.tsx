@@ -1,8 +1,7 @@
 ﻿import { PullRequestCard } from "@components/cards/PullRequestCard";
+import { SessionCard } from "@components/cards/SessionCard";
 import Badge from "@components/helpers/Badge";
 import Button from "@components/helpers/Button";
-import CardWide from "@components/helpers/cards/CardWide";
-import SessionStatusDot from "@components/helpers/dots/SessionStatusDot";
 import Input from "@components/helpers/Input";
 import Select from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";
@@ -242,7 +241,7 @@ export default function ProjectPage() {
 
 //
 
-function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }: { /* TODO group in component session card */
+function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }: {
   agent: Session,
   repository: Repository,
   hoveredIndex: string | null,
@@ -266,36 +265,33 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
   }, [agent.id])
 
   return (
-    <CardWide id={agent.id} className={twMerge(
+    <SessionCard
+      session={agent} id={agent.id} className={twMerge(
       'hover:bg-elevated hover:border-border-hover',
       hovered && 'bg-elevated border-border-hover',
       highlighted && 'bg-primary/15 border-primary/35 hover:bg-primary/15 hover:border-primary/35 transition-colors duration-750',
-    )}>
-      <SessionStatusDot session={agent}/>
-      <div className='flex-1'>
-        <span className='mb-1 text-subtitle text-primary-foreground font-medium'>
-          {agent.title ?? agent.prompt}
-        </span>
-        <div className='flex items-center gap-1 text-label text-muted'>
+    )}
+      contents={{
+        title: agent.title ?? agent.prompt,
+        subtitle: (
           <div className='flex items-center gap-1'>
             {!headRef && 'from'} <GitBranch className='h-3 w-3'/> {baseRef}
-          </div>
-          {headRef && (<>
-            <span className="text-faint">→</span>
-            <div className='flex items-center gap-1'>
-              <GitBranchPlus className='h-3 w-3'/> {headRef}
-            </div>
-          </>)}
-        </div>
-      </div>
-      <div className='flex items-center-safe gap-2.5'>
-        <Link to={agent.url} text={'conversation'}/>
-        {headRef && (<>
-          <span className='border-l border-border-color h-5'/>
-          <Link to={`${repoUrl}/tree/${headRef}`} text={'branche'}/>
-        </>)}
-      </div>
-    </CardWide>
+            {headRef && (<>
+              <span className="text-ghost">→</span>
+              <div className='flex items-center gap-1'>
+                <GitBranchPlus className='h-3 w-3'/> {headRef}
+              </div>
+            </>)}
+          </div>),
+        end: (
+          <div className='flex items-center-safe gap-2.5'>
+            <Link to={agent.url} text={'conversation'}/>
+            {headRef && (<>
+              <span className='border-l border-border-color h-5'/>
+              <Link to={`${repoUrl}/tree/${headRef}`} text={'branche'}/>
+            </>)}
+          </div>),
+      }}/>
   )
 }
 
