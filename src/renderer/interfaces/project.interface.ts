@@ -50,9 +50,15 @@ export class ProjectOptionalRepo {
     }
   }
 
-  get activeAgents() {
-    const { data: agents = [] } = this.agents
-    return agents.filter(({ state }) => ACTIVE_STATES.includes(state))
+  get activeAgents(): UseQueryResult<Session[]> {
+    const query = this.agents
+
+    if (!query.data) return query
+
+    return {
+      ...query,
+      data: [...query.data].filter(({ state }) => ACTIVE_STATES.includes(state)) // TODO: check err no agent find
+    }
   }
 
   branches =

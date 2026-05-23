@@ -27,7 +27,12 @@ function ProjectCardBase({ children, project, isFirst }: {
   project: Project,
   isFirst: boolean
 }) {
-  const { repository, hasJulesAccess, activeAgents, prs: prsQuery } = project
+  const {
+    repository,
+    hasJulesAccess,
+    activeAgents: { data: activeAgents = [] },
+    prs: prsQuery
+  } = project
 
   const numberActiveAgents = activeAgents.length
   const { data: prs = [], isLoading: isPRsLoading } = prsQuery()
@@ -81,7 +86,11 @@ function ProjectCardBase({ children, project, isFirst }: {
 }
 
 function ProjectCardFirst({ project }: { project: Project }) {
-  const { repository, hasJulesAccess, activeAgents } = project
+  const { // TODO refactor
+    repository,
+    hasJulesAccess,
+    activeAgents: { data: activeAgents = [] },
+  } = project
 
   const numberActiveAgents = activeAgents.length
 
@@ -161,7 +170,11 @@ function ProjectCardFirst({ project }: { project: Project }) {
 }
 
 function ProjectCardDefault({ project }: { project: Project }) {
-  const { repository, hasJulesAccess, activeAgents } = project
+  const { // TODO refactor
+    repository,
+    hasJulesAccess,
+    activeAgents: { data: activeAgents = [] },
+  } = project
 
   const numberActiveAgents = activeAgents.length
 
@@ -219,7 +232,12 @@ function ProjectCardDefault({ project }: { project: Project }) {
 }
 
 function ProjectCardWide({ project }: { project: Project }) {
-  const { repository, hasJulesAccess, activeAgents, prs: prsQuery } = project
+  const {
+    repository,
+    hasJulesAccess,
+    activeAgents: { data: activeAgents = [] },
+    prs: prsQuery
+  } = project
 
   const numberActiveAgents = activeAgents.length
   const { data: prs = [], isLoading: isPRsLoading, error: prsError } = prsQuery()

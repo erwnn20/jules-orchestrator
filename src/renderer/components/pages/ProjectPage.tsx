@@ -41,7 +41,7 @@ export default function ProjectPage() {
     source,
     hasJulesAccess,
     agents: agentsQuery,
-    activeAgents
+    activeAgents: { data: activeAgents = [] },
   } = new Project(repositoryData)
 
   const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery({
