@@ -9,6 +9,10 @@ import { UseQueryResult } from "@tanstack/react-query";
 
 
 type BranchMatcher = string | RegExp | ((branch: ProjectBranch) => boolean)
+type BranchFilterMap = {
+  include?: BranchMatcher | BranchMatcher[]
+  exclude?: BranchMatcher | BranchMatcher[]
+}
 type BranchPriorityMap = Record<number, BranchMatcher | BranchMatcher[]>
 
 export const DEFAULT_BRANCH_PRIORITIES: BranchPriorityMap = {
@@ -44,8 +48,9 @@ export class ProjectOptionalRepo {
   }
 
   branches =
-    ({ branchPriorities = DEFAULT_BRANCH_PRIORITIES, ...args }:
+    ({ branchFilter = {}, branchPriorities = DEFAULT_BRANCH_PRIORITIES, ...args }:
        Omit<Parameters<typeof useRepoBranches>[0], 'repo' | 'owner'> & {
+       branchFilter?: BranchFilterMap
        branchPriorities?: BranchPriorityMap
      } = {}
     ): UseQueryResult<ProjectBranch[]> => {
@@ -81,6 +86,13 @@ export class ProjectOptionalRepo {
         ...branch,
         isDefault: branch.name === this.repository?.defaultBranch
       }))
+      .filter(branch => {
+        const { include, exclude } = branchFilter
+        const includeList = include ? (Array.isArray(include) ? include : [include]) : null
+        const excludeList = exclude ? (Array.isArray(exclude) ? exclude : [exclude]) : null
+        return (!includeList || includeList.some(m => match(branch, m)))
+          && (!excludeList || !excludeList.some(m => match(branch, m)))
+      })
       .sort((a, b) => rank(a) - rank(b))
 
       return { ...query, data: sorted }
