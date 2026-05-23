@@ -1,5 +1,6 @@
 ﻿import { Branch } from "@github/branch/branch.interfaces";
 import { Repository } from "@github/repositories/repository.model";
+import { Session } from "@jules/sessions/session.model";
 import { ACTIVE_STATES } from "@jules/sessions/session.types";
 import { Source } from "@jules/sources/source.model";
 import { useRepoPRs } from "@renderer/hooks/github/pr.hooks";
@@ -38,8 +39,15 @@ export class ProjectOptionalRepo {
     return !!this.source
   }
 
-  get agents() {
-    return useSessionsBySource(this.source?.id ?? '')
+  get agents(): UseQueryResult<Session[]> {
+    const query = useSessionsBySource(this.source?.id ?? '')
+
+    if (!query.data) return query
+
+    return {
+      ...query,
+      data: [...query.data].sort((a, b) => b.updateTime.getTime() - a.updateTime.getTime()),
+    }
   }
 
   get activeAgents() {
