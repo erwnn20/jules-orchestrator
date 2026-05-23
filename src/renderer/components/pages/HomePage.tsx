@@ -1,5 +1,5 @@
+import { SessionCard } from "@components/cards/SessionCard";
 import CardWide from "@components/helpers/cards/CardWide";
-import SessionStatusDot from "@components/helpers/dots/SessionStatusDot";
 import Loader from "@components/helpers/Loader";
 import Section from "@components/Section";
 import { Session } from "@jules/sessions/session.model";
@@ -234,7 +234,7 @@ function StatsCard({ children, label, value, info, accent, icon: Icon, isLoading
   )
 }
 
-function ActivityCard({ activity }: { activity: Session }) { /* TODO group in component session card */
+function ActivityCard({ activity }: { activity: Session }) {
   const {
     title,
     prompt,
@@ -244,27 +244,20 @@ function ActivityCard({ activity }: { activity: Session }) { /* TODO group in co
   const [owner, repo] = source.split('/').slice(2);
 
   return (
-    <CardWide>
-      <SessionStatusDot session={activity}/>
-      <div className="flex-1">
+    <SessionCard session={activity} contents={{
+      title: (
         <div className="flex items-center gap-2">
           <NavLink to={`/projects/${owner}/${repo}#${activity.id}`}
-                   className="text-base text-accent-blue hover:underline">
+                   className="text-accent-blue hover:underline">
             {owner}/{repo}
           </NavLink>
 
-          <span className='flex items-center gap-1 text-label text-muted'>
-            <GitBranch className='h-2.5 w-2.5'/>
-            {startingBranch}
-          </span>
-        </div>
-        <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
-          {title ?? prompt}
-        </p>
-      </div>
-      <span className="text-meta text-faint">
-        {formatDistanceToNow(updateTime, { addSuffix: true, locale: fr })}
-      </span>
-    </CardWide>
+          <p className='flex items-center gap-1 text-label text-faint'>
+            <GitBranch className='h-2.5 w-2.5'/> {startingBranch}
+          </p>
+        </div>),
+      subtitle: title ?? prompt,
+      end: formatDistanceToNow(updateTime, { addSuffix: true, locale: fr })
+    }}/>
   )
 }
