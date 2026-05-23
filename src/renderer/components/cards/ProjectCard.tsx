@@ -89,9 +89,11 @@ function ProjectCardFirst({ project }: { project: Project }) {
   const { // TODO refactor
     repository,
     hasJulesAccess,
+    agents: { data: agents = [] },
     activeAgents: { data: activeAgents = [] },
   } = project
 
+  const description = repository?.description ?? (agents[0] ? `Last session: ${agents[0]?.title ?? agents[0]?.prompt}` : null);
   const numberActiveAgents = activeAgents.length
 
   const img = repository?.owner.avatarUrl
@@ -162,7 +164,7 @@ function ProjectCardFirst({ project }: { project: Project }) {
           "text-base text-secondary-foreground leading-relaxed " +
           "line-clamp-3 text-ellipsis"
         }>
-          {repository.description}
+          {description ?? <span className="text-ghost italic">No description</span>}
         </p>
       </div>
     </ProjectCardBase>
@@ -173,9 +175,11 @@ function ProjectCardDefault({ project }: { project: Project }) {
   const { // TODO refactor
     repository,
     hasJulesAccess,
+    agents: { data: agents = [] },
     activeAgents: { data: activeAgents = [] },
   } = project
 
+  const description = repository?.description ?? (agents[0] ? `Last session: ${agents[0]?.title ?? agents[0]?.prompt}` : null);
   const numberActiveAgents = activeAgents.length
 
   const img = repository?.owner.avatarUrl
@@ -224,7 +228,7 @@ function ProjectCardDefault({ project }: { project: Project }) {
           "text-meta text-secondary-foreground leading-relaxed " +
           "line-clamp-4 text-ellipsis"
         }>
-          {repository.description /* TODO: si vide remplacer par autre chose ? */}
+          {description ?? <span className="text-ghost italic">No description</span>}
         </p>
       </div>
     </ProjectCardBase>
