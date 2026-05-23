@@ -96,8 +96,7 @@ export default function ProjectPage() {
   }
 
   useEffect(() => {
-    if (branches.length > 0 && baseBranch === '')
-      setBaseBranch(branches.find(branch => branch.isDefault)?.name ?? branches[0].name)
+    if (branches.length > 0 && baseBranch === '') setBaseBranch(branches[0].name)
   }, [branches, baseBranch])
 
   const [activeAgentsOnly, setActiveAgentsOnly] = useState(true)
