@@ -1,39 +1,52 @@
-﻿import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 
-type Theme = 'dark' | 'light'
+export type Theme = ResolvedTheme | 'system'
+type ResolvedTheme = 'dark' | 'light'
 
 interface ThemeContextValue {
   theme: Theme
-  toggleTheme: () => void
+  resolvedTheme: ResolvedTheme
+  setTheme: (theme: Theme) => void
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: 'dark',
-  toggleTheme: () => {},
+  theme: 'system',
+  resolvedTheme: 'dark',
+  setTheme: () => {},
 })
 
+const STORAGE_KEY = 'orchestrator-theme'
+
+function getSystemTheme(): ResolvedTheme {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    return 'dark'
-    // return (localStorage.getItem('jules-theme') as Theme) ?? 'dark' TODO
-  })
+  const [theme, setThemeState] = useState<Theme>(
+    () => (localStorage.getItem(STORAGE_KEY) as Theme) ?? 'system'
+  )
+  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(getSystemTheme)
 
   useEffect(() => {
-    const root = document.documentElement
-    if (theme === 'light') {
-      root.classList.add('light')
-    } else {
-      root.classList.remove('light')
-    }
-    localStorage.setItem('jules-theme', theme)
-  }, [theme])
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const handler = (e: MediaQueryListEvent) => setSystemTheme(e.matches ? 'dark' : 'light')
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
-  function toggleTheme() {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'))
+  const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('light', resolvedTheme === 'light')
+  }, [resolvedTheme])
+
+  const setTheme = (next: Theme) => {
+    setThemeState(next)
+    localStorage.setItem(STORAGE_KEY, next)
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   )
