@@ -69,8 +69,8 @@ export default function Sidebar() {
           </>)}
       </div>
 
-      <div className='px-3 py-2 border-t border-t-border-color'> {/*TODO*/}
-        <ThemeToggle/>
+      <div className='flex px-3.5 py-3'>
+        <ThemeToggle className='opacity-65 hover:opacity-100 transition-opacity duration-350'/>
       </div>
     </aside>
   )
