@@ -58,7 +58,7 @@ export default function Sidebar() {
 
       {/* Recent projects */}
       <div className='px-2 py-3 flex-1 overflow-y-auto'>
-        {isSessionsLoading ? <Loader/> /*TODO fix */ :
+        {isSessionsLoading ? <Loader/> :
           !errorSessions && recentsSessions.length > 0 && (<>
             <p className='pb-1 px-1 text-label text-muted uppercase tracking-wider'>
               RÉCENTS
