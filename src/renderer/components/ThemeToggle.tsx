@@ -8,11 +8,12 @@ const OPTIONS: { label: string; value: Theme; icon: LucideIcon }[] = [
   { label: 'Dark', value: 'dark', icon: Moon },
 ]
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ className = '' }: { className?: string, }) {
   const { theme, setTheme } = useTheme()
 
   return (
     <RadioToggle
+      className={className}
       name="theme-toggle"
       inputs={OPTIONS.map(({ label, value, icon }) => ({
         label,
