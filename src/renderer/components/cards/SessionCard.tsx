@@ -4,7 +4,7 @@ import { Session } from "@jules/sessions/session.model";
 import { ReactNode } from "react";
 
 
-export function SessionCard({ session, id, className = '', contents: { title, subtitle, end } }: {
+export default function SessionCard({ session, id, className = '', contents: { title, subtitle, end } }: {
   session: Session,
   contents: {
     title: ReactNode,

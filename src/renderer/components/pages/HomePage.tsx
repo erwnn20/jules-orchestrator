@@ -1,4 +1,4 @@
-import { SessionCard } from "@components/cards/SessionCard";
+import SessionCard from "@components/cards/SessionCard";
 import CardWide from "@components/helpers/cards/CardWide";
 import Loader from "@components/helpers/Loader";
 import Section from "@components/Section";

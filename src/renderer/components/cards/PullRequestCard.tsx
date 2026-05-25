@@ -6,7 +6,7 @@ import { PullRequest } from "@github/pr/pr.model";
 import { GitBranch, GitMerge } from "lucide-react";
 
 
-export function PullRequestCard({ pr, style = 'wide', className = '' }: {
+export default function PullRequestCard({ pr, style = 'wide', className = '' }: {
   pr: PullRequest | PullRequestList,
   style?: 'wide',
   className?: string,

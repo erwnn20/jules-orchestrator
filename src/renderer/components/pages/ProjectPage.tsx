@@ -1,5 +1,5 @@
-﻿import { PullRequestCard } from "@components/cards/PullRequestCard";
-import { SessionCard } from "@components/cards/SessionCard";
+﻿import PullRequestCard from "@components/cards/PullRequestCard";
+import SessionCard from "@components/cards/SessionCard";
 import Badge from "@components/helpers/Badge";
 import Button from "@components/helpers/Button";
 import Input from "@components/helpers/Input";
