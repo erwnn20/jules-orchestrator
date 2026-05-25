@@ -5,15 +5,14 @@ import Loader from "@components/helpers/Loader";
 import BasePage from "@pages/BasePage";
 import { useRepositories } from "@renderer/hooks/github/repositories.hooks";
 import { twMerge } from "@renderer/utils/tw.utils";
-import { Plus, SlidersHorizontal } from "lucide-react";
+import { Plus, SlidersHorizontal, TriangleAlert } from "lucide-react";
 
 
 export default function ProjectsPage() {
-  const {
-    data: repositories = [],
-    isLoading: isRepositoriesLoading,
-    error: repositoriesError,
-  } = useRepositories({ sort: 'updated', direction: 'desc' /* TODO: implement filters */ })
+  const { data: repositories = [], isLoading, error } = useRepositories({
+    sort: 'updated',
+    direction: 'desc' /* TODO: implement filters */
+  })
 
   const handleConnectRepository = () => {/* TODO connect new repository to jules */}
 
@@ -49,7 +48,21 @@ export default function ProjectsPage() {
         {repositories.map((repo, index) =>
           <ProjectCard key={index} index={index} repository={repo}/>)}
 
-        {isRepositoriesLoading ? (<Loader/>) :
+        {error && (
+          <div className={twMerge(
+            'flex flex-col gap-2 p-5',
+            'bg-panel', 'border border-border-color rounded-lg',
+            'transition-colors duration-350',
+          )}>
+            <p className={'flex items-center gap-1 text-base text-accent-red'}>
+              <TriangleAlert className="w-4 h-4 mr-1"/>
+              Error {error.name !== 'Error' && `: ${error.name}`}
+            </p>
+            <p className={'text-base text-faint text-ellipsis overflow-hidden'}>
+              {error.message}
+            </p>
+          </div>)}
+        {isLoading ? (<Loader/>) :
           (<Button
             disabled
             variant={"outline"} size={"lg"}
