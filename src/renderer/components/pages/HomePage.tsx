@@ -1,5 +1,5 @@
+import ErrorCard from "@components/cards/ErrorCard";
 import SessionCard from "@components/cards/SessionCard";
-import CardWide from "@components/helpers/cards/CardWide";
 import Loader from "@components/helpers/Loader";
 import Section from "@components/Section";
 import { Session } from "@jules/sessions/session.model";
@@ -13,15 +13,7 @@ import { twMerge } from "@renderer/utils/tw.utils";
 import { Property } from "csstype";
 import { formatDistanceToNow, isToday } from "date-fns";
 import { fr } from "date-fns/locale";
-import {
-  Activity,
-  Bot,
-  Folders,
-  GitBranch,
-  GitPullRequest,
-  LucideIcon,
-  TriangleAlert
-} from "lucide-react";
+import { Activity, Bot, Folders, GitBranch, GitPullRequest, LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
 import { NavLink } from "react-router";
 
@@ -174,17 +166,7 @@ export default function HomePage() {
           ))}
         </div>
         {isSessionsLoading && <Loader/>}
-        {sessionsError && (
-          <CardWide>
-            <div className="flex-1">
-              <span className='flex items-center gap-1 text-base text-accent-red'>
-                <TriangleAlert className='h-4 w-4'/> Error : {sessionsError.name}
-              </span>
-              <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
-                {sessionsError.message}
-              </p>
-            </div>
-          </CardWide>)}
+        {sessionsError && <ErrorCard error={sessionsError}/>}
       </Section>
     </BasePage>
   )
