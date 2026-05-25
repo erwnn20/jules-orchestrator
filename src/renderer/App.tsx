@@ -1,19 +1,7 @@
-import Sidebar from "@components/Sidebar";
-import { routes } from "@renderer/config/routes.config";
-import { Route, Routes } from "react-router";
+import { router } from "@renderer/config/routes.config";
+import { RouterProvider } from "react-router-dom";
 
 
 export default function App() {
-  return (
-    <div className="flex h-screen bg-void text-primary-foreground">
-      <Sidebar/>
-      <main className="flex-1 overflow-y-auto">
-        <Routes>
-          {routes.map(({ path, component: Component }) => (
-            <Route key={path} path={path} element={<Component/>}/>)
-          )}
-        </Routes>
-      </main>
-    </div>
-  )
+  return <RouterProvider router={router}/>
 }
