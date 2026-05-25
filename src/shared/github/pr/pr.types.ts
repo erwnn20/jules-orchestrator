@@ -1,4 +1,4 @@
-﻿const FREE = Symbol('free')
+const FREE = Symbol('free')
 
 const QUERY_VALUES = {
   is: ['open', 'closed', 'merged', 'draft'],
@@ -6,36 +6,33 @@ const QUERY_VALUES = {
   author: ['@me', FREE],
   assignee: ['@me', FREE],
   'review-requested': ['@me'],
-  repo: [FREE], /* todo: error */
-  user: [FREE], /* todo: error */
-  label: [FREE], /* todo: error */
+  repo: [FREE],
+  user: [FREE],
+  label: [FREE],
 } as const
 type QueryValues = typeof QUERY_VALUES
 
-type QueryPatterns = {
+type HasFreeValue = {
+  [K in keyof QueryValues]: (typeof FREE) extends QueryValues[K][number] ? K : never
+}[keyof QueryValues]
+
+type DefineQueryPatterns<T extends Partial<Record<HasFreeValue, string>>> = T
+type QueryPatterns = DefineQueryPatterns<{
   repo: `${string}/${string}`
-} /*TODO: precise w HasFreeValue*/
+}>
 
 type FreePattern<K extends keyof QueryValues> = K extends keyof QueryPatterns
   ? QueryPatterns[K]
   : string
 
+type StrictValues<T extends ReadonlyArray<unknown>> =
+  T[number] extends typeof FREE ? never : Exclude<T[number], typeof FREE>
+
 export type QueryParam = {
   [K in keyof QueryValues]: Extract<QueryValues[K][number], typeof FREE> extends never
     ? `${K}:${StrictValues<QueryValues[K]>}`
-    : `${K}:${Exclude<QueryValues[K][number], typeof FREE>}` | `${K}:${FreePattern<K>}`
+    : `${K}:` | `${K}:${Exclude<QueryValues[K][number], typeof FREE>}` | `${K}:${FreePattern<K>}`
 }[keyof QueryValues]
-
-// const test: QueryParam = 'repo:dsf' /* todo: error */
-
-//
-
-type HasFreeValue = {
-  [K in keyof QueryValues]: (typeof FREE) extends QueryValues[K][number] ? K : never
-}[keyof QueryValues];
-
-type StrictValues<T extends ReadonlyArray<unknown>> =
-  T[number] extends typeof FREE ? never : Exclude<T[number], typeof FREE>
 
 //
 
