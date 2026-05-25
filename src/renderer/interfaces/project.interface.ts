@@ -1,7 +1,7 @@
 ﻿import { Branch } from "@github/branch/branch.interfaces";
 import { Repository } from "@github/repositories/repository.model";
 import { Session } from "@jules/sessions/session.model";
-import { ACTIVE_STATES } from "@jules/sessions/session.types";
+import { ACTIVE_STATES, WAITING_STATES } from "@jules/sessions/session.types";
 import { Source } from "@jules/sources/source.model";
 import { useRepoPRs } from "@renderer/hooks/github/pr.hooks";
 import { useRepoBranches } from "@renderer/hooks/github/repositories.hooks";
@@ -57,7 +57,7 @@ export class ProjectOptionalRepo {
 
     return {
       ...query,
-      data: [...query.data].filter(({ state }) => ACTIVE_STATES.includes(state)) // TODO: check err no agent find
+      data: [...query.data].filter(({ state }) => [...ACTIVE_STATES, ...WAITING_STATES].includes(state))
     }
   }
 
