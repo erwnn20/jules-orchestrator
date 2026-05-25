@@ -277,10 +277,8 @@ function AgentCardWide({ agent, repository: { htmlUrl: repoUrl }, hoveredIndex }
           <div className='flex items-center gap-1'>
             {!headRef && 'from'} <GitBranch className='h-3 w-3'/> {baseRef}
             {headRef && (<>
-              <span className="text-ghost">→</span>
-              <div className='flex items-center gap-1'>
-                <GitBranchPlus className='h-3 w-3'/> {headRef}
-              </div>
+              <span className="mx-0.5 text-ghost">→</span>
+              <GitBranchPlus className='h-3 w-3'/> {headRef}
             </>)}
           </div>),
         end: (
