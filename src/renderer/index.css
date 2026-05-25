@@ -22,7 +22,6 @@
     --color-accent-blue: #60a5fa;  /* liens · projets connectés */
     --color-accent-red: #f87171;  /* error · agent KO */
     --color-accent-gray: #6b7280;  /* done · inactif */
-
     --color-purple-jules: #705cd6;
     --color-purple-github: #8957e6;
 
@@ -85,6 +84,15 @@
         --color-accent-gray: #636c76;
 
         --color-purple-github: #8250de;
+    }
+}
+
+@keyframes notif-shrink {
+    from {
+        width: 100%
+    }
+    to {
+        width: 0
     }
 }
 
