@@ -101,7 +101,7 @@ export class GithubController extends BaseController<Octokit> {
   //
 
   private async getPR({ repo, owner, pull_number }: GetPRRequest): Promise<PullRequest> {
-    const { data } = await this.client.rest.pulls.get({ repo, owner, pull_number })
+    const { data } = await this.client.rest.pulls.get({ owner, repo, pull_number })
 
     return new PullRequest(data)
   }
