@@ -23,6 +23,9 @@
     --color-accent-red: #f87171;  /* error · agent KO */
     --color-accent-gray: #6b7280;  /* done · inactif */
 
+    --color-purple-jules: #705cd6;
+    --color-purple-github: #8957e6;
+
     /* GLOW — StatusDot (utilisé en box-shadow via var()) */
     --color-glow-running: var(--color-accent-green);
     --color-glow-error: var(--color-accent-red);
@@ -80,6 +83,8 @@
         --color-accent-blue: #2563eb;
         --color-accent-red: #dc2626;
         --color-accent-gray: #636c76;
+
+        --color-purple-github: #8250de;
     }
 }
 
