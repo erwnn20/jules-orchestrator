@@ -237,8 +237,7 @@ export default function ProjectPage() {
                              repository={repository}
                              hoveredIndex={hoveredIndex}/>
             )}
-          </div>)
-        }
+          </div>)}
         {isAgentsLoading && <Loader/>}
         {errorAgents && <ErrorCard error={errorAgents} style={'wide'}/>}
       </Section>
@@ -252,8 +251,7 @@ export default function ProjectPage() {
             {prs.map((pr, index) => (
               <PullRequestCardWide key={index} pr={pr} setHoveredIndex={setHoveredIndex}/>
             ))}
-          </div>)
-        }
+          </div>)}
         {isPRsLoading && <Loader/>}
         {errorPRs && <ErrorCard error={errorPRs} style={'wide'}/>}
       </Section>
