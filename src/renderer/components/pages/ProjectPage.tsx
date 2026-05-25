@@ -54,7 +54,9 @@ export default function ProjectPage() {
   const { data: agents = [], isLoading: isAgentsLoading } = agentsQuery
 
   const [task, setTask] = useState('')
+  const [taskError, setTaskError] = useState<string | null>(null)
   const [baseBranch, setBaseBranch] = useState('')
+  const [baseBranchError, setBaseBranchError] = useState<string | null>(null)
   const [autoCreatePR, setAutoCreatePR] = useState(false)
   const [autoValidatePlan, setAutoValidatePlan] = useState(true)
   const createSession = useCreateSession()
@@ -65,11 +67,11 @@ export default function ProjectPage() {
       return;
     }
     if (!task.trim()) {
-      console.error('no task') /*todo error par affichage (notif)*/
+      setTaskError('No task provided, or empty task')
       return;
     }
     if (!baseBranch) {
-      console.error('no base branch') /*todo error par affichage (notif)*/
+      setBaseBranchError('Base branch not defined')
       return;
     }
 
@@ -136,11 +138,15 @@ export default function ProjectPage() {
           <div className="space-y-4">
             <Textarea
               value={task}
-              onChange={(e) => setTask(e.target.value)}
+              onChange={(e) => {
+                setTask(e.target.value)
+                setTaskError(null)
+              }}
               placeholder="Décrivez la tâche à accomplir..."
               rows={5}
               className={'w-full min-h-28 resize-y box-border'}
               disabled={createSession.isPending}
+              error={taskError ?? undefined}
             />
 
             <div className="flex flex-col xl:flex-row gap-4 xl:items-center">
@@ -149,23 +155,29 @@ export default function ProjectPage() {
                   <div className="sm:w-48">
                     <Select
                       value={baseBranch}
-                      onChange={(e) => {setBaseBranch(e.target.value)}}
+                      onChange={(e) => {
+                        setBaseBranch(e.target.value)
+                        setBaseBranchError(null)
+                      }}
                       options={isBranchesLoading ? [{ value: '', label: 'Chargement...' }] :
                         branches.map(({ name }) => ({ value: name, label: `📍 ${name}` }))}
                       className="w-full"
                       disabled={createSession.isPending}
+                      error={baseBranchError ?? undefined}
                     />
                   </div>
 
-                  <div className="flex flex-wrap gap-3 items-center">
+                  <div className="flex flex-wrap gap-3 items-start">
                     <Toggle
                       label="Auto PR"
+                      className={'py-1.5'}
                       checked={autoCreatePR}
                       onChange={(e) => setAutoCreatePR(e.target.checked)}
                       disabled={createSession.isPending}
                     />
                     <Toggle
                       label="Auto plan"
+                      className={'py-1.5'}
                       checked={autoValidatePlan}
                       onChange={(e) => setAutoValidatePlan(e.target.checked)}
                       disabled={createSession.isPending}
@@ -194,10 +206,10 @@ export default function ProjectPage() {
                  onChange={(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) =>
                    setActiveAgentsOnly(e.target.checked)}/>}>
         {selectedAgents.length === 0 ?
-          !isAgentsLoading &&
+          !isAgentsLoading && (
             <span className='text-base text-faint'>
                 — aucun agent {activeAgentsOnly && 'actif'}
-            </span> :
+            </span>) :
           (<div className='flex flex-col gap-1.5'>
             {selectedAgents.map((agent, index) =>
               <AgentCardWide key={index}
