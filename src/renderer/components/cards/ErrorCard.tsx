@@ -21,17 +21,13 @@ function ErrorCardWide({ error, className = '' }: {
   error: Error,
   className?: string
 }) {
-  return (
-    <CardWide className={className}>
-      <TriangleAlert className='h-4 w-4 text-accent-red'/>
-      <div className="flex-1">
-        <p className='text-subtitle text-accent-red font-medium mb-1'>
-          Error {error.name !== 'Error' && `: ${error.name}`}
-        </p>
-        <p className="text-meta text-muted">
-          {error.message}
-        </p>
-      </div>
-    </CardWide>
-  )
+  return (<CardWide
+    className={className}
+    start={<TriangleAlert className='h-4 w-4 text-accent-red'/>}
+    title={(
+      <p className='text-accent-red'>
+        Error {error.name !== 'Error' && `: ${error.name}`}
+      </p>)}
+    subtitle={error.message}
+  />)
 }
