@@ -8,6 +8,7 @@ import Textarea from "@components/helpers/inputs/Textarea";
 import Toggle from "@components/helpers/inputs/Toggle";
 import Link from "@components/helpers/Link";
 import Loader from "@components/helpers/Loader";
+import Notifications from "@components/helpers/Notifications";
 import Section from "@components/Section";
 import { PullRequestList } from "@github/pr/list.model";
 import { PullRequest } from "@github/pr/pr.model";
@@ -17,6 +18,7 @@ import { Session } from "@jules/sessions/session.model";
 import BasePage from "@pages/BasePage";
 import { useRepository } from "@renderer/hooks/github/repositories.hooks";
 import { useCreateSession } from "@renderer/hooks/jules/sessions.hooks";
+import { useNotifications } from "@renderer/hooks/notifications.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
@@ -53,6 +55,8 @@ export default function ProjectPage() {
   })
   const { data: agents = [], isLoading: isAgentsLoading } = agentsQuery
 
+  const { notifs, push: pushNotif, dismiss: dismissNotif } = useNotifications()
+
   const [task, setTask] = useState('')
   const [taskError, setTaskError] = useState<string | null>(null)
   const [baseBranch, setBaseBranch] = useState('')
@@ -63,7 +67,7 @@ export default function ProjectPage() {
 
   const handleLunchAgent = async () => {
     if (!source) {
-      console.error('no sources') /*todo error par affichage (notif)*/
+      pushNotif({ message: 'Aucun accès Jules configuré pour ce projet', type: 'error' })
       return;
     }
     if (!task.trim()) {
@@ -85,11 +89,15 @@ export default function ProjectPage() {
         requirePlanApproval: !autoValidatePlan,
       },
       {
-        onSuccess: (data) => {
-          console.log('Session créée :', data) /*todo confirmer par affichage (notif)*/
+        onSuccess: () => {
+          pushNotif({ message: 'Agent lancé avec succès', type: 'success', duration: 7500 })
           setTask('')
         },
-        onError: (error) => console.error('Erreur :', error) /*todo error par affichage (notif)*/,
+        onError: (error) => pushNotif({
+          message: `Échec du lancement : ${error.message}`,
+          type: 'error',
+          duration: 7500,
+        }),
       })
   }
 
@@ -247,6 +255,7 @@ export default function ProjectPage() {
         {isPRsLoading && <Loader/>}
       </Section>
 
+      <Notifications notifs={notifs} onDismiss={dismissNotif}/>
     </BasePage>
   )
 }
