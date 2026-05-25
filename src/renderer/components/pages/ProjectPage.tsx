@@ -112,6 +112,17 @@ export default function ProjectPage() {
   //
 
   if (isLoading) return <Loader/>
+  if (error) return (
+    <div className='flex flex-col gap-2 p-10'>
+      <p className={'flex items-center gap-1 text-base text-accent-red'}>
+        <TriangleAlert className="w-4 h-4 mr-1"/>
+        Error {error.name !== 'Error' && `: ${error.name}`}
+      </p>
+      <p className={'text-base text-faint'}>
+        {error.message}
+      </p>
+    </div>
+  )
   if (!repository) return (
     <div className='flex p-10 text-base text-faint'>
       <TriangleAlert className="w-4 h-4 mr-1 text-accent-orange"/>
