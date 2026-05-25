@@ -1,4 +1,5 @@
-﻿import PullRequestCard from "@components/cards/PullRequestCard";
+﻿import ErrorCard from "@components/cards/ErrorCard";
+import PullRequestCard from "@components/cards/PullRequestCard";
 import SessionCard from "@components/cards/SessionCard";
 import Badge from "@components/helpers/Badge";
 import Button from "@components/helpers/Button";
@@ -48,12 +49,12 @@ export default function ProjectPage() {
   const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery({
     branchFilter: { exclude: /^.+-\d+[a-f0-9]*$/ },
   })
-  const { data: prs = [], isLoading: isPRsLoading } = prsQuery({
+  const { data: prs = [], isLoading: isPRsLoading, error: errorPRs } = prsQuery({
     sort: 'updated',
     direction: 'desc',
     // state: 'all',
   })
-  const { data: agents = [], isLoading: isAgentsLoading } = agentsQuery
+  const { data: agents = [], isLoading: isAgentsLoading, error: errorAgents } = agentsQuery
 
   const { notifs, push: pushNotif, dismiss: dismissNotif } = useNotifications()
 
@@ -225,7 +226,7 @@ export default function ProjectPage() {
                  onChange={(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) =>
                    setActiveAgentsOnly(e.target.checked)}/>}>
         {selectedAgents.length === 0 ?
-          !isAgentsLoading && (
+          !isAgentsLoading && !errorAgents && (
             <span className='text-base text-faint'>
                 — aucun agent {activeAgentsOnly && 'actif'}
             </span>) :
@@ -239,24 +240,14 @@ export default function ProjectPage() {
           </div>)
         }
         {isAgentsLoading && <Loader/>}
-        {/*errorAgents &&
-            <CardWide>
-                <div className="flex-1">
-              <span className='flex items-center gap-1 text-base text-accent-red'>
-                <TriangleAlert className='h-4 w-4'/> Error : {errorAgents.name}
-              </span>
-                    <p className="text-meta text-secondary-foreground text-ellipsis mt-1">
-                      {errorAgents.message}
-                    </p>
-                </div>
-            </CardWide> TODO */}
+        {errorAgents && <ErrorCard error={errorAgents} style={'wide'}/>}
       </Section>
 
       {/* Pull Requests */}
       <Section title={`PULL REQUESTS (${prs.length ?? 0})`}>
         {prs.length === 0 ?
-          !isPRsLoading &&
-            <span className='text-base text-faint'> — aucune PR {/* en attente */}</span> :
+          !isPRsLoading && !errorPRs &&
+            <span className='text-base text-faint'> — aucune PR {/* en attente TODO */}</span> :
           (<div className='flex flex-col gap-1.5'>
             {prs.map((pr, index) => (
               <PullRequestCardWide key={index} pr={pr} setHoveredIndex={setHoveredIndex}/>
@@ -264,6 +255,7 @@ export default function ProjectPage() {
           </div>)
         }
         {isPRsLoading && <Loader/>}
+        {errorPRs && <ErrorCard error={errorPRs} style={'wide'}/>}
       </Section>
 
       <Notifications notifs={notifs} onDismiss={dismissNotif}/>
