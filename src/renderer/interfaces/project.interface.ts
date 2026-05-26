@@ -36,7 +36,7 @@ export class ProjectOptionalRepo {
   }
 
   get hasJulesAccess() {
-    return !!this.source
+    return this.source !== undefined ? !!this.source : undefined
   }
 
   get agents(): UseQueryResult<Session[]> {
