@@ -117,7 +117,7 @@ export default function ProjectPage() {
     <div className='flex flex-col gap-2 p-10'>
       <p className={'flex items-center gap-1 text-base text-accent-red'}>
         <TriangleAlert className="w-4 h-4 mr-1"/>
-        Error {error.name !== 'Error' && `: ${error.name}`}
+        Error : {error.code}
       </p>
       <p className={'text-base text-faint'}>
         {error.message}

@@ -56,7 +56,7 @@ export default function ProjectsPage() {
           )}>
             <p className={'flex items-center gap-1 text-base text-accent-red'}>
               <TriangleAlert className="w-4 h-4 mr-1"/>
-              Error {error.name !== 'Error' && `: ${error.name}`}
+              Error : {error.code}
             </p>
             <p className={'text-base text-faint text-ellipsis overflow-hidden'}>
               {error.message}
