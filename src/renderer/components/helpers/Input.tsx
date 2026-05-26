@@ -19,7 +19,6 @@ import {
 
 export type InputSize = 'sm' | 'md' | 'lg';
 
-type ElementMap = {
 export type InputPropsBase<T extends HTMLAttributes<HTMLElement>> = T & {
   size?: InputSize;
   label?: string;
@@ -27,14 +26,15 @@ export type InputPropsBase<T extends HTMLAttributes<HTMLElement>> = T & {
   helperText?: string;
 }
 
+type DefinedElementsMap = {
   textarea: { element: HTMLTextAreaElement, props: TextareaProps };
   select: { element: HTMLSelectElement, props: SelectProps };
   toggle: { element: HTMLInputElement, props: ToggleProps };
   checkbox: { element: HTMLInputElement, props: CheckboxProps };
   radio: { element: HTMLInputElement, props: RadioProps };
-} & { [K in TextInputType]: { element: HTMLInputElement, props: Omit<TextInputProps, 'type'> } }
-  & {
-  [K in HTMLInputTypeAttribute]: {
+} & { [K in TextInputType]: { element: HTMLInputElement, props: Omit<TextInputProps, 'type'> } };
+type ElementMap = DefinedElementsMap & {
+  [K in Exclude<HTMLInputTypeAttribute, keyof DefinedElementsMap>]: {
     element: HTMLInputElement,
     props: Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>
   }
@@ -53,7 +53,7 @@ function InputInner<T extends keyof ElementMap>(
     return <TextInput
       type={type}
       ref={ref as ForwardedRef<InferElement<TextInputType>>}
-      {...props as InferProps<TextInputType>}
+      {...props as InferProps<typeof type>}
     />;
 
   switch (type) {
@@ -91,7 +91,7 @@ function InputInner<T extends keyof ElementMap>(
       return <input
         type={type}
         ref={ref}
-        {...props as InferProps<HTMLInputTypeAttribute>}
+        {...props as Omit<InferProps<Omit<typeof type, keyof DefinedElementsMap>>, "type">}
       />;
   }
 }
