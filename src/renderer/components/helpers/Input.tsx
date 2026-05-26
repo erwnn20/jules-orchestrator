@@ -8,10 +8,25 @@ import TextInput, {
   TextInputType
 } from "@components/helpers/inputs/TextInput";
 import Toggle, { ToggleProps } from "@components/helpers/inputs/Toggle";
-import { ForwardedRef, forwardRef, HTMLInputTypeAttribute, InputHTMLAttributes } from 'react';
+import {
+  ForwardedRef,
+  forwardRef,
+  HTMLAttributes,
+  HTMLInputTypeAttribute,
+  InputHTMLAttributes
+} from 'react';
 
+
+export type InputSize = 'sm' | 'md' | 'lg';
 
 type ElementMap = {
+export type InputPropsBase<T extends HTMLAttributes<HTMLElement>> = T & {
+  size?: InputSize;
+  label?: string;
+  error?: string;
+  helperText?: string;
+}
+
   textarea: { element: HTMLTextAreaElement, props: TextareaProps };
   select: { element: HTMLSelectElement, props: SelectProps };
   toggle: { element: HTMLInputElement, props: ToggleProps };
