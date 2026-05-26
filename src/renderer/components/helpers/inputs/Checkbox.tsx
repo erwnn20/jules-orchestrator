@@ -1,4 +1,3 @@
-import Toggle from "@components/helpers/inputs/Toggle";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { Check, LucideIcon } from 'lucide-react';
 import { forwardRef, InputHTMLAttributes } from 'react';
@@ -11,9 +10,6 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, variant = 'default', innerIcon, className = '', ...props }, ref) => {
-    if (variant === 'toggle') return <Toggle label={label} innerIcon={innerIcon} {...props}/>;
-
-    const Icon = innerIcon ?? Check
     return (
       <label className={'group inline-flex items-center'}>
         <div className={twMerge(
@@ -30,17 +26,8 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               disabled={props.disabled}
               {...props}
             />
-            <div className={
-              "w-5 h-5 flex items-center justify-center " +
-              "bg-elevated peer-checked:bg-primary " +
-              "border border-border-input peer-checked:border-primary rounded-md " +
-              "transition-all duration-150 "
-            }>
-              <Icon className={
-                "w-3.5 h-3.5 text-void stroke-3 transition-opacity duration-150 " +
-                "opacity-0 group-has-checked:opacity-100"
-              }/>
-            </div>
+            {variant === 'default' && <CheckboxInputComponent innerIcon={innerIcon}/>}
+            {variant === 'toggle' && <ToggleInputComponent innerIcon={innerIcon}/>}
           </div>
           {label && (
             <span className="text-base text-primary-foreground font-medium select-none">
@@ -56,3 +43,52 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 Checkbox.displayName = 'Checkbox';
 
 export default Checkbox;
+
+function CheckboxInputComponent({ innerIcon }: Pick<CheckboxProps, 'innerIcon'>) {
+  const Icon = innerIcon ?? Check
+
+  return (
+    <div className={
+      "w-5 h-5 flex items-center justify-center " +
+      "bg-elevated peer-checked:bg-primary " +
+      "border border-border-input peer-checked:border-primary rounded-md " +
+      "transition-all duration-150 "
+    }>
+      <Icon className={
+        "w-3.5 h-3.5 text-void stroke-3 transition-opacity duration-150 " +
+        "opacity-0 group-has-checked:opacity-100"
+      }/>
+    </div>
+  )
+}
+
+function ToggleInputComponent({ innerIcon: Icon }: Pick<CheckboxProps, 'innerIcon'>) {
+  return (<>
+    <div className={
+      "w-10 h-6 rounded-full overflow-hidden " +
+      "bg-elevated peer-checked:bg-border-color " +
+      "border border-border-input peer-checked:border-primary " +
+      "transition-all duration-150"
+    }>
+      <div className={"w-full h-full group-has-checked:bg-primary/20"}/>
+    </div>
+    <div
+      className={
+        "absolute inset-y-0 aspect-square " +
+        "flex items-center justify-center p-0.75 " +
+        "peer-checked:translate-x-4 " +
+        "transition-all duration-150"
+      }>
+      <div className={
+        "w-full h-full flex items-center justify-center p-0.75 " +
+        "bg-ghost rounded-full group-has-checked:bg-primary"
+      }>
+        {Icon && <Icon className={
+          "w-full h-full " +
+          "text-primary-foreground stroke-3 group-has-checked:text-void " +
+          "transition-opacity duration-150"
+        }/>}
+      </div>
+    </div>
+  </>)
+}
