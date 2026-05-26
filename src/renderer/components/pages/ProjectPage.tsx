@@ -137,7 +137,7 @@ export default function ProjectPage() {
         <h1 className='text-title text-primary-foreground mb-1 font-semibold'>
           {repository.name}
         </h1>
-        {!hasJulesAccess && (<div className='ms-2'>
+        {hasJulesAccess !== undefined && !hasJulesAccess && (<div className='ms-2'>
           <Badge>jules non connecté</Badge>
         </div>)}
       </div>}

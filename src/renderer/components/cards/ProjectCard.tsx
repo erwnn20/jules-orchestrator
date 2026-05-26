@@ -88,7 +88,7 @@ function ProjectCardBase({ children, project, isFirst }: {
       <div
         className="flex items-center justify-between mt-3 pt-3 border-t border-border-color shrink-0">
         <div className="flex items-center gap-2">
-          {!hasJulesAccess && <Badge>no jules access</Badge>}
+          {hasJulesAccess !== undefined && !hasJulesAccess && <Badge>no jules access</Badge>}
           {activeAgents.length > 0 && (
             <Badge variant="agent">
               {activeAgents.length} agent{activeAgents.length > 1 ? 's' : ''}
