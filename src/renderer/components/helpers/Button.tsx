@@ -1,14 +1,14 @@
-﻿import { twMerge } from '@renderer/utils/tw.utils';
+﻿import { InputSize } from "@components/helpers/Input";
+import { twMerge } from '@renderer/utils/tw.utils';
 import React, { ReactNode } from 'react';
 
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
-type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps {
   children: ReactNode;
   variant?: ButtonVariant;
-  size?: ButtonSize;
+  size?: InputSize;
   disabled?: boolean;
   onClick?: () => void;
   className?: string;
@@ -40,7 +40,7 @@ export default function Button({
       'disabled:opacity-50 disabled:hover:bg-elevated disabled:text-muted disabled:cursor-default'),
   };
 
-  const sizeClasses: Record<ButtonSize, string> = {
+  const sizeClasses: Record<InputSize, string> = {
     sm: 'px-3 py-1.5 rounded-md text-meta',
     md: 'px-4 py-2 rounded-lg text-base',
     lg: 'px-4 py-2.5 rounded-lg text-subtitle',
