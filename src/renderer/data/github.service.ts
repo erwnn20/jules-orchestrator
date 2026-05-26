@@ -1,4 +1,4 @@
-﻿import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch.interfaces";
+import { ListBranchesRequest, ListBranchesResponse } from "@github/branch/branch.interfaces";
 import { PullRequestList } from "@github/pr/list.model";
 import {
   AcceptPRRequest,
@@ -15,23 +15,35 @@ import {
   ListRepositoryRequest
 } from "@github/repositories/repository.interfaces";
 import { Repository } from "@github/repositories/repository.model";
+import { unwrapIpc } from "@renderer/utils/ipc-error.utils";
 
 
 export abstract class GithubService {
 
-  static getRepo: (args: GetRepositoryRequest) => Promise<Repository> = window.api.github.repository.get;
-  static getRepos: (args: ListRepositoryRequest) => Promise<Repository[]> = window.api.github.repository.list;
+  static getRepo = async (args: GetRepositoryRequest): Promise<Repository> =>
+    unwrapIpc(await window.api.github.repository.get(args))
 
-  static getRepoBranches: (args: ListBranchesRequest) => Promise<ListBranchesResponse> = window.api.github.repository.branch.list;
+  static getRepos = async (args: ListRepositoryRequest): Promise<Repository[]> =>
+    unwrapIpc(await window.api.github.repository.list(args))
+
+  static getRepoBranches = async (args: ListBranchesRequest): Promise<ListBranchesResponse> =>
+    unwrapIpc(await window.api.github.repository.branch.list(args))
 
   //
 
-  static getPR: (args: GetPRRequest) => Promise<PullRequest> = window.api.github.repository.pr.get;
-  static getRepoPRs: (args: ListPRRequest) => Promise<PullRequestList[]> = window.api.github.repository.pr.list;
+  static getPR = async (args: GetPRRequest): Promise<PullRequest> =>
+    unwrapIpc(await window.api.github.repository.pr.get(args))
 
-  static getIssuesPR: (args?: ListIssuesRequest) => Promise<ListIssuesResponse> = window.api.github.pr.list;
+  static getRepoPRs = async (args: ListPRRequest): Promise<PullRequestList[]> =>
+    unwrapIpc(await window.api.github.repository.pr.list(args))
 
-  static acceptPR: (args: AcceptPRRequest) => Promise<AcceptPRResponse> = window.api.github.repository.pr.accept;
-  static rejectPR: (args: RejectPRRequest) => Promise<PullRequest> = window.api.github.repository.pr.reject;
+  static getIssuesPR = async (args?: ListIssuesRequest): Promise<ListIssuesResponse> =>
+    unwrapIpc(await window.api.github.pr.list(args))
+
+  static acceptPR = async (args: AcceptPRRequest): Promise<AcceptPRResponse> =>
+    unwrapIpc(await window.api.github.repository.pr.accept(args))
+
+  static rejectPR = async (args: RejectPRRequest): Promise<PullRequest> =>
+    unwrapIpc(await window.api.github.repository.pr.reject(args))
 
 }
