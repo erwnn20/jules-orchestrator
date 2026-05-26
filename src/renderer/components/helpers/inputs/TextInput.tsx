@@ -94,16 +94,16 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             )}
             {...props}
           />
-          {iconPosition !== 'noIcon' && Icon &&
-              <div className={
-                `absolute inset-y-0 ${iconPosition === 'iconEnd' ? 'right-3' : 'left-3'} ` +
-                `flex items-center ${isLucideIcon(Icon) && 'pointer-events-none'} ` +
-                "peer-disabled:opacity-50"
-              }>
-                {isLucideIcon(Icon)
-                  ? <Icon className="w-3.5 h-3.5 text-muted"/>
-                  : <>{Icon}</>}
-              </div>}
+          {iconPosition !== 'noIcon' && Icon && (
+            <div className={twMerge(
+              'absolute inset-y-0', iconPosition === 'iconEnd' ? 'right-3' : 'left-3',
+              'flex items-center peer-disabled:opacity-50',
+              isLucideIcon(Icon) && 'pointer-events-none'
+            )}>
+              {isLucideIcon(Icon)
+                ? <Icon className="w-3.5 h-3.5 text-muted"/>
+                : <>{Icon}</>}
+            </div>)}
         </div>
         {error && (
           <p className="text-label text-accent-red mt-1.5">{error}</p>
@@ -122,7 +122,7 @@ export default TextInput;
 
 //
 
-function isLucideIcon(icon: any): icon is LucideIcon {
+function isLucideIcon(icon: LucideIcon | ReactNode): icon is LucideIcon {
   return typeof icon === 'function' || (typeof icon === 'object' && icon !== null && !('props' in icon))
 }
 
