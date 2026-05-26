@@ -31,9 +31,8 @@ const paddings = {
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-    const [typ, setType] = useState<TextInputType>(type)
-    const [isVisible, setVisible] = useState(true)
   ({ type = 'text', size = 'md', label, error, helperText, className = '', ...props }, ref) => {
+    const [showPassword, setShowPassword] = useState(false)
 
     const specials: Record<TextInputType, {
       iconPosition: keyof typeof paddings,
@@ -47,20 +46,20 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       search: { iconPosition: "iconStart", icon: Search },
       password: {
         iconPosition: "iconEnd",
-        icon: (<label>
-          <input
-            type={"checkbox"}
-            checked={isVisible}
-            disabled={props.disabled}
-            className={"sr-only"}
-            onChange={(e) => {
-              setVisible(e.target.checked)
-              setType(isVisible ? 'text' : 'password')
-            }}/>
-          {isVisible
-            ? <EyeClosed className="w-3.5 h-3.5 text-muted"/>
-            : <Eye className="w-3.5 h-3.5 text-muted"/>}
-        </label>)
+        icon: (
+          <label>
+            <input
+              type="checkbox"
+              checked={showPassword}
+              disabled={props.disabled}
+              className="sr-only"
+              onChange={(e) => setShowPassword(e.target.checked)}
+            />
+            {showPassword
+              ? <Eye className="w-3.5 h-3.5 text-muted"/>
+              : <EyeClosed className="w-3.5 h-3.5 text-muted"/>}
+          </label>
+        )
       },
       date: { iconPosition: "noIcon" },
       month: { iconPosition: "noIcon" },
@@ -81,7 +80,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         )}
         <div className="relative">
           <input
-            type={typ}
+            type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
             ref={ref}
             className={twMerge(
               Icon ? padding : paddings.noIcon,
