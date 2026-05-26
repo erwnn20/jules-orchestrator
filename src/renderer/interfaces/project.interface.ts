@@ -25,7 +25,7 @@ export const DEFAULT_BRANCH_PRIORITIES: BranchPriorityMap = {
 export class ProjectOptionalRepo {
   static readonly MAX_PR = 9
 
-  readonly source?: Source
+  readonly source?: Source | null
 
   constructor(readonly repository?: Repository) {
     const { data: { sources } = { sources: [] } } = useSources()
