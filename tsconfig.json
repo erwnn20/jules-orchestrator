@@ -10,6 +10,9 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "paths": {
+      "@shared/*": [
+        "./src/shared/*"
+      ],
       "@jules/*": [
         "./src/shared/jules/*"
       ],
