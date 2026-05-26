@@ -1,15 +1,15 @@
+import { InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from "@renderer/utils/tw.utils";
 import { LucideIcon } from "lucide-react";
 import { forwardRef, InputHTMLAttributes } from 'react';
 
 
-export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  label?: string;
-  innerIcon?: LucideIcon
-}
+export type RadioProps =
+  InputPropsBase<Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>>
+  & { innerIcon?: LucideIcon; }
 
 const RadioToggle = forwardRef<HTMLInputElement, RadioProps>(
-  ({ label, innerIcon: Icon, className = '', ...props }, ref) => {
+  ({ label, size = 'md', innerIcon: Icon, className = '', ...props }, ref) => {
     return (
       <label
         className={twMerge(

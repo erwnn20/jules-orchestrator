@@ -1,12 +1,10 @@
+import { InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { ChevronDown } from 'lucide-react';
 import { forwardRef, SelectHTMLAttributes } from 'react';
 
 
-export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
+export type SelectProps = InputPropsBase<Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'>> & {
   placeholder?: string | Omit<Option, 'value'>
   options: Option[];
 }
@@ -14,7 +12,16 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 export type Option = { value: string; label: string }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, helperText, placeholder, options, className = '', ...props }, ref) => {
+  ({
+     label,
+     size = 'md',
+     error,
+     helperText,
+     placeholder,
+     options,
+     className = '',
+     ...props
+   }, ref) => {
     return (
       <div className={className.includes("w-full") ? "w-full" : ""}>
         {label && (

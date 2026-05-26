@@ -1,3 +1,4 @@
+import { InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { Eye, EyeClosed, LucideIcon, Search } from "lucide-react";
 import {
@@ -19,12 +20,9 @@ type TextInputTypeBase = (typeof TEXT_INPUT_TYPES)[number];
 
 export type TextInputType = Extract<HTMLInputTypeAttribute, TextInputTypeBase>
 
-export interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  type?: TextInputType;
-  label?: string;
-  error?: string;
-  helperText?: string;
-}
+export type TextInputProps =
+  InputPropsBase<Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>>
+  & { type?: TextInputType }
 
 const paddings = {
   noIcon: 'px-3 py-2',
@@ -33,9 +31,9 @@ const paddings = {
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ type = 'text', label, error, helperText, className = '', ...props }, ref) => {
     const [typ, setType] = useState<TextInputType>(type)
     const [isVisible, setVisible] = useState(true)
+  ({ type = 'text', size = 'md', label, error, helperText, className = '', ...props }, ref) => {
 
     const specials: Record<TextInputType, {
       iconPosition: keyof typeof paddings,

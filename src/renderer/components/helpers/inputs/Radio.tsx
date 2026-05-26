@@ -1,12 +1,12 @@
+import { InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { forwardRef, InputHTMLAttributes } from 'react';
 
-export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  label?: string;
-}
+
+export type RadioProps = InputPropsBase<Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>>
 
 const Radio = forwardRef<HTMLInputElement, RadioProps>(
-  ({ label, className = '', ...props }, ref) => {
+  ({ label, size = 'md', className = '', ...props }, ref) => {
     return (
       <label className={'group inline-flex items-center'}>
         <div className={twMerge(

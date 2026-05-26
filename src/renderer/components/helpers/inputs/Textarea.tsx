@@ -1,14 +1,12 @@
+import { InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { forwardRef, TextareaHTMLAttributes } from 'react';
 
-export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-}
+
+export type TextareaProps = InputPropsBase<TextareaHTMLAttributes<HTMLTextAreaElement>>
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ label, error, helperText, className = '', ...props }, ref) => {
+  ({ label, size = 'md', error, helperText, className = '', ...props }, ref) => {
     return (
       <div className={className.includes("w-full") ? "w-full" : ""}>
         {label && (

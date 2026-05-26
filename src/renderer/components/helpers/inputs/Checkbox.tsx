@@ -1,15 +1,15 @@
+import { InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { Check, LucideIcon } from 'lucide-react';
 import { forwardRef, InputHTMLAttributes } from 'react';
 
-export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  label?: string;
-  variant?: 'default' | 'toggle';
-  innerIcon?: LucideIcon
-}
+
+export type CheckboxProps =
+  InputPropsBase<Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'>>
+  & { variant?: 'default' | 'toggle'; innerIcon?: LucideIcon; }
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ label, variant = 'default', innerIcon, className = '', ...props }, ref) => {
+  ({ label, size = 'md', variant = 'default', innerIcon, className = '', ...props }, ref) => {
     return (
       <label className={'group inline-flex items-center'}>
         <div className={twMerge(
