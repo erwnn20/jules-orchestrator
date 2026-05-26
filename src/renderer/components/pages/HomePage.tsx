@@ -166,7 +166,7 @@ export default function HomePage() {
           ))}
         </div>
         {isSessionsLoading && <Loader/>}
-        {sessionsError && <ErrorCard error={sessionsError}/>}
+        {sessionsError && <ErrorCard error={sessionsError} style={'wide'}/>}
       </Section>
     </BasePage>
   )
