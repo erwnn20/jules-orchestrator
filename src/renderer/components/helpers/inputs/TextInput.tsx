@@ -12,8 +12,8 @@ import {
 
 const TEXT_INPUT_TYPES = [
   'text', 'number',
-  'url', 'email', 'tel', 'search', 'password',// icon
-  'date', 'month', 'week', 'time', 'datetime-local' // end icon ?
+  'url', 'email', 'tel', 'search', 'password', // icon
+  'date', 'month', 'week', 'time', 'datetime-local', // end icon ?
 ] as const;
 
 type TextInputTypeBase = (typeof TEXT_INPUT_TYPES)[number];
@@ -68,7 +68,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       'datetime-local': { iconPosition: "noIcon" },
     };
 
-    const { iconPosition, icon: Icon } = specials[type] ?? { iconPosition: "noIcon" }
+    const { iconPosition, icon: Icon } = specials[type]
     const padding = paddings[iconPosition]
 
     return (
@@ -83,8 +83,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
             ref={ref}
             className={twMerge(
-              Icon ? padding : paddings.noIcon,
-              'peer',
+              padding, 'peer',
               'bg-elevated text-base text-primary-foreground placeholder:text-ghost',
               'border border-border-input focus:border-border-hover rounded-md',
               'focus:outline-none cursor-text',
