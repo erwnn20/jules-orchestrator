@@ -3,14 +3,14 @@ import { ApiError } from "@renderer/utils/ipc-error.utils";
 import { TriangleAlert } from "lucide-react";
 
 
-interface Error {
+type Error = ApiError | {
   name: string,
   message: string,
 }
 
-export default function ErrorCard({ error, style = 'wide', className = '' }: {
-  error: ApiError | Error,
   style?: 'wide',
+export default function ErrorCard({ error, style, className = '' }: {
+  error: Error,
   className?: string,
 }) {
   return (
@@ -19,7 +19,7 @@ export default function ErrorCard({ error, style = 'wide', className = '' }: {
 }
 
 function ErrorCardWide({ error, className = '' }: {
-  error: ApiError | Error,
+  error: Error,
   className?: string
 }) {
   const title = 'code' in error ? error.code : error.name
