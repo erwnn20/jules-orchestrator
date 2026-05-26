@@ -5,7 +5,7 @@ import { ACTIVE_STATES, WAITING_STATES } from "@jules/sessions/session.types";
 import { Source } from "@jules/sources/source.model";
 import { useRepoPRs } from "@renderer/hooks/github/pr.hooks";
 import { useRepoBranches } from "@renderer/hooks/github/repositories.hooks";
-import { useSessionsBySource, useSources } from "@renderer/hooks/jules/sources.hooks";
+import { useSessionsBySource, useSource } from "@renderer/hooks/jules/sources.hooks";
 import { UseQueryResult } from "@tanstack/react-query";
 
 
@@ -28,11 +28,23 @@ export class ProjectOptionalRepo {
   readonly source?: Source | null
 
   constructor(readonly repository?: Repository) {
-    const { data: { sources } = { sources: [] } } = useSources()
+    const { owner: { login: owner } = {}, name: repo } = repository ?? {}
 
-    if (!repository) return
-    this.source = sources.find(({ githubRepo: { repo, owner } }) =>
-      repo === repository.name && owner === repository.owner.login) /* TODO get w useSource (need api err catch) */
+    const {
+      data: source,
+      isLoading,
+      error
+    } = useSource(owner && repo ? `github/${owner}/${repo}` : '')
+
+    if (error) {
+      if (error.code === 'NOT_FOUND') {
+        this.source = null
+        return;
+      }
+      throw error
+    }
+
+    this.source = !isLoading ? source ?? null : undefined
   }
 
   get hasJulesAccess() {
