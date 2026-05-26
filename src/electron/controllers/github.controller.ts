@@ -169,7 +169,6 @@ export class GithubController extends BaseController<Octokit> {
     const { data } = await this.client.pulls.update({
       owner, repo, pull_number, state: 'closed'
     })
-    /* TODO: add optional delete branch */
 
     return new PullRequest(data)
   }
