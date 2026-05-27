@@ -1,7 +1,7 @@
 import Badge from "@components/helpers/Badge";
 import StatusDot, { DotStatus, Status, statusColors } from "@components/helpers/dots/StatusDot";
 import { Repository } from "@github/repositories/repository.model";
-import { WAITING_STATES } from "@jules/sessions/session.types";
+import { sessionHasTag } from "@jules/sessions/session.types";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { twMerge } from "@renderer/utils/tw.utils";
 import { formatDistanceToNow } from "date-fns";
@@ -123,11 +123,15 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
   if (!repository) return <MissingRepository/>
 
   const description = repository.description ?? (agents[0] ? `Last session: ${agents[0].title ?? agents[0].prompt}` : null)
-  const agentStatus: Status =
-    activeAgents.length === 0 ? 'done'
-      : activeAgents.some(agent => agent.state === 'FAILED') ? 'error'
-        : activeAgents.some(agent => WAITING_STATES.includes(agent.state)) ? 'warning'
-          : 'running'
+  const PRIORITY: Status[] = ['error', 'warning', 'running', 'done', 'none']
+  const agentStatus: Status = activeAgents.reduce<Status>((status, { state }) => {
+    const current: Status =
+      sessionHasTag(state, 'error') ? 'error'
+        : sessionHasTag(state, 'waiting') ? 'warning'
+          : sessionHasTag(state, 'active') ? 'running'
+            : 'done'
+    return PRIORITY.indexOf(current) < PRIORITY.indexOf(status) ? current : status
+  }, activeAgents.length === 0 ? 'none' : 'done')
 
   return (
     <ProjectCardBase project={project} isFirst={isFirst}>
@@ -144,7 +148,7 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
               </h3>
               {isFirst && hasJulesAccess && (
                 <div className="flex items-center gap-2 mt-1">
-                  <StatusDot status={agentStatus}/>
+                  <StatusDot status={agentStatus === 'none' ? 'none' : agentStatus}/>
                   <span
                     style={{ color: statusColors[agentStatus] }}
                     className="text-meta uppercase font-semibold tracking-wide">
