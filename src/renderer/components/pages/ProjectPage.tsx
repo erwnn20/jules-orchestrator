@@ -13,6 +13,7 @@ import Notifications from "@components/helpers/Notifications";
 import Section from "@components/Section";
 import { PullRequestList } from "@github/pr/list.model";
 import { PullRequest } from "@github/pr/pr.model";
+import { PRStateFilter } from "@github/pr/pr.types";
 import { Repository } from "@github/repositories/repository.model";
 import { PullRequest as JulesPullRequest } from '@jules/github/github.interfaces'
 import { Session } from "@jules/sessions/session.model";
@@ -49,11 +50,14 @@ export default function ProjectPage() {
   const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery({
     branchFilter: { exclude: /^.+-\d+[a-f0-9]*$/ },
   })
+
+  const [prStateFilter, setPRStateFilter] = useState<PRStateFilter>('open')
   const { data: prs = [], isLoading: isPRsLoading, error: errorPRs } = prsQuery({
     sort: 'updated',
     direction: 'desc',
-    // state: 'all',
+    state: prStateFilter,
   })
+
   const { data: agents = [], isLoading: isAgentsLoading, error: errorAgents } = agentsQuery
 
   const { notifs, push: pushNotif, dismiss: dismissNotif } = useNotifications()
