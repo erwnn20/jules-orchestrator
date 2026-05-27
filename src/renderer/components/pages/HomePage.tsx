@@ -3,7 +3,7 @@ import SessionCard from "@components/cards/SessionCard";
 import Loader from "@components/helpers/Loader";
 import Section from "@components/Section";
 import { Session } from "@jules/sessions/session.model";
-import { ACTIVE_STATES, SessionState, WAITING_STATES } from "@jules/sessions/session.types";
+import { sessionHasTag } from "@jules/sessions/session.types";
 import BasePage from "@pages/BasePage";
 import { JulesService } from "@renderer/data/jules.service";
 import { usePRs } from "@renderer/hooks/github/pr.hooks";
@@ -51,26 +51,22 @@ export default function HomePage() {
   } = useSources();
 
   const {
-    data: { sessions: sessionsData } = { sessions: [] },
+    data: { sessions: sessions } = { sessions: [] },
     isLoading: isSessionsLoading,
     error: sessionsError
   } = useSessions({ pageSize: JulesService.DAILY_SESSION_LIMIT })
-  const sessions = sessionsData.reduce(
-    (acc, session) => {
-      if (isToday(session.updateTime)) acc.today.push(session);
 
-      if (!acc.record[session.state]) acc.record[session.state] = [];
-      acc.record[session.state]?.push(session);
-
-      return acc;
+  const { todayCount, inProgressCount, waitingCount, activeCount } = sessions.reduce(
+    (acc, { state, updateTime }) => {
+      if (isToday(updateTime)) acc.todayCount++
+      if (sessionHasTag(state, 'active')) acc.inProgressCount++
+      if (sessionHasTag(state, 'waiting')) acc.waitingCount++
+      if (sessionHasTag(state, 'running')) acc.activeCount++
+      return acc
     },
-    { today: [] as Session[], record: {} as Partial<Record<SessionState, Session[]>> }
-  );
-  const dailySessionsUsage = sessions.today.length / JulesService.DAILY_SESSION_LIMIT;
-
-  const inProgressCount = sessions.record[SessionState.IN_PROGRESS]?.length ?? 0
-  const waitingCount = WAITING_STATES.reduce((acc, state) => acc + (sessions.record[state]?.length ?? 0), 0)
-  const activeCount = ACTIVE_STATES.reduce((acc, state) => acc + (sessions.record[state]?.length ?? 0), 0)
+    { todayCount: 0, inProgressCount: 0, waitingCount: 0, activeCount: 0 }
+  )
+  const dailySessionsUsage = todayCount / JulesService.DAILY_SESSION_LIMIT
 
   const stats: Parameters<typeof StatsCard>[0][] = [
     {
@@ -96,7 +92,7 @@ export default function HomePage() {
     },
     {
       label: 'Sessions du Jour',
-      value: sessions.today.length,
+      value: todayCount,
       info: `/${JulesService.DAILY_SESSION_LIMIT}`,
       accent: 'var(--color-accent-gray)',
       icon: Activity,
@@ -161,7 +157,7 @@ export default function HomePage() {
       {/* Recent activity */}
       <Section title={'Sessions récentes'}>
         <div className="space-y-2">
-          {sessionsData.map((activity, index) => (
+          {sessions.map((activity, index) => (
             <ActivityCard key={index} activity={activity}/>
           ))}
         </div>
