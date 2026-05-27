@@ -25,24 +25,18 @@ export type TextInputProps =
   & { type?: TextInputType }
 
 const paddings = {
-  noIcon: 'px-3 py-2',
-  iconStart: 'ps-9 pe-3 py-2',
-  iconEnd: 'ps-3 pe-9 py-2',
+  iconStart: 'ps-9',
+  iconEnd: 'pe-9',
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ type = 'text', size = 'md', label, error, helperText, className = '', ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false)
 
-    const specials: Record<TextInputType, {
-      iconPosition: keyof typeof paddings,
+    const specials: Partial<Record<TextInputType, {
+      iconPosition?: keyof typeof paddings,
       icon?: LucideIcon | ReactNode
-    }> = {
-      text: { iconPosition: "noIcon" },
-      number: { iconPosition: "noIcon" },
-      url: { iconPosition: "noIcon" },
-      email: { iconPosition: "noIcon" },
-      tel: { iconPosition: "noIcon" },
+    }>> = {
       search: { iconPosition: "iconStart", icon: Search },
       password: {
         iconPosition: "iconEnd",
@@ -61,15 +55,10 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           </label>
         )
       },
-      date: { iconPosition: "noIcon" },
-      month: { iconPosition: "noIcon" },
-      week: { iconPosition: "noIcon" },
-      time: { iconPosition: "noIcon" },
-      'datetime-local': { iconPosition: "noIcon" },
     };
 
-    const { iconPosition, icon: Icon } = specials[type]
     const padding = paddings[iconPosition]
+    const { iconPosition, icon: Icon } = specials[type] ?? {}
 
     return (
       <div className={className.includes("w-full") ? "w-full" : ""}>
@@ -94,7 +83,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             )}
             {...props}
           />
-          {iconPosition !== 'noIcon' && Icon && (
+          {iconPosition && Icon && (
             <div className={twMerge(
               'absolute inset-y-0', iconPosition === 'iconEnd' ? 'right-3' : 'left-3',
               'flex items-center peer-disabled:opacity-50',
