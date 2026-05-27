@@ -1,6 +1,7 @@
 import Badge from "@components/helpers/Badge";
-import StatusDot, { DotStatus, statusColors } from "@components/helpers/dots/StatusDot";
+import StatusDot, { DotStatus, Status, statusColors } from "@components/helpers/dots/StatusDot";
 import { Repository } from "@github/repositories/repository.model";
+import { WAITING_STATES } from "@jules/sessions/session.types";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { twMerge } from "@renderer/utils/tw.utils";
 import { formatDistanceToNow } from "date-fns";
@@ -122,7 +123,11 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
   if (!repository) return <MissingRepository/>
 
   const description = repository.description ?? (agents[0] ? `Last session: ${agents[0].title ?? agents[0].prompt}` : null)
-  const agentStatus: DotStatus['status'] = activeAgents.length > 0 ? 'running' : 'done'
+  const agentStatus: Status =
+    activeAgents.length === 0 ? 'done'
+      : activeAgents.some(agent => agent.state === 'FAILED') ? 'error'
+        : activeAgents.some(agent => WAITING_STATES.includes(agent.state)) ? 'warning'
+          : 'running'
 
   return (
     <ProjectCardBase project={project} isFirst={isFirst}>
@@ -169,5 +174,5 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
 }
 
 const agentStatusLabels: Record<DotStatus['status'], string> = {
-  running: 'Active', done: 'Done', error: 'Error', none: '', warning: '',
+  running: 'Active', done: 'Done', error: 'Error', none: '', warning: 'Warning',
 }
