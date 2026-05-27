@@ -190,14 +190,12 @@ export default function ProjectPage() {
                   <div className="flex flex-wrap gap-3 items-start">
                     <Toggle
                       label="Auto PR"
-                      className={'py-1.5'}
                       checked={autoCreatePR}
                       onChange={(e) => setAutoCreatePR(e.target.checked)}
                       disabled={createSession.isPending}
                     />
                     <Toggle
                       label="Auto plan"
-                      className={'py-1.5'}
                       checked={autoValidatePlan}
                       onChange={(e) => setAutoValidatePlan(e.target.checked)}
                       disabled={createSession.isPending}
@@ -221,7 +219,7 @@ export default function ProjectPage() {
       {/* Agents */}
       <Section title={`AGENTS ${activeAgentsOnly ? 'actifs ' : ''}(${selectedAgents.length ?? 0})`}
                addon={<Input
-                 type={'checkbox'} label={'Actifs seulement'}
+                 type={'checkbox'} label={'Actifs seulement'} size={'sm'}
                  checked={activeAgentsOnly}
                  onChange={(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) =>
                    setActiveAgentsOnly(e.target.checked)}/>}>
