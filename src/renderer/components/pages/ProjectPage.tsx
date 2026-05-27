@@ -254,7 +254,9 @@ export default function ProjectPage() {
                />}>
         {prs.length === 0 ?
           !isPRsLoading && !errorPRs &&
-            <span className='text-base text-faint'> — aucune PR {/* en attente TODO */}</span> :
+            <span className='text-base text-faint'>
+                — aucune PR {prStateFilter === 'open' ? 'ouverte' : prStateFilter === 'closed' ? 'fermée' : ''}
+            </span> :
           (<div className='flex flex-col gap-1.5'>
             {prs.map((pr, index) => (
               <PullRequestCardWide key={index} pr={pr} setHoveredIndex={setHoveredIndex}/>
