@@ -1,4 +1,4 @@
-import { InputPropsBase } from "@components/helpers/Input";
+import { InputMeasures, InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { forwardRef, InputHTMLAttributes } from 'react';
 
@@ -7,6 +7,8 @@ export type RadioProps = InputPropsBase<Omit<InputHTMLAttributes<HTMLInputElemen
 
 const Radio = forwardRef<HTMLInputElement, RadioProps>(
   ({ label, size = 'md', className = '', ...props }, ref) => {
+    const sizes = InputMeasures[size]
+
     return (
       <label className={'group inline-flex items-center'}>
         <div className={twMerge(
@@ -39,7 +41,10 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
             </div>
           </div>
           {label && (
-            <span className="text-base text-primary-foreground font-medium select-none">
+            <span className={twMerge(
+              'text-primary-foreground font-medium select-none',
+              sizes['font'], sizes['paddings'], 'px-0'
+            )}>
               {label}
             </span>
           )}

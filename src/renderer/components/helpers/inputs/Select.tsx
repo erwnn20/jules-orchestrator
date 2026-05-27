@@ -1,4 +1,4 @@
-import { InputPropsBase } from "@components/helpers/Input";
+import { InputMeasures, InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { ChevronDown } from 'lucide-react';
 import { forwardRef, SelectHTMLAttributes } from 'react';
@@ -22,6 +22,8 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
      className = '',
      ...props
    }, ref) => {
+    const sizes = InputMeasures[size]
+
     return (
       <div className={className.includes("w-full") ? "w-full" : ""}>
         {label && (
@@ -33,13 +35,14 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <select
             ref={ref}
             className={twMerge(
-              'px-3 py-2 pr-9 peer',
-              'bg-elevated text-base text-primary-foreground',
-              'border border-border-input focus:border-border-hover rounded-md',
+              'peer',
+              'bg-elevated text-primary-foreground',
+              'border border-border-input focus:border-border-hover',
               'transition-colors duration-150',
               'focus:outline-none appearance-none cursor-pointer',
               'disabled:opacity-50 disabled:cursor-default',
               error && 'border-accent-red focus:border-accent-red',
+              sizes['paddings'], 'pr-9', sizes['radius'], sizes['font'],
               className
             )}
             {...props}

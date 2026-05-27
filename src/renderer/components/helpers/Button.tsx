@@ -1,4 +1,4 @@
-﻿import { InputSize } from "@components/helpers/Input";
+﻿import { InputMeasures, InputSize } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import React, { ReactNode } from 'react';
 
@@ -40,11 +40,7 @@ export default function Button({
       'disabled:opacity-50 disabled:hover:bg-elevated disabled:text-muted disabled:cursor-default'),
   };
 
-  const sizeClasses: Record<InputSize, string> = {
-    sm: 'px-3 py-1.5 rounded-md text-meta',
-    md: 'px-4 py-2 rounded-lg text-base',
-    lg: 'px-4 py-2.5 rounded-lg text-subtitle',
-  };
+  const sizes = InputMeasures[size]
 
   return (
     <button
@@ -54,7 +50,7 @@ export default function Button({
         'inline-flex items-center justify-center font-semibold',
         'disabled:pointer-events-none',
         'transition-all duration-150',
-        variantClasses[variant], sizeClasses[size],
+        variantClasses[variant], sizes['paddings'], sizes['radius'], sizes['font'],
         className
       )}>
       {children}

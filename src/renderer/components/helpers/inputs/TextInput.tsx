@@ -1,4 +1,4 @@
-import { InputPropsBase } from "@components/helpers/Input";
+import { InputMeasures, InputPropsBase } from "@components/helpers/Input";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { Eye, EyeClosed, LucideIcon, Search } from "lucide-react";
 import {
@@ -57,8 +57,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       },
     };
 
-    const padding = paddings[iconPosition]
+    const sizes = InputMeasures[size]
     const { iconPosition, icon: Icon } = specials[type] ?? {}
+    const padding = twMerge(sizes['paddings'], iconPosition && paddings[iconPosition])
 
     return (
       <div className={className.includes("w-full") ? "w-full" : ""}>
@@ -72,13 +73,14 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
             ref={ref}
             className={twMerge(
-              padding, 'peer',
-              'bg-elevated text-base text-primary-foreground placeholder:text-ghost',
-              'border border-border-input focus:border-border-hover rounded-md',
+              'peer',
+              'bg-elevated text-primary-foreground placeholder:text-ghost',
+              'border border-border-input focus:border-border-hover',
               'focus:outline-none cursor-text',
               'disabled:opacity-50 disabled:cursor-default',
               'transition-colors duration-150',
               error && 'border-accent-red focus:border-accent-red',
+              padding, sizes['radius'], sizes['font'],
               className
             )}
             {...props}
