@@ -8,6 +8,7 @@ import TextInput, {
   TextInputType
 } from "@components/helpers/inputs/TextInput";
 import Toggle, { ToggleProps } from "@components/helpers/inputs/Toggle";
+import { twMerge } from "@renderer/utils/tw.utils";
 import {
   ForwardedRef,
   forwardRef,
@@ -18,6 +19,24 @@ import {
 
 
 export type InputSize = 'sm' | 'md' | 'lg';
+
+export const InputMeasures: Record<InputSize, Record<'font' | 'paddings' | 'radius', string>> = {
+  sm: {
+    font: twMerge('text-meta'),
+    paddings: twMerge('px-3 py-1.5'),
+    radius: twMerge('rounded-md'),
+  },
+  md: {
+    font: twMerge('text-base'),
+    paddings: twMerge('px-4 py-2'),
+    radius: twMerge('rounded-lg'),
+  },
+  lg: {
+    font: twMerge('text-subtitle'),
+    paddings: twMerge('px-4 py-2.5'),
+    radius: twMerge('rounded-lg'),
+  },
+}
 
 export type InputPropsBase<T extends HTMLAttributes<HTMLElement>> = T & {
   size?: InputSize;
