@@ -90,13 +90,13 @@ export class JulesController extends BaseController<HttpClient> {
         path: '/sessions',
         config: { params: { pageSize: 100, ...(pageToken && { pageToken }) } }
       })
-      sessions.push(...data.sessions)
+      sessions.push(
+        ...data.sessions.filter(s => s.sourceContext.source === `sources/${sourceId}`)
+      )
       pageToken = data.nextPageToken
     } while (pageToken)
 
-    return sessions
-    .filter(s => s.sourceContext.source === `sources/${sourceId}`)
-    .map(s => new Session(s))
+    return sessions.map(s => new Session(s))
   }
 
   //
