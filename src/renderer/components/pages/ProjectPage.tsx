@@ -3,7 +3,7 @@ import PullRequestCard from "@components/cards/PullRequestCard";
 import SessionCard from "@components/cards/SessionCard";
 import Badge from "@components/helpers/Badge";
 import Button from "@components/helpers/Button";
-import Input from "@components/helpers/Input";
+import Checkbox from "@components/helpers/inputs/Checkbox";
 import Select from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";
 import Toggle from "@components/helpers/inputs/Toggle";
@@ -23,7 +23,7 @@ import { useNotifications } from "@renderer/hooks/notifications.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router";
 import { useLocation } from "react-router-dom";
 
@@ -218,11 +218,10 @@ export default function ProjectPage() {
 
       {/* Agents */}
       <Section title={`AGENTS ${activeAgentsOnly ? 'actifs ' : ''}(${selectedAgents.length ?? 0})`}
-               addon={<Input
-                 type={'checkbox'} label={'Actifs seulement'} size={'sm'}
-                 checked={activeAgentsOnly}
-                 onChange={(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) =>
-                   setActiveAgentsOnly(e.target.checked)}/>}>
+               addon={<Checkbox
+                 label={'Actifs seulement'} size={'sm'} checked={activeAgentsOnly}
+                 onChange={e => setActiveAgentsOnly(e.target.checked)}
+               />}>
         {selectedAgents.length === 0 ?
           !isAgentsLoading && !errorAgents && (
             <span className='text-base text-faint'>
