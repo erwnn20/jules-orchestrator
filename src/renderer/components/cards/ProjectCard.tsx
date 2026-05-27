@@ -178,5 +178,5 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
 }
 
 const agentStatusLabels: Record<DotStatus['status'], string> = {
-  running: 'Active', done: 'Done', error: 'Error', none: '', warning: 'Warning',
+  running: 'Active', warning: 'Warning', error: 'Error', done: 'Done', none: 'Inactive',
 }
