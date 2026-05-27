@@ -244,7 +244,14 @@ export default function ProjectPage() {
       </Section>
 
       {/* Pull Requests */}
-      <Section title={`PULL REQUESTS (${prs.length ?? 0})`}>
+      <Section title={`PULL REQUESTS (${prs.length ?? 0})`}
+               addon={<Select
+                 size={'sm'} value={prStateFilter}
+                 options={PR_STATE_FILTER_VALUES.map(value => ({
+                   value, label: value.capitalize()
+                 }))}
+                 onChange={e => setPRStateFilter(e.target.value as PRStateFilter)}
+               />}>
         {prs.length === 0 ?
           !isPRsLoading && !errorPRs &&
             <span className='text-base text-faint'> — aucune PR {/* en attente TODO */}</span> :
@@ -261,6 +268,8 @@ export default function ProjectPage() {
     </BasePage>
   )
 }
+
+const PR_STATE_FILTER_VALUES = ['all', 'open', 'closed'] as const satisfies PRStateFilter[]
 
 //
 
