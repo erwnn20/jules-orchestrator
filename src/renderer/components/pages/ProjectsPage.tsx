@@ -2,12 +2,14 @@ import ErrorCard from "@components/cards/ErrorCard";
 import ProjectCard from "@components/cards/ProjectCard";
 import Button from "@components/helpers/Button";
 import Input from "@components/helpers/Input";
+import Select from "@components/helpers/inputs/Select";
 import Loader from "@components/helpers/Loader";
+import { Direction, Sort, Visibility } from "@github/repositories/header.types";
 import { ListRepositoryRequest } from "@github/repositories/repository.interfaces";
 import BasePage from "@pages/BasePage";
 import { useRepositories } from "@renderer/hooks/github/repositories.hooks";
 import { twMerge } from "@renderer/utils/tw.utils";
-import { Plus, SlidersHorizontal } from "lucide-react";
+import { Plus, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 
 
@@ -34,9 +36,23 @@ export default function ProjectsPage() {
 
       <div className="flex items-center justify-end gap-3 mb-4">
         <Input disabled type={"search"} placeholder="Search projects..." className={"w-80"}/>
-        <Button disabled variant={'outline'}
-                className={'gap-2 bg-elevated hover:border-border-hover'}>
+        <Button
+          variant={'outline'}
+          className={twMerge(
+            'gap-2 bg-elevated hover:bg-border-color hover:border-border-hover',
+            showFilters && ' bg-border-color border-border-hover',
+          )}
+          onClick={() => setShowFilters(v => !v)}
+        >
           <SlidersHorizontal className="w-3 h-3"/> Filter
+          {activeFilterCount > 0 && (
+            <span className={twMerge(
+              "flex items-baseline justify-center w-3.5 h-3.5 rounded-full",
+              "bg-primary text-ghost text-label font-bold",
+            )}>
+              {activeFilterCount}
+            </span>
+          )}
         </Button>
         <Button disabled variant={"outline"}
                 onClick={handleConnectRepository}
@@ -56,6 +72,70 @@ export default function ProjectsPage() {
           <Plus className={'w-5 h-5'}/>
         </Button>
       </div>
+
+      {showFilters && (
+        <div className={twMerge(
+          'flex items-center gap-3 mb-4 px-4 py-3',
+          'bg-panel border border-border-color rounded-lg', /*todo check*/
+        )}>
+          <div className="flex items-center gap-2">
+            <Button
+              size={'sm'}
+              variant={hasPendingChanges ? 'primary' : 'outline'}
+              disabled={!hasPendingChanges}
+              onClick={() => setAppliedFilters(draftFilters)}
+            >
+              Apply {/*todo check*/}
+            </Button>
+            <Button
+              variant={'ghost'}
+              size={'sm'}
+              className={'p-2 aspect-square text-muted hover:text-primary'}
+              disabled={activeFilterCount === 0 && !hasPendingChanges}
+              onClick={() => {
+                setDraftFilters(DEFAULT_FILTERS)
+                setAppliedFilters(DEFAULT_FILTERS)
+              }}
+            >
+              <RotateCcw className="w-3 h-3 stroke-2"/> {/*Reset*/}
+            </Button>
+          </div>
+          {/*todo style check */}
+          <Select
+            size={'sm'}
+            value={draftFilters.sort}
+            onChange={e => setDraftFilters(f => ({ ...f, sort: e.target.value as Sort }))}
+            options={[
+              { value: 'updated', label: 'Last updated' },
+              { value: 'created', label: 'Created' },
+              { value: 'pushed', label: 'Last pushed' },
+              { value: 'full_name', label: 'Name' },
+            ]} /*todo check*/
+          />
+          <Select
+            size={'sm'}
+            value={draftFilters.direction}
+            onChange={e => setDraftFilters(f => ({ ...f, direction: e.target.value as Direction }))}
+            options={[
+              { value: 'desc', label: 'Descending' },
+              { value: 'asc', label: 'Ascending' },
+            ]} /*todo check*/
+          />
+          <Select
+            size={'sm'}
+            value={draftFilters.visibility}
+            onChange={e => setDraftFilters(f => ({
+              ...f,
+              visibility: e.target.value as Visibility
+            }))}
+            options={[
+              { value: 'all', label: 'All' },
+              { value: 'public', label: 'Public' },
+              { value: 'private', label: 'Private' },
+            ]} /*todo check*/
+          />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[200px]">
         {repositories.map((repo, index) =>
