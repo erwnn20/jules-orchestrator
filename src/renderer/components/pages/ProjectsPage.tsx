@@ -1,19 +1,31 @@
-﻿import ErrorCard from "@components/cards/ErrorCard";
+import ErrorCard from "@components/cards/ErrorCard";
 import ProjectCard from "@components/cards/ProjectCard";
 import Button from "@components/helpers/Button";
 import Input from "@components/helpers/Input";
 import Loader from "@components/helpers/Loader";
+import { ListRepositoryRequest } from "@github/repositories/repository.interfaces";
 import BasePage from "@pages/BasePage";
 import { useRepositories } from "@renderer/hooks/github/repositories.hooks";
 import { twMerge } from "@renderer/utils/tw.utils";
 import { Plus, SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
 
 
 export default function ProjectsPage() {
-  const { data: repositories = [], isLoading, error } = useRepositories({
-    sort: 'updated',
-    direction: 'desc' /* TODO: implement filters */
-  })
+  const [showFilters, setShowFilters] = useState(false)
+  const [draftFilters, setDraftFilters] = useState(DEFAULT_FILTERS)
+  const [appliedFilters, setAppliedFilters] = useState(DEFAULT_FILTERS)
+
+  const { data: repositories = [], isLoading, error } = useRepositories(appliedFilters)
+
+  const filterKeys = Object.keys(DEFAULT_FILTERS) as (keyof typeof DEFAULT_FILTERS)[]
+  const { activeFilterCount, hasPendingChanges } = filterKeys.reduce((acc, key) => {
+
+    if (appliedFilters[key] !== DEFAULT_FILTERS[key]) acc.activeFilterCount++
+    if (appliedFilters[key] !== draftFilters[key]) acc.hasPendingChanges = true
+
+    return acc
+  }, { activeFilterCount: 0, hasPendingChanges: false })
 
   const handleConnectRepository = () => {/* TODO connect new repository to jules */}
 
@@ -76,4 +88,10 @@ export default function ProjectsPage() {
       </div>
     </BasePage>
   )
+}
+
+const DEFAULT_FILTERS: Pick<ListRepositoryRequest, 'sort' | 'direction' | 'visibility'> = {
+  sort: 'updated',
+  direction: 'desc',
+  visibility: 'all',
 }
