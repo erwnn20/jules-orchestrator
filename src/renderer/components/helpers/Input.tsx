@@ -14,7 +14,8 @@ import {
   forwardRef,
   HTMLAttributes,
   HTMLInputTypeAttribute,
-  InputHTMLAttributes
+  InputHTMLAttributes,
+  ReactNode
 } from 'react';
 
 
@@ -40,7 +41,7 @@ export const InputMeasures: Record<InputSize, Record<'font' | 'paddings' | 'radi
 
 export type InputPropsBase<T extends HTMLAttributes<HTMLElement>> = T & {
   size?: InputSize;
-  label?: string;
+  label?: ReactNode;
   error?: string;
   helperText?: string;
 }
