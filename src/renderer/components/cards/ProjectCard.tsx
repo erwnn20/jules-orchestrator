@@ -1,8 +1,10 @@
+import ErrorCard from "@components/cards/ErrorCard";
 import Badge from "@components/helpers/Badge";
 import StatusDot, { DotStatus, Status, statusColors } from "@components/helpers/dots/StatusDot";
 import { Repository } from "@github/repositories/repository.model";
 import { sessionHasTag } from "@jules/sessions/session.types";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
+import { ApiError } from "@renderer/utils/ipc-error.utils";
 import { twMerge } from "@renderer/utils/tw.utils";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -14,12 +16,19 @@ import { NavLink } from "react-router";
 export default function ProjectCard({ index, ...args }: { index: number } & (
   { repository: Repository } | { project: Project }
   )) {
-  const repository = 'repository' in args ? args.repository : undefined
-  const project = ('project' in args ? args.project : undefined) ?? new Project(repository)
+  try {
+    const repository = 'repository' in args ? args.repository : undefined
+    const project = ('project' in args ? args.project : undefined) ?? new Project(repository)
 
-  return index === 0
-    ? <ProjectCardContent project={project} isFirst/>
-    : <ProjectCardContent project={project}/>
+    return index === 0
+      ? <ProjectCardContent project={project} isFirst/>
+      : <ProjectCardContent project={project}/>
+  } catch (e) {
+    if (e instanceof ApiError) {
+      return <ErrorCard error={e} style={"default"}/>
+    }
+    return <ErrorCard error={e as Error} style={"default"}/>
+  }
 }
 
 function MissingRepository() {
