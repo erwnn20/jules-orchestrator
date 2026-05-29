@@ -116,6 +116,7 @@ export default function ProjectsPage() {
                       {value.label}
                     </span>)}
                     value={typeof draftValue === 'string' ? draftValue : undefined}
+                    className={twMerge(draftValue !== DEFAULT_FILTERS[key] && 'border-primary ')}
                     onChange={e => setDraftFilters(f => ({ ...f, [key]: e.target.value }))}
                     options={Object.entries(value.options).map(([k, label]) => ({
                       value: k, label,
@@ -127,7 +128,8 @@ export default function ProjectsPage() {
                     label={(<span className={'text-meta text-secondary-foreground'}>
                       {value.label}
                     </span>)}
-                    value={draftValue instanceof Date ? draftValue.toISOString() : undefined}
+                    className={twMerge(draftValue !== DEFAULT_FILTERS[key] && 'border-primary ')}
+                    value={draftValue instanceof Date ? draftValue.toISOString().split('T')[0] : undefined}
                     onChange={e => setDraftFilters(f => ({
                       ...f, [key]: new Date(e.target.value)
                     }))}
@@ -138,6 +140,7 @@ export default function ProjectsPage() {
                     label={(<span className={'text-meta text-secondary-foreground'}>
                       {value.label}
                     </span>)}
+                    className={twMerge(draftValue !== DEFAULT_FILTERS[key] && 'border-primary ')}
                     value={typeof draftValue === 'number' ? draftValue : undefined}
                     min={value.min} max={value.max}
                     onChange={e => setDraftFilters(f => ({
