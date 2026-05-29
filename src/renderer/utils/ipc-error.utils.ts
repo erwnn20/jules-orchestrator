@@ -1,4 +1,4 @@
-import { ApiErrorCode, IpcResult, isSerializedApiError } from '../../shared/errors/api-error.types'
+import { ApiErrorCode, IpcResult, isSerializedApiError } from '@shared/errors/api-error.types'
 
 
 export class ApiError extends Error {
