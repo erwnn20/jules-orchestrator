@@ -8,6 +8,7 @@ import Loader from "@components/helpers/Loader";
 import { ListRepositoryRequest } from "@github/repositories/repository.interfaces";
 import BasePage from "@pages/BasePage";
 import { useRepositories } from "@renderer/hooks/github/repositories.hooks";
+import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { twMerge } from "@renderer/utils/tw.utils";
 import { Plus, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
@@ -19,6 +20,7 @@ export default function ProjectsPage() {
   const [appliedFilters, setAppliedFilters] = useState(DEFAULT_FILTERS)
 
   const { data: repositories = [], isLoading, error } = useRepositories(appliedFilters)
+  const sourcesQuery = useSources()
 
   const filterKeys = Object.keys(DEFAULT_FILTERS) as (keyof typeof DEFAULT_FILTERS)[]
   const { activeFilterCount, hasPendingChanges } = filterKeys.reduce((acc, key) => {
@@ -155,7 +157,7 @@ export default function ProjectsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[200px]">
         {repositories.map((repo, index) =>
-          <ProjectCard key={index} index={index} repository={repo}/>)}
+          <ProjectCard key={index} index={index} repository={repo} sourcesQuery={sourcesQuery}/>)}
 
         {error && <ErrorCard error={error} style={"default"}/>}
         {isLoading ? <Loader/> :
