@@ -32,9 +32,10 @@ export default function ProjectsPage() {
   const handleConnectRepository = () => {/* TODO connect new repository to jules */}
 
   return (
-    <BasePage title='Projects' subtitle={`${repositories.length} repositories GitHub`}>
+    <BasePage title='Projects'
+              subtitle={`${repositories.length} repositories ${activeFilterCount === 0 ? 'GitHub' : 'affichés'}`}>
 
-      <div className="flex items-center justify-end gap-3 mb-4">
+      <div className="flex items-center justify-end gap-3 mb-3">
         <Input disabled type={"search"} placeholder="Search projects..." className={"w-80"}/>
         <Button
           variant={'outline'}
@@ -75,18 +76,11 @@ export default function ProjectsPage() {
 
       {showFilters && (
         <div className={twMerge(
-          'flex items-center gap-3 mb-4 px-4 py-3',
+          'flex flex-col gap-2.5 mb-4 px-4 py-3',
           'bg-panel border border-border-color rounded-lg', /*todo check*/
         )}>
           <div className="flex items-center gap-2">
-            <Button
-              size={'sm'}
-              variant={hasPendingChanges ? 'primary' : 'outline'}
-              disabled={!hasPendingChanges}
-              onClick={() => setAppliedFilters(draftFilters)}
-            >
-              Apply {/*todo check*/}
-            </Button>
+            <h4 className={'text-subtitle me-auto'}>Filters</h4>
             <Button
               variant={'ghost'}
               size={'sm'}
@@ -99,41 +93,53 @@ export default function ProjectsPage() {
             >
               <RotateCcw className="w-3 h-3 stroke-2"/> {/*Reset*/}
             </Button>
+            <Button
+              size={'sm'}
+              variant={hasPendingChanges ? 'primary' : 'outline'}
+              disabled={!hasPendingChanges}
+              onClick={() => setAppliedFilters(draftFilters)}
+            >
+              Apply {/*todo check*/}
+            </Button>
           </div>
-          {/*todo style check */}
-          <Select
-            size={'sm'}
-            value={draftFilters.sort}
-            onChange={e => setDraftFilters(f => ({ ...f, sort: e.target.value as Sort }))}
-            options={[
-              { value: 'updated', label: 'Last updated' },
-              { value: 'created', label: 'Created' },
-              { value: 'pushed', label: 'Last pushed' },
-              { value: 'full_name', label: 'Name' },
-            ]} /*todo check*/
-          />
-          <Select
-            size={'sm'}
-            value={draftFilters.direction}
-            onChange={e => setDraftFilters(f => ({ ...f, direction: e.target.value as Direction }))}
-            options={[
-              { value: 'desc', label: 'Descending' },
-              { value: 'asc', label: 'Ascending' },
-            ]} /*todo check*/
-          />
-          <Select
-            size={'sm'}
-            value={draftFilters.visibility}
-            onChange={e => setDraftFilters(f => ({
-              ...f,
-              visibility: e.target.value as Visibility
-            }))}
-            options={[
-              { value: 'all', label: 'All' },
-              { value: 'public', label: 'Public' },
-              { value: 'private', label: 'Private' },
-            ]} /*todo check*/
-          />
+          <div className={'flex flex-wrap gap-3'}>
+            <Select
+              size={'sm'}
+              value={draftFilters.sort}
+              onChange={e => setDraftFilters(f => ({ ...f, sort: e.target.value as Sort }))}
+              options={[
+                { value: 'updated', label: 'Last updated' },
+                { value: 'created', label: 'Created' },
+                { value: 'pushed', label: 'Last pushed' },
+                { value: 'full_name', label: 'Name' },
+              ]} /*todo check*/
+            />
+            <Select
+              size={'sm'}
+              value={draftFilters.direction}
+              onChange={e => setDraftFilters(f => ({
+                ...f,
+                direction: e.target.value as Direction
+              }))}
+              options={[
+                { value: 'desc', label: 'Descending' },
+                { value: 'asc', label: 'Ascending' },
+              ]} /*todo check*/
+            />
+            <Select
+              size={'sm'}
+              value={draftFilters.visibility}
+              onChange={e => setDraftFilters(f => ({
+                ...f,
+                visibility: e.target.value as Visibility
+              }))}
+              options={[
+                { value: 'all', label: 'All' },
+                { value: 'public', label: 'Public' },
+                { value: 'private', label: 'Private' },
+              ]} /*todo check*/
+            />
+          </div>
         </div>
       )}
 
