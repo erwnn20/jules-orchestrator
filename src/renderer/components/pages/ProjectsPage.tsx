@@ -3,8 +3,8 @@ import ProjectCard from "@components/cards/ProjectCard";
 import Button from "@components/helpers/Button";
 import Input from "@components/helpers/Input";
 import Select from "@components/helpers/inputs/Select";
+import TextInput from "@components/helpers/inputs/TextInput";
 import Loader from "@components/helpers/Loader";
-import { Direction, Sort, Visibility } from "@github/repositories/header.types";
 import { ListRepositoryRequest } from "@github/repositories/repository.interfaces";
 import BasePage from "@pages/BasePage";
 import { useRepositories } from "@renderer/hooks/github/repositories.hooks";
@@ -30,6 +30,8 @@ export default function ProjectsPage() {
   }, { activeFilterCount: 0, hasPendingChanges: false })
 
   const handleConnectRepository = () => {/* TODO connect new repository to jules */}
+
+  const filtersConfig = Object.entries(FILTERS_CONFIG) as [keyof FiltersKeys, FilterConfig[keyof FilterConfig]][];
 
   return (
     <BasePage title='Projects'
@@ -102,43 +104,48 @@ export default function ProjectsPage() {
               Apply {/*todo check*/}
             </Button>
           </div>
-          <div className={'flex flex-wrap gap-3'}>
-            <Select
-              size={'sm'}
-              value={draftFilters.sort}
-              onChange={e => setDraftFilters(f => ({ ...f, sort: e.target.value as Sort }))}
-              options={[
-                { value: 'updated', label: 'Last updated' },
-                { value: 'created', label: 'Created' },
-                { value: 'pushed', label: 'Last pushed' },
-                { value: 'full_name', label: 'Name' },
-              ]} /*todo check*/
-            />
-            <Select
-              size={'sm'}
-              value={draftFilters.direction}
-              onChange={e => setDraftFilters(f => ({
-                ...f,
-                direction: e.target.value as Direction
-              }))}
-              options={[
-                { value: 'desc', label: 'Descending' },
-                { value: 'asc', label: 'Ascending' },
-              ]} /*todo check*/
-            />
-            <Select
-              size={'sm'}
-              value={draftFilters.visibility}
-              onChange={e => setDraftFilters(f => ({
-                ...f,
-                visibility: e.target.value as Visibility
-              }))}
-              options={[
-                { value: 'all', label: 'All' },
-                { value: 'public', label: 'Public' },
-                { value: 'private', label: 'Private' },
-              ]} /*todo check*/
-            />
+          <div className={'flex items-end flex-wrap gap-3'}>
+
+            {filtersConfig.map(([key, value], index) => {
+              const draftValue = draftFilters[key]
+              switch (value.type) {
+                case "select":
+                  return (<Select
+                    size={'sm'} key={index}
+                    label={(<span className={'text-meta text-secondary-foreground'}>
+                      {value.label}
+                    </span>)}
+                    value={typeof draftValue === 'string' ? draftValue : undefined}
+                    onChange={e => setDraftFilters(f => ({ ...f, [key]: e.target.value }))}
+                    options={Object.entries(value.options).map(([k, label]) => ({
+                      value: k, label,
+                    }))}
+                  />)
+                case "date":
+                  return (<TextInput
+                    type={'date'} size={'sm'} key={index}
+                    label={(<span className={'text-meta text-secondary-foreground'}>
+                      {value.label}
+                    </span>)}
+                    value={draftValue instanceof Date ? draftValue.toISOString() : undefined}
+                    onChange={e => setDraftFilters(f => ({
+                      ...f, [key]: new Date(e.target.value)
+                    }))}
+                  />)
+                case "number":
+                  return (<TextInput
+                    type={'number'} size={'sm'} key={index}
+                    label={(<span className={'text-meta text-secondary-foreground'}>
+                      {value.label}
+                    </span>)}
+                    value={typeof draftValue === 'number' ? draftValue : undefined}
+                    min={value.min} max={value.max}
+                    onChange={e => setDraftFilters(f => ({
+                      ...f, [key]: Number(e.target.value)
+                    }))}
+                  />)
+              }
+            })}
           </div>
         </div>
       )}
