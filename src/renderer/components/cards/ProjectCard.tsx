@@ -158,9 +158,9 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
               </h3>
               {isFirst && hasJulesAccess && (
                 <div className="flex items-center gap-2 mt-1">
-                  <StatusDot status={agentStatus === 'none' ? 'none' : agentStatus}/>
+                  <StatusDot status={agentStatus === 'none' ? 'done' : agentStatus}/>
                   <span
-                    style={{ color: statusColors[agentStatus] }}
+                    style={{ color: statusColors[agentStatus === 'none' ? 'done' : agentStatus] }}
                     className="text-meta uppercase font-semibold tracking-wide">
                     {agentStatusLabels[agentStatus]}
                   </span>
