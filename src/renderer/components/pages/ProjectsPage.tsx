@@ -176,7 +176,52 @@ export default function ProjectsPage() {
   )
 }
 
-const DEFAULT_FILTERS: Pick<ListRepositoryRequest, 'sort' | 'direction' | 'visibility'> = {
+type RequiredFiltersKeys = Required<ListRepositoryRequest>;
+type FilterConfig = {
+  [key in keyof RequiredFiltersKeys]: { label?: string; } & (
+  RequiredFiltersKeys[key] extends string ? {
+      type: 'select'; options: Record<RequiredFiltersKeys[key], string>
+    } :
+    RequiredFiltersKeys[key] extends number ? { type: 'number'; min: number; max: number } :
+      RequiredFiltersKeys[key] extends Date ? { type: 'date'; } :
+        never
+  )
+};
+
+type FiltersKeys = Partial<Pick<RequiredFiltersKeys, 'sort' | 'direction' | 'visibility' | 'since' | 'before'>>
+
+const FILTERS_CONFIG: Pick<FilterConfig, keyof FiltersKeys> = {
+  sort: {
+    label: 'Sort By',
+    type: 'select',
+    options: {
+      created: 'Created',
+      updated: 'Last updated',
+      pushed: 'Last pushed',
+      full_name: 'Name'
+    }
+  },
+  direction: {
+    type: 'select',
+    options: {
+      desc: '↓',
+      asc: '↑',
+    }
+  },
+  visibility: {
+    label: 'Visibility',
+    type: 'select',
+    options: {
+      all: 'All',
+      public: 'Public',
+      private: 'Private',
+    }
+  },
+  before: { label: 'Before', type: 'date' },
+  since: { label: 'After', type: 'date' },
+}
+
+const DEFAULT_FILTERS: FiltersKeys = {
   sort: 'updated',
   direction: 'desc',
   visibility: 'all',
