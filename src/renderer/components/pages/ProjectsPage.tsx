@@ -18,7 +18,7 @@ export default function ProjectsPage() {
   const [draftFilters, setDraftFilters] = useState(DEFAULT_FILTERS)
   const [appliedFilters, setAppliedFilters] = useState(DEFAULT_FILTERS)
 
-  const { data: repositories = [], isLoading, error } = useRepositories(appliedFilters)
+  const { data: repositories = [], isLoading, error } = useRepositories(appliedFilters) /*todo check 429*/
 
   const filterKeys = Object.keys(DEFAULT_FILTERS) as (keyof typeof DEFAULT_FILTERS)[]
   const { activeFilterCount, hasPendingChanges } = filterKeys.reduce((acc, key) => {
@@ -30,6 +30,8 @@ export default function ProjectsPage() {
   }, { activeFilterCount: 0, hasPendingChanges: false })
 
   const handleConnectRepository = () => {/* TODO connect new repository to jules */}
+
+  /* todo catch 429 too many request error */
 
   const filtersConfig = Object.entries(FILTERS_CONFIG) as [keyof FiltersKeys, FilterConfig[keyof FilterConfig]][];
 
@@ -231,7 +233,7 @@ const FILTERS_CONFIG: Pick<FilterConfig, keyof FiltersKeys> = {
   since: { label: 'After', type: 'date' },
 }
 
-const DEFAULT_FILTERS: FiltersKeys = {
+const DEFAULT_FILTERS: FiltersKeys = { /* todo fix err on undefined filters */
   sort: 'updated',
   direction: 'desc',
   visibility: 'all',
