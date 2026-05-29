@@ -3,6 +3,7 @@ import Badge from "@components/helpers/Badge";
 import StatusDot, { DotStatus, Status, statusColors } from "@components/helpers/dots/StatusDot";
 import { Repository } from "@github/repositories/repository.model";
 import { sessionHasTag } from "@jules/sessions/session.types";
+import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { ApiError } from "@renderer/utils/ipc-error.utils";
 import { twMerge } from "@renderer/utils/tw.utils";
@@ -14,11 +15,11 @@ import { NavLink } from "react-router";
 
 
 export default function ProjectCard({ index, ...args }: { index: number } & (
-  { repository: Repository } | { project: Project }
+  { repository: Repository, sourcesQuery?: ReturnType<typeof useSources> } | { project: Project }
   )) {
   try {
-    const repository = 'repository' in args ? args.repository : undefined
-    const project = ('project' in args ? args.project : undefined) ?? new Project(repository)
+    const { repository, sourcesQuery } = 'repository' in args ? args : {}
+    const project = ('project' in args ? args.project : undefined) ?? new Project(repository, sourcesQuery)
 
     return index === 0
       ? <ProjectCardContent project={project} isFirst/>
