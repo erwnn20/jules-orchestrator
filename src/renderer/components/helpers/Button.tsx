@@ -30,7 +30,7 @@ export default function Button({
       'bg-elevated text-primary-foreground hover:opacity-90 cursor-pointer',
       'disabled:opacity-50 disabled:cursor-default'),
     outline: twMerge(
-      'border border-border-input text-primary-foreground hover:bg-elevated cursor-pointer',
+      'outline outline-border-input text-primary-foreground hover:bg-elevated cursor-pointer',
       'disabled:opacity-50 disabled:cursor-default disabled:hover:bg-transparent'),
     ghost: twMerge(
       'text-primary-foreground hover:bg-elevated cursor-pointer',
