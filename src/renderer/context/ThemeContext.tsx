@@ -37,7 +37,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme
 
   useEffect(() => {
-    document.documentElement.classList.toggle('light', resolvedTheme === 'light')
+    const root = document.documentElement
+    root.classList.remove('light', 'dark')
+    root.classList.add(resolvedTheme)
   }, [resolvedTheme])
 
   const setTheme = (next: Theme) => {
