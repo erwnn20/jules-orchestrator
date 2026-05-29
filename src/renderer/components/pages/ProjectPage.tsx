@@ -223,7 +223,8 @@ export default function ProjectPage() {
       {/* Agents */}
       <Section title={`AGENTS ${activeAgentsOnly ? 'actifs ' : ''}(${selectedAgents.length ?? 0})`}
                addon={<Checkbox
-                 label={'Actifs seulement'} size={'sm'} checked={activeAgentsOnly}
+                 size={'sm'} checked={activeAgentsOnly}
+                 label={<span className={'text-muted'}>Actifs seulement</span>}
                  onChange={e => setActiveAgentsOnly(e.target.checked)}
                />}>
         {selectedAgents.length === 0 ?
