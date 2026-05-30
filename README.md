@@ -8,29 +8,14 @@ Application desktop permettant de piloter visuellement une flotte d'agents IA [J
 
 - Visualisation de vos dépôts GitHub et de leurs agents IA actifs
 - Suivi des sessions Jules en cours (statut, tâche, branche)
-- Consultation et gestion des Pull Requests ouvertes par les agents
-- Acceptation / rejet de PRs directement depuis le tableau de bord
+- Consultation des Pull Requests vos dépôts (ouvertes par les agents ou non)
 - Interface dark/light mode, esthétique terminal
-
----
-
-## Stack technique
-
-| Couche          | Technologie              |
-|-----------------|--------------------------|
-| Desktop Runtime | Electron 41              |
-| Frontend        | React 19, React Router 7 |
-| Langage         | TypeScript 6 (strict)    |
-| Bundler         | Vite 8 + Tailwind CSS 4  |
-| Data fetching   | TanStack React Query     |
-| API GitHub      | Octokit REST             |
-| API Jules       | HTTP client custom       |
 
 ---
 
 ## Prérequis
 
-- **Node.js** ≥ 20
+- **Node.js** 22
 - **npm** ≥ 10
 - Un **token GitHub** (Personal Access Token) avec les scopes `repo` et `read:user`
 - Une **clé API Jules** — obtenir un accès sur [jules.google.com](https://jules.google.com/)
@@ -42,7 +27,7 @@ Application desktop permettant de piloter visuellement une flotte d'agents IA [J
 **1. Cloner le dépôt**
 
 ```bash
-git clone <url-du-repo>
+git clone https://github.com/erwnn20/jules-orchestrator.git
 cd jules-orchestrator
 ```
 
