@@ -16,15 +16,15 @@ Application desktop permettant de piloter visuellement une flotte d'agents IA [J
 
 ## Stack technique
 
-| Couche | Technologie |
-|--------|-------------|
-| Desktop Runtime | Electron 41 |
-| Frontend | React 19, React Router 7 |
-| Langage | TypeScript 6 (strict) |
-| Bundler | Vite 8 + Tailwind CSS 4 |
-| Data fetching | TanStack React Query |
-| API GitHub | Octokit REST |
-| API Jules | HTTP client custom |
+| Couche          | Technologie              |
+|-----------------|--------------------------|
+| Desktop Runtime | Electron 41              |
+| Frontend        | React 19, React Router 7 |
+| Langage         | TypeScript 6 (strict)    |
+| Bundler         | Vite 8 + Tailwind CSS 4  |
+| Data fetching   | TanStack React Query     |
+| API GitHub      | Octokit REST             |
+| API Jules       | HTTP client custom       |
 
 ---
 
@@ -52,10 +52,10 @@ Le projet contient deux `package.json` : un pour le processus Electron (racine) 
 
 ```bash
 # Dépendances Electron (racine)
-npm install
+npm clean-install
 
 # Dépendances renderer (React + Vite)
-npm install --prefix src/renderer
+npm clean-install --prefix src/renderer
 ```
 
 **3. Configurer les variables d'environnement**
@@ -67,10 +67,10 @@ GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
 JULES_API_KEY=xxxxxxxxxxxxxxxxxxxx
 ```
 
-| Variable | Description |
-|----------|-------------|
-| `GITHUB_TOKEN` | Personal Access Token GitHub (scopes : `repo`, `read:user`) |
-| `JULES_API_KEY` | Clé API Jules (Google) |
+| Variable        | Description                                                 |
+|-----------------|-------------------------------------------------------------|
+| `GITHUB_TOKEN`  | Personal Access Token GitHub (scopes : `repo`, `read:user`) |
+| `JULES_API_KEY` | Clé API Jules (Google)                                      |
 
 > Le fichier `.env` est ignoré par git — ne pas le committer.
 
