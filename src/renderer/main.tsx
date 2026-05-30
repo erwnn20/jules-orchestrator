@@ -1,4 +1,5 @@
-﻿import { ThemeProvider } from "@context/ThemeContext";
+﻿import '@shared/utils/global.utils'
+import { ThemeProvider } from "@context/ThemeContext";
 import App from "@renderer/App";
 import { QueryClient } from "@tanstack/query-core";
 import { QueryClientProvider } from "@tanstack/react-query";

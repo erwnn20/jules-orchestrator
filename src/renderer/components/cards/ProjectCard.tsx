@@ -1,7 +1,11 @@
+import ErrorCard from "@components/cards/ErrorCard";
 import Badge from "@components/helpers/Badge";
-import StatusDot, { DotStatus, statusColors } from "@components/helpers/dots/StatusDot";
+import StatusDot, { DotStatus, Status, statusColors } from "@components/helpers/dots/StatusDot";
 import { Repository } from "@github/repositories/repository.model";
+import { sessionHasTag } from "@jules/sessions/session.types";
+import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
+import { ApiError } from "@renderer/utils/ipc-error.utils";
 import { twMerge } from "@renderer/utils/tw.utils";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -11,14 +15,21 @@ import { NavLink } from "react-router";
 
 
 export default function ProjectCard({ index, ...args }: { index: number } & (
-  { repository: Repository } | { project: Project }
+  { repository: Repository, sourcesQuery?: ReturnType<typeof useSources> } | { project: Project }
   )) {
-  const repository = 'repository' in args ? args.repository : undefined
-  const project = ('project' in args ? args.project : undefined) ?? new Project(repository)
+  try {
+    const { repository, sourcesQuery } = 'repository' in args ? args : {}
+    const project = ('project' in args ? args.project : undefined) ?? new Project(repository, sourcesQuery)
 
-  return index === 0
-    ? <ProjectCardContent project={project} isFirst/>
-    : <ProjectCardContent project={project}/>
+    return index === 0
+      ? <ProjectCardContent project={project} isFirst/>
+      : <ProjectCardContent project={project}/>
+  } catch (e) {
+    if (e instanceof ApiError) {
+      return <ErrorCard error={e} style={"default"}/>
+    }
+    return <ErrorCard error={e as Error} style={"default"}/>
+  }
 }
 
 function MissingRepository() {
@@ -122,7 +133,15 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
   if (!repository) return <MissingRepository/>
 
   const description = repository.description ?? (agents[0] ? `Last session: ${agents[0].title ?? agents[0].prompt}` : null)
-  const agentStatus: DotStatus['status'] = activeAgents.length > 0 ? 'running' : 'done'
+  const PRIORITY: Status[] = ['error', 'warning', 'running', 'done', 'none']
+  const agentStatus: Status = activeAgents.reduce<Status>((status, { state }) => {
+    const current: Status =
+      sessionHasTag(state, 'error') ? 'error'
+        : sessionHasTag(state, 'waiting') ? 'warning'
+          : sessionHasTag(state, 'active') ? 'running'
+            : 'done'
+    return PRIORITY.indexOf(current) < PRIORITY.indexOf(status) ? current : status
+  }, activeAgents.length === 0 ? 'none' : 'done')
 
   return (
     <ProjectCardBase project={project} isFirst={isFirst}>
@@ -139,9 +158,9 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
               </h3>
               {isFirst && hasJulesAccess && (
                 <div className="flex items-center gap-2 mt-1">
-                  <StatusDot status={agentStatus}/>
+                  <StatusDot status={agentStatus === 'none' ? 'done' : agentStatus}/>
                   <span
-                    style={{ color: statusColors[agentStatus] }}
+                    style={{ color: statusColors[agentStatus === 'none' ? 'done' : agentStatus] }}
                     className="text-meta uppercase font-semibold tracking-wide">
                     {agentStatusLabels[agentStatus]}
                   </span>
@@ -169,5 +188,5 @@ function ProjectCardContent({ project, isFirst = false }: { project: Project; is
 }
 
 const agentStatusLabels: Record<DotStatus['status'], string> = {
-  running: 'Active', done: 'Done', error: 'Error', none: '', warning: '',
+  running: 'Active', warning: 'Warning', error: 'Error', done: 'Done', none: 'Inactive',
 }

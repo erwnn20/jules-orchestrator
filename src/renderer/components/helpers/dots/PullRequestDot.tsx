@@ -33,7 +33,7 @@ const statusDots: Record<PullRequestState, { icon?: LucideIcon } & (
   approved: { icon: GitPullRequestArrow, status: 'running' },
   changes_requested: { icon: GitMergeConflict, status: 'warning' },
   closed: { icon: GitPullRequestClosed, status: 'done' },
-  draft: { icon: GitPullRequestDraft, status: 'done' },
+  draft: { icon: GitPullRequestDraft, status: 'warning' },
   merge_conflict: { icon: GitMergeConflict, status: 'error' },
   merged: {
     icon: GitMerge,

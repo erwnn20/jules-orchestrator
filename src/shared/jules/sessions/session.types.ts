@@ -1,4 +1,4 @@
-﻿import type { ChangeSet, PullRequest } from "@jules/github/github.interfaces";
+import type { ChangeSet, PullRequest } from "@jules/github/github.interfaces";
 
 
 export type SessionOutput = { pullRequest: PullRequest } | { changeSet: ChangeSet }
@@ -25,10 +25,56 @@ export const SessionState = {
 } as const;
 export type SessionState = (typeof SessionState)[keyof typeof SessionState];
 
-export const ACTIVE_STATES: SessionState[] = [SessionState.IN_PROGRESS, SessionState.PLANNING]
-export const WAITING_STATES: SessionState[] = [
-  SessionState.QUEUED, SessionState.AWAITING_PLAN_APPROVAL, SessionState.AWAITING_USER_FEEDBACK
-]
+export const SessionTag = {
+  /** Jules is actively processing */
+  ACTIVE: 'active',
+  /** Session is alive but not processing — no specific user action needed */
+  IDLE: 'idle',
+  /** Session is alive but blocked on user action */
+  WAITING: 'waiting',
+  /** Session completed successfully */
+  SUCCESS: 'success',
+  /** Session failed */
+  ERROR: 'error',
+  /** State is unspecified */
+  NONE: 'none',
+} as const;
+export type SessionTag = (typeof SessionTag)[keyof typeof SessionTag]
+
+export const SESSION_TAG_GROUPS = {
+  /** Session is still alive — not yet terminal */
+  running: ['active', 'idle', 'waiting'],
+  /** Session is definitively done — no further progress possible */
+  terminal: ['success', 'error'],
+  /** User should act — waiting on approval/feedback or session failed */
+  needs_attention: ['waiting', 'error'],
+  /** No problems — session is progressing or completed successfully */
+  healthy: ['active', 'idle', 'success'],
+} satisfies Record<string, SessionTag[]>;
+export type SessionTagGroup = keyof typeof SESSION_TAG_GROUPS;
+
+export const SESSION_STATE_TAGS: Record<SessionState, SessionTag> = {
+  STATE_UNSPECIFIED: 'none',
+  QUEUED: 'idle',
+  PLANNING: 'active',
+  IN_PROGRESS: 'active',
+  AWAITING_PLAN_APPROVAL: 'waiting',
+  AWAITING_USER_FEEDBACK: 'waiting',
+  PAUSED: 'idle',
+  FAILED: 'error',
+  COMPLETED: 'success',
+} as const;
+
+type PossibleTags = SessionTag | SessionTagGroup
+
+export function sessionHasTag(state: SessionState, tags: PossibleTags | PossibleTags[]): boolean {
+  const tagsArray = Array.isArray(tags) ? tags : [tags]
+
+  const resolved: SessionTag[] = tagsArray.map(tag =>
+    tag in SESSION_TAG_GROUPS ? SESSION_TAG_GROUPS[tag as SessionTagGroup] : [tag as SessionTag]
+  ).flat()
+  return resolved.includes(SESSION_STATE_TAGS[state])
+}
 
 //
 

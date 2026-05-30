@@ -3,7 +3,7 @@ import PullRequestCard from "@components/cards/PullRequestCard";
 import SessionCard from "@components/cards/SessionCard";
 import Badge from "@components/helpers/Badge";
 import Button from "@components/helpers/Button";
-import Input from "@components/helpers/Input";
+import Checkbox from "@components/helpers/inputs/Checkbox";
 import Select from "@components/helpers/inputs/Select";
 import Textarea from "@components/helpers/inputs/Textarea";
 import Toggle from "@components/helpers/inputs/Toggle";
@@ -13,6 +13,7 @@ import Notifications from "@components/helpers/Notifications";
 import Section from "@components/Section";
 import { PullRequestList } from "@github/pr/list.model";
 import { PullRequest } from "@github/pr/pr.model";
+import { PRStateFilter } from "@github/pr/pr.types";
 import { Repository } from "@github/repositories/repository.model";
 import { PullRequest as JulesPullRequest } from '@jules/github/github.interfaces'
 import { Session } from "@jules/sessions/session.model";
@@ -23,7 +24,7 @@ import { useNotifications } from "@renderer/hooks/notifications.hooks";
 import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.interface";
 import { twMerge } from '@renderer/utils/tw.utils';
 import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router";
 import { useLocation } from "react-router-dom";
 
@@ -49,11 +50,14 @@ export default function ProjectPage() {
   const { data: branches = [], isLoading: isBranchesLoading } = branchesQuery({
     branchFilter: { exclude: /^.+-\d+[a-f0-9]*$/ },
   })
+
+  const [prStateFilter, setPRStateFilter] = useState<PRStateFilter>('open')
   const { data: prs = [], isLoading: isPRsLoading, error: errorPRs } = prsQuery({
     sort: 'updated',
     direction: 'desc',
-    // state: 'all',
+    state: prStateFilter,
   })
+
   const { data: agents = [], isLoading: isAgentsLoading, error: errorAgents } = agentsQuery
 
   const { notifs, push: pushNotif, dismiss: dismissNotif } = useNotifications()
@@ -218,11 +222,11 @@ export default function ProjectPage() {
 
       {/* Agents */}
       <Section title={`AGENTS ${activeAgentsOnly ? 'actifs ' : ''}(${selectedAgents.length ?? 0})`}
-               addon={<Input
-                 type={'checkbox'} label={'Actifs seulement'} size={'sm'}
-                 checked={activeAgentsOnly}
-                 onChange={(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) =>
-                   setActiveAgentsOnly(e.target.checked)}/>}>
+               addon={<Checkbox
+                 size={'sm'} checked={activeAgentsOnly}
+                 label={<span className={'text-muted'}>Actifs seulement</span>}
+                 onChange={e => setActiveAgentsOnly(e.target.checked)}
+               />}>
         {selectedAgents.length === 0 ?
           !isAgentsLoading && !errorAgents && (
             <span className='text-base text-faint'>
@@ -241,10 +245,19 @@ export default function ProjectPage() {
       </Section>
 
       {/* Pull Requests */}
-      <Section title={`PULL REQUESTS (${prs.length ?? 0})`}>
+      <Section title={`PULL REQUESTS (${prs.length ?? 0})`}
+               addon={<Select
+                 size={'sm'} value={prStateFilter}
+                 options={PR_STATE_FILTER_VALUES.map(value => ({
+                   value, label: value.capitalize()
+                 }))}
+                 onChange={e => setPRStateFilter(e.target.value as PRStateFilter)}
+               />}>
         {prs.length === 0 ?
           !isPRsLoading && !errorPRs &&
-            <span className='text-base text-faint'> — aucune PR {/* en attente TODO */}</span> :
+            <span className='text-base text-faint'>
+                — aucune PR {prStateFilter === 'open' ? 'ouverte' : prStateFilter === 'closed' ? 'fermée' : ''}
+            </span> :
           (<div className='flex flex-col gap-1.5'>
             {prs.map((pr, index) => (
               <PullRequestCardWide key={index} pr={pr} setHoveredIndex={setHoveredIndex}/>
@@ -258,6 +271,8 @@ export default function ProjectPage() {
     </BasePage>
   )
 }
+
+const PR_STATE_FILTER_VALUES = ['all', 'open', 'closed'] as const satisfies PRStateFilter[]
 
 //
 
