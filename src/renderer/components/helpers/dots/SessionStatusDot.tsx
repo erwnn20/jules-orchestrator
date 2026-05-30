@@ -4,7 +4,7 @@ import { SESSION_STATE_TAGS, SessionTag } from "@jules/sessions/session.types";
 
 
 export default function SessionStatusDot({ session }: { session: Session }) {
-  return <StatusDot {...sessionStateStatus[SESSION_STATE_TAGS[session.state]]}/>  /* todo use new sessions tags */
+  return <StatusDot {...sessionStateStatus[SESSION_STATE_TAGS[session.state]]}/>
 }
 
 const sessionStateStatus: Record<SessionTag, DotStatus> = {

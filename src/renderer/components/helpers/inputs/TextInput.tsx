@@ -68,7 +68,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             {label}
           </label>
         )}
-        <div className="relative">
+        <div className="relative scheme-light-dark"> {/*todo look*/}
           <input
             type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
             ref={ref}

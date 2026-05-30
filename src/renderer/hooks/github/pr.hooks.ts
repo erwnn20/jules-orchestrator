@@ -19,7 +19,7 @@ export function usePR({ owner, repo, pull_number }: GetPRRequest) {
 
 export function useRepoPRs({ owner, repo, ...args }: ListPRRequest) {
   return useQuery({
-    queryKey: ['repositories', owner, repo, 'pr'],
+    queryKey: ['repositories', owner, repo, 'pr', args],
     queryFn: () => GithubService.getRepoPRs({ owner, repo, ...args }),
     enabled: !!owner && !!repo,
   })

@@ -1,4 +1,4 @@
-import { ApiErrorCode, SerializedApiError } from '../../shared/errors/api-error.types'
+import { ApiErrorCode, SerializedApiError } from '@shared/errors/api-error.types'
 
 
 export function normalizeError(err: unknown): SerializedApiError {
