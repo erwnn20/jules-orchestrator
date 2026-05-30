@@ -17,8 +17,6 @@ Application desktop permettant de piloter visuellement une flotte d'agents IA [J
 
 - **Node.js** 22
 - **npm** ≥ 10
-- Un **token GitHub** (Personal Access Token) avec les scopes `repo` et `read:user`
-- Une **clé API Jules** — obtenir un accès sur [jules.google.com](https://jules.google.com/)
 
 ---
 
@@ -45,19 +43,12 @@ npm clean-install --prefix src/renderer
 
 **3. Configurer les variables d'environnement**
 
-Créer un fichier `.env` à la racine du projet :
+Copier le fichier `.env.example` dans un nouveau fichier `.env`.
+Puis compléter les variables d'environnement en suivant les instructions depuis ce fichier.
 
-```env
-GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
-JULES_API_KEY=xxxxxxxxxxxxxxxxxxxx
+```bash
+cp .env.example .env
 ```
-
-| Variable        | Description                                                 |
-|-----------------|-------------------------------------------------------------|
-| `GITHUB_TOKEN`  | Personal Access Token GitHub (scopes : `repo`, `read:user`) |
-| `JULES_API_KEY` | Clé API Jules (Google)                                      |
-
-> Le fichier `.env` est ignoré par git — ne pas le committer.
 
 ---
 
