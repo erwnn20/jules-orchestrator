@@ -80,7 +80,7 @@ export default function ProjectsPage() {
 
       {showFilters && (
         <div className={twMerge(
-          'flex flex-col gap-2.5 mb-4 px-4 py-3',
+          'flex flex-col gap-2.5 mb-4 p-3',
           'bg-panel border border-border-color rounded-lg',
         )}>
           <div className="flex items-center gap-2">
