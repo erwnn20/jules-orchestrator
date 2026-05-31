@@ -22,7 +22,7 @@ export default function ProjectsPage() {
   const { data: repositories = [], isLoading, error } = useRepositories(appliedFilters)
   const sourcesQuery = useSources()
 
-  const filterKeys = Object.keys(DEFAULT_FILTERS) as (keyof typeof DEFAULT_FILTERS)[]
+  const filterKeys = DEFAULT_FILTERS.keys();
   const { activeFilterCount, hasPendingChanges } = filterKeys.reduce((acc, key) => {
 
     if (appliedFilters[key] !== DEFAULT_FILTERS[key]) acc.activeFilterCount++
