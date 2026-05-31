@@ -110,7 +110,7 @@ export default function ProjectsPage() {
           <div className={'flex items-end flex-wrap gap-3'}>
 
             {filtersConfig.map(([key, value], index) => {
-              const draftValue = draftFilters[key]
+              const draftValue = draftFilters[key] as string | number | Date | undefined
               switch (value.type) {
                 case "select":
                   return (<Select
@@ -201,7 +201,7 @@ type FilterConfig = {
   )
 };
 
-type FiltersKeys = Partial<Pick<RequiredFiltersKeys, 'sort' | 'direction' | 'visibility' | 'since' | 'before'>>
+type FiltersKeys = Partial<Pick<RequiredFiltersKeys, 'sort' | 'direction' | 'visibility'>>
 
 const FILTERS_CONFIG: Pick<FilterConfig, keyof FiltersKeys> = {
   sort: {
@@ -230,8 +230,6 @@ const FILTERS_CONFIG: Pick<FilterConfig, keyof FiltersKeys> = {
       private: 'Private',
     }
   },
-  before: { label: 'Before', type: 'date' },
-  since: { label: 'After', type: 'date' },
 }
 
 const DEFAULT_FILTERS: FiltersKeys = {
