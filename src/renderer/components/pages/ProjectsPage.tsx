@@ -118,7 +118,7 @@ export default function ProjectsPage() {
                     label={(<span className={'text-meta text-secondary-foreground'}>
                       {value.label}
                     </span>)}
-                    value={typeof draftValue === 'string' ? draftValue : undefined}
+                    value={typeof draftValue === 'string' ? draftValue : ''}
                     className={twMerge(draftValue !== DEFAULT_FILTERS[key] && 'border-primary ')}
                     onChange={e => setDraftFilters(f => ({ ...f, [key]: e.target.value }))}
                     options={Object.entries(value.options).map(([k, label]) => ({
@@ -132,7 +132,7 @@ export default function ProjectsPage() {
                       {value.label}
                     </span>)}
                     className={twMerge(draftValue !== DEFAULT_FILTERS[key] && 'border-primary ')}
-                    value={draftValue instanceof Date ? draftValue.toISOString().split('T')[0] : undefined}
+                    value={draftValue instanceof Date ? draftValue.toISOString().split('T')[0] : ''}
                     onChange={e => setDraftFilters(f => ({
                       ...f, [key]: new Date(e.target.value)
                     }))}
@@ -144,7 +144,7 @@ export default function ProjectsPage() {
                       {value.label}
                     </span>)}
                     className={twMerge(draftValue !== DEFAULT_FILTERS[key] && 'border-primary ')}
-                    value={typeof draftValue === 'number' ? draftValue : undefined}
+                    value={typeof draftValue === 'number' ? draftValue : ''}
                     min={value.min} max={value.max}
                     onChange={e => setDraftFilters(f => ({
                       ...f, [key]: Number(e.target.value)
@@ -234,7 +234,7 @@ const FILTERS_CONFIG: Pick<FilterConfig, keyof FiltersKeys> = {
   since: { label: 'After', type: 'date' },
 }
 
-const DEFAULT_FILTERS: FiltersKeys = { /* todo fix err on undefined filters */
+const DEFAULT_FILTERS: FiltersKeys = {
   sort: 'updated',
   direction: 'desc',
   visibility: 'all',
