@@ -10,7 +10,7 @@ import BasePage from "@pages/BasePage";
 import { useRepositories } from "@renderer/hooks/github/repositories.hooks";
 import { useSources } from "@renderer/hooks/jules/sources.hooks";
 import { twMerge } from "@renderer/utils/tw.utils";
-import { Plus, RotateCcw, SlidersHorizontal } from "lucide-react";
+import { Check, Plus, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 
 
@@ -95,15 +95,16 @@ export default function ProjectsPage() {
                 setAppliedFilters(DEFAULT_FILTERS)
               }}
             >
-              <RotateCcw className="w-3 h-3 stroke-2"/> {/*Reset*/}
+              <RotateCcw className="w-3.25 h-3.25 stroke-3"/> {/*Reset*/}
             </Button>
             <Button
               size={'sm'}
               variant={hasPendingChanges ? 'primary' : 'outline'}
+              className={'p-1.75 aspect-square'}
               disabled={!hasPendingChanges}
               onClick={() => setAppliedFilters(draftFilters)}
             >
-              Apply {/*todo check*/}
+              <Check className="w-3.75 h-3.75 stroke-3"/> {/*Apply*/}
             </Button>
           </div>
           <div className={'flex items-end flex-wrap gap-3'}>
