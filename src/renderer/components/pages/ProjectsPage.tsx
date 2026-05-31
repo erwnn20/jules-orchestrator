@@ -134,7 +134,7 @@ export default function ProjectsPage() {
                     className={twMerge(draftValue !== DEFAULT_FILTERS[key] && 'border-primary ')}
                     value={draftValue instanceof Date ? draftValue.toISOString().split('T')[0] : ''}
                     onChange={e => setDraftFilters(f => ({
-                      ...f, [key]: new Date(e.target.value)
+                      ...f, [key]: e.target.value ? new Date(e.target.value) : undefined
                     }))}
                   />)
                 case "number":
