@@ -22,7 +22,7 @@ export default function ProjectsPage() {
   const { data: repositories = [], isLoading, error } = useRepositories(appliedFilters)
   const sourcesQuery = useSources()
 
-  const filterKeys = DEFAULT_FILTERS.keys();
+  const filterKeys = FILTERS_CONFIG.keys();
   const { activeFilterCount, hasPendingChanges } = filterKeys.reduce((acc, key) => {
 
     if (appliedFilters[key] !== DEFAULT_FILTERS[key]) acc.activeFilterCount++
@@ -195,7 +195,7 @@ type FilterConfig = {
   RequiredFiltersKeys[key] extends string ? {
       type: 'select'; options: Record<RequiredFiltersKeys[key], string>
     } :
-    RequiredFiltersKeys[key] extends number ? { type: 'number'; min: number; max: number } :
+    RequiredFiltersKeys[key] extends number ? { type: 'number'; min?: number; max?: number } :
       RequiredFiltersKeys[key] extends Date ? { type: 'date'; } :
         never
   )
