@@ -66,14 +66,6 @@ L'interface est disponible sur `http://localhost:5173`. Electron se lance automa
 
 > Pour exposer le serveur Vite sur le réseau local : `npm run dev:host`
 
-### Build de production
-
-```bash
-npm run build
-```
-
-Compile le renderer (Vite → `dist/renderer/`) et le processus principal (tsc + tsc-alias → `dist/electron/`).
-
 ### Packaging en exécutable
 
 ```bash
