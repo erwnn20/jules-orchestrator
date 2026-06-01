@@ -32,7 +32,7 @@
     "wait-on": "^9.0.5"
   },
   "build": {
-    "appId": "com.erwann.jules-orchestrator",
+    "appId": "jules-orchestrator",
     "productName": "Jules Orchestrator",
     "files": [
       "dist/**/*"
@@ -44,7 +44,8 @@
       }
     ],
     "directories": {
-      "buildResources": "assets"
+      "buildResources": "assets",
+      "output": "release"
     },
     "win": {
       "target": "nsis"

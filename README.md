@@ -77,7 +77,7 @@ Compile le renderer (Vite → `dist/renderer/`) et le processus principal (tsc +
 ### Packaging en exécutable
 
 ```bash
-npm run dist
+npm run generate
 ```
 
 Génère un installateur natif (`.exe` sur Windows, `.dmg` sur macOS) dans le dossier `release/`.

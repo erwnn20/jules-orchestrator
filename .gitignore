@@ -5,8 +5,9 @@ node_modules/
 # IDE
 .idea/
 
-#
+# Generated files
 dist/
+release/
 
 # Subjects and Utils
 *.pdf
