@@ -1,12 +1,12 @@
 ﻿# Dependencies
 node_modules/
+.env
 
 # IDE
 .idea/
 
 #
 dist/
-.env
 
 # Subjects and Utils
 *.pdf
