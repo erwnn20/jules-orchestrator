@@ -66,6 +66,9 @@ declare global {
           list: (args?: ListIssuesRequest) => Promise<ListIssuesResponse>,
         }
       },
+      utils: {
+        openLink: (url: string) => Promise<void>,
+      },
     }
   }
 }
