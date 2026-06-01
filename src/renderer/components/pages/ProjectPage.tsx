@@ -117,7 +117,9 @@ export default function ProjectPage() {
 
   //
 
-  if (isLoading) return <Loader/>
+  if (isLoading) return (
+    <div className='flex p-10'><Loader/></div>
+  )
   if (error) return (
     <div className='flex flex-col gap-2 p-10'>
       <p className={'flex items-center gap-1 text-base text-accent-red'}>
