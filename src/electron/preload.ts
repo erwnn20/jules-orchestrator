@@ -55,4 +55,7 @@ contextBridge.exposeInMainWorld('api', {
       list: (args?: ListIssuesRequest) => ipcRenderer.invoke('github:pr:list', args),
     },
   },
+  utils: {
+    openLink: (url: string) => ipcRenderer.invoke('utils:open-link', url),
+  },
 })

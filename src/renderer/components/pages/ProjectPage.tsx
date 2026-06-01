@@ -18,6 +18,7 @@ import { Repository } from "@github/repositories/repository.model";
 import { PullRequest as JulesPullRequest } from '@jules/github/github.interfaces'
 import { Session } from "@jules/sessions/session.model";
 import BasePage from "@pages/BasePage";
+import { UtilsServices } from "@renderer/data/utils.services";
 import { useRepository } from "@renderer/hooks/github/repositories.hooks";
 import { useCreateSession } from "@renderer/hooks/jules/sessions.hooks";
 import { useNotifications } from "@renderer/hooks/notifications.hooks";
@@ -25,7 +26,7 @@ import { ProjectOptionalRepo as Project } from "@renderer/interfaces/project.int
 import { twMerge } from '@renderer/utils/tw.utils';
 import { ExternalLink, GitBranch, GitBranchPlus, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useLocation } from "react-router-dom";
 
 
@@ -146,14 +147,13 @@ export default function ProjectPage() {
         </div>)}
       </div>}
       subtitle={<div className={'mb-8'}>
-        <NavLink to={repository.htmlUrl}
-                 className={twMerge(
-                   'flex items-center w-fit',
-                   'text-meta text-accent-blue hover:underline'
-                 )}
-                 target='_blank' rel={'noreferrer'}>
+        <p onClick={_ => UtilsServices.OpenLink(repository.htmlUrl)}
+           className={twMerge(
+             'flex items-center w-fit',
+             'text-meta text-accent-blue hover:underline'
+           )}>
           <ExternalLink className='h-3 w-3 me-1'/> {repository.owner.login}/{repository.name}
-        </NavLink>
+        </p>
       </div>}>
 
       {/* Lancer un agent */}
