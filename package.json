@@ -34,7 +34,15 @@
   "build": {
     "appId": "com.erwann.jules-orchestrator",
     "productName": "Jules Orchestrator",
-    "files": ["dist/**/*"],
+    "files": [
+      "dist/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": ".env",
+        "to": ".env"
+      }
+    ],
     "directories": {
       "buildResources": "assets"
     },

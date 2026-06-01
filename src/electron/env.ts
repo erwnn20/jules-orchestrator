@@ -2,4 +2,10 @@
 import path from 'path'
 
 
-dotenv.config({ path: path.join(__dirname, '../../.env') })
+const isDev = process.env.NODE_ENV === 'development'
+
+dotenv.config({
+  path: isDev
+    ? path.join(__dirname, '../../.env')
+    : path.join(process.resourcesPath, '.env')
+})
