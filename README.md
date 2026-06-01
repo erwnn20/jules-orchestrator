@@ -82,6 +82,8 @@ npm run generate
 
 Génère un installateur natif (`.exe` sur Windows, `.dmg` sur macOS) dans le dossier `release/`.
 
+> Un raccourci du `.exe` sera automatiquement généré à la racine du projet.
+
 ---
 
 ## Architecture

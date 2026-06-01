@@ -7,7 +7,8 @@
     "dev": "     concurrently \"npm run dev --prefix src/renderer\"      \"tsc --watch -p tsconfig.json\" \"tsc-alias --watch -p tsconfig.json\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development nodemon --watch dist/electron --ext js --exec electron .\"",
     "dev:host": "concurrently \"npm run dev:host --prefix src/renderer\" \"tsc --watch -p tsconfig.json\" \"tsc-alias --watch -p tsconfig.json\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development nodemon --watch dist/electron --ext js --exec electron .\"",
     "build": "npm run build --prefix src/renderer && tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
-    "generate": "npm run build && electron-builder"
+    "generate": "npm run build && electron-builder",
+    "postgenerate": "node scripts/create-shortcut.js"
   },
   "keywords": [],
   "author": "Erwann Varlet",

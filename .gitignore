@@ -8,6 +8,7 @@ node_modules/
 # Generated files
 dist/
 release/
+*.lnk
 
 # Subjects and Utils
 *.pdf
