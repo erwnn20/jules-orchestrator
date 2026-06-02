@@ -13,8 +13,19 @@ import type { Source } from "@jules/sources/source.model";
 import { unwrapIpc } from "@renderer/utils/ipc-error.utils";
 
 
+type GoogleSubscription = 'Default' | 'Pro' | 'Ultra'
+
+const JULES_DAILY_SESSION_LIMIT: Record<GoogleSubscription, {
+  totalTasks: number;
+  concurrentTasks: number;
+}> = {
+  Default: { concurrentTasks: 3, totalTasks: 15 },
+  Pro: { concurrentTasks: 15, totalTasks: 100 },
+  Ultra: { concurrentTasks: 60, totalTasks: 300 }
+}
+
 export abstract class JulesService {
-  static readonly DAILY_SESSION_LIMIT = 15; /*TODO get limit by Jules API*/
+  static readonly DAILY_SESSION_LIMIT = JULES_DAILY_SESSION_LIMIT['Default']; /* TODO get subscription by api ? */
 
   static getSource = async (id: string): Promise<Source> =>
     unwrapIpc(await window.api.jules.source.get(id))
