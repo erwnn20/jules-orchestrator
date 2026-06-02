@@ -19,7 +19,7 @@ export default function Sidebar() {
     data: { sessions } = { sessions: [] },
     isLoading: isSessionsLoading,
     error: errorSessions
-  } = useSessions({ pageSize: JulesService.DAILY_SESSION_LIMIT })
+  } = useSessions({ pageSize: JulesService.DAILY_SESSION_LIMIT.totalTasks })
 
   const sessionsBySource =
     sessions.reduce((acc, session) => {

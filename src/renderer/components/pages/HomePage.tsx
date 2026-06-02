@@ -54,7 +54,7 @@ export default function HomePage() {
     data: { sessions: sessions } = { sessions: [] },
     isLoading: isSessionsLoading,
     error: sessionsError
-  } = useSessions({ pageSize: JulesService.DAILY_SESSION_LIMIT })
+  } = useSessions({ pageSize: JulesService.DAILY_SESSION_LIMIT.totalTasks })
 
   const { todayCount, inProgressCount, waitingCount, activeCount } = sessions.reduce(
     (acc, { state, updateTime }) => {
@@ -66,7 +66,7 @@ export default function HomePage() {
     },
     { todayCount: 0, inProgressCount: 0, waitingCount: 0, activeCount: 0 }
   )
-  const dailySessionsUsage = todayCount / JulesService.DAILY_SESSION_LIMIT
+  const dailySessionsUsage = todayCount / JulesService.DAILY_SESSION_LIMIT.totalTasks
 
   const stats: Parameters<typeof StatsCard>[0][] = [
     {
@@ -93,7 +93,7 @@ export default function HomePage() {
     {
       label: 'Sessions du Jour',
       value: todayCount,
-      info: `/${JulesService.DAILY_SESSION_LIMIT}`,
+      info: `/${JulesService.DAILY_SESSION_LIMIT.totalTasks}`,
       accent: 'var(--color-accent-gray)',
       icon: Activity,
       children: (
