@@ -72,6 +72,9 @@ export default function HomePage() {
     {
       label: 'Sessions actives',
       value: activeCount,
+      info: (<span className={'text-accent-gray'}>
+        /{JulesService.DAILY_SESSION_LIMIT.concurrentTasks}
+      </span>),
       accent: 'var(--color-accent-green)',
       icon: Bot,
       children: (
@@ -174,7 +177,7 @@ function StatsCard({ children, label, value, info, accent, icon: Icon, isLoading
   children?: ReactNode
   label: string,
   value: number | string,
-  info?: string | number,
+  info?: ReactNode,
   accent: Property.Color,
   icon: LucideIcon,
   isLoading?: boolean,
